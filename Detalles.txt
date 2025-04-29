@@ -1,0 +1,37 @@
+Espero que este git salga bien jajjaa
+Holis Chris
+Voy a armar una breve descripcion de cada archivo y de ese sus clases
+Ademas de las modificaciones que se tengan que hacer en las clases 
+
+
+ARCHIVO: Encabezado.html 
+CLASES (MODIFICACIONES-si las necesita-):
+encabezado -> cambiar color al naranja FFA154
+navegacion
+login
+nav -> modificar fuente
+
+
+
+ARCHIVO:PieDePagina.html
+CLASES (MODIFICACIONES):
+/*ver de acomodarlo con grid*/
+PieDePagina -> cambiar color al naranja FFA154
+redes -> cambiar fuente y revisar si es necesario sumar el tamaño 
+iconos-redes 
+iconos
+iconoswpp
+direc -> CAMBIAR FUENTE y color de fuente
+
+ARCHIVO:Inicio.html
+CLASES (MODIFICACIONES):
+*/Sacarle el encabezado y pie de pagina cuando tengamos el archivo en php/*
+
+in -> modificar fuente / cambiar color/ tamaño
+prom-opi-> Sumarle grid
+    prom
+    opi
+
+
+ARCHIVO:
+CLASES (MODIFICACIONES):

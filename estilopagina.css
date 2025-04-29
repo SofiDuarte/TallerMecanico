@@ -1,0 +1,144 @@
+/*COMANDOS PARA QUE UTILICE EL ANCHO Y ALTO DEL 100% DE LA OAGINA Y NO MÁS*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    width: 100%;
+    height: 100%;
+  }
+
+
+/*PAGINA DE ENCABEZADO Y PIE DE PAGINA*/
+
+.encabezado{
+    width: 100%;
+    height: 91px;
+    padding: 10px;
+    background-color: bisque;/*cambiar color al naranja FFA154*/
+    display: flex;
+    align-items: center; /* Centra verticalmente */
+    justify-content: space-between; /* Espacia logo a la izquierda y menú a la derecha */
+
+}
+
+.navegacion{
+    display: flex;
+    justify-content: space-around; /*justifica y utiliza todo el espacio*/
+    align-items: center;
+    gap: 40px; /* Separación entre links */
+    width: 100%;
+}
+.login{
+    width: 101px;
+    height: 71px;
+    margin: 15px; /*a partir del margen*/
+    border-radius: 5px; /*BUSCAR rondeda bordes*/
+}
+
+.nav:hover{
+    font-size: large; /*tipo de fuente*/
+    border-radius: content-box; /*Que cuando definís el width (ancho) y el height (alto) de un elemento, solo cuentan el contenido — no se incluyen el padding ni el border dentro de esas medidas.*/
+   
+}   
+
+
+
+/*ACOMODAR LA DIRECCION POR QUE LAS IMAGENES ESTAN EN BLOQUE*/
+
+.PieDePagina{
+    height: 100px;
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(252, 146, 16);/*cambiar color al naranja FFA154*/
+    padding-left: 25px;
+    
+ 
+}
+
+.redes{
+    font-family: 'Courier New', Courier, monospace; /*cambiar fuente*/
+    /*font-size: 16px; SI ES NESECARIO CAMBIAR EL TAMAÑO TENEMOS QUE CAMBIAR EL H4 POR UN DIV*/
+}
+
+
+.iconos-redes{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.iconos{
+    width:31px;
+    height: 31px;
+    
+}
+
+
+.iconoswpp{
+    width: 24px;
+    height: 24px;
+    margin: 2.7px;
+}
+
+
+.direc{
+    font-family: 'Courier New', Courier, monospace;/*CAMBIAR FUENTE*/
+    font-size: large;/*tamaño de fuente*/
+    color: #000000;/*color de fuente*/
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: right;
+
+}
+
+
+/*PAGINA DE INICIO*/
+
+.in{
+ /*sector imagen de fondo*/
+    margin-top: 16px;
+    background-image: url(fondos/A.jpg);
+    background-repeat: no-repeat; /*No repite la imagen.*/
+    opacity: 80%; /*opacidad en porcentaje*/
+    background-size: cover; 
+    background-position: center;
+    min-height: 100vh; /* que ocupe toda la pantalla */
+
+/*sector texto*/
+    background-color: rgb(252, 252, 252);
+    font-family: 'Courier New', Courier, monospace;/*CAMBIAR FUENTE*/
+    font-size: large;/*tamaño de fuente*/
+    color: #000000;/*color de fuente*/
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    text-align: center;
+
+}
+
+.prom-opi{
+    font-family: 'Courier New', Courier, monospace;/*CAMBIAR FUENTE*/
+    font-size: large;/*tamaño de fuente*/
+    color: #000000;/*color de fuente*/
+    align-content: center;
+    margin: 40px;
+    
+}
+
+
+.prom{
+    /*display: flex;
+    justify-items: flex-start;*/
+    width: 164px;
+    height: 164px;
+
+
+}
+.opiones{
+    /*display: flex;
+    justify-content: flex-end;*/
+   
+}
