@@ -4,13 +4,14 @@ Voy a armar una breve descripcion de cada archivo y de ese sus clases
 Ademas de las modificaciones que se tengan que hacer en las clases 
 
 
-ARCHIVO: Encabezado.html 
+ARCHIVO: Encabezado.html (navegador.php) 
 CLASES (MODIFICACIONES-si las necesita-):
 encabezado -> cambiar color al naranja FFA154
 navegacion
 login
 nav -> modificar fuente
 
+INFORMACION/OBSERVACIONES: Ver si modificamos la etiqueta a y le sumamos una b para que sea negrita 
 
 
 ARCHIVO:PieDePagina.html
@@ -22,6 +23,8 @@ iconos-redes
 iconos
 iconoswpp
 direc -> CAMBIAR FUENTE y color de fuente
+INFORMACION/OBSERVACIONES: Modificar la direccion que quede con más margen del lado derecho
+
 
 ARCHIVO:Inicio.html
 CLASES (MODIFICACIONES):
@@ -35,3 +38,4 @@ prom-opi-> Sumarle grid
 
 ARCHIVO:
 CLASES (MODIFICACIONES):
+INFORMACION/OBSERVACIONES: Avisarle a la rpofe que se modificaron tamaños de visual e la pagina a 400px
