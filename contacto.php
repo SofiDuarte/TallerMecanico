@@ -22,12 +22,12 @@
             
         <div class="form_1">
                 <label for="nom">Nombre</label>
-                <input type="text" value="  Martina Elías González" id="nom">
+                <input type="text" value="" id="nom" placeholder="  Martina Elías González">
             </div>
 
             <div class="form_2">
                 <label for="tel">Telefono de Contacto</label>
-                <input type="tel"  value=" 113585764" name="" id="">
+                <input type="tel"  value="" name="" id="" placeholder=" 113585764">
             </div>
 
             <div class="form_3">

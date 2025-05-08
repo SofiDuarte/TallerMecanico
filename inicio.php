@@ -26,28 +26,28 @@
             <!-- INTENTO DE CARRUCEL CON HTML Y CSS SIN JAVA -->
              <div class="slide">
                 <div class="slide-inner">
-                        <input class="slide-open" type="radio" id="slide-1" 
-                            name="slide" aria-hidden="true" hidden="" checked="checked">
-                        <div class="slide-item">
-                            <img src="Promociones/5.png">
-                        </div>
+                    <input class="slide-open" type="radio" id="slide-1" 
+                        name="slide" aria-hidden="true" hidden="" checked="checked">
+                    <div class="slide-item">
+                        <img src="Promociones/5.jpg">
+                    </div>
 
-                        <input class="slide-open" type="radio" id="slide-2" 
-                            name="slide" aria-hidden="true" hidden="">
-                        <div class="slide-item">
-                            <img src="Promociones/6.png">
-                        </div>
+                    <input class="slide-open" type="radio" id="slide-2" 
+                        name="slide" aria-hidden="true" hidden="">
+                    <div class="slide-item">
+                        <img src="Promociones/6.jpg">
+                    </div>
 
-                        <input class="slide-open" type="radio" id="slide-3" 
-                            name="slide" aria-hidden="true" hidden="">
-                        <div class="slide-item">
-                            <img src="Promociones/7.png">
-                        </div>
+                    <input class="slide-open" type="radio" id="slide-3" 
+                        name="slide" aria-hidden="true" hidden="">
+                    <div class="slide-item">
+                        <img src="Promociones/7.jpg">
+                    </div>
 
-                        <input class="slide-open" type="radio" id="slide-4" name="slide" hidden>
-                        <div class="slide-item">
-                            <img src="Promociones/8.png">
-                        </div>
+                    <input class="slide-open" type="radio" id="slide-4" name="slide" hidden>
+                    <div class="slide-item">
+                        <img src="Promociones/8.jpg">
+                </div>
 
 
 
@@ -82,7 +82,7 @@
 
         </div>
         <div>
-            <h2 >Opinion</h2>
+            <h2 >Opiniones</h2>
             <img class="prom-opi_img" src="fondos/qrcode_www.google.com.ar.jpg" alt="QR dirijido a reseñas de google">
            
             
