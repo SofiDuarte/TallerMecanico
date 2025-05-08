@@ -520,3 +520,34 @@
 
 
 
+.fondoclisof{
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;  
+    background-image: linear-gradient( #FFC631,#FF8E31, #e75070 );
+    background-repeat: no-repeat; /*No repite la imagen.*/
+    margin: 20px auto 20px;
+    min-height: 50vh;  /*que ocupe toda la pantalla */
+    position: relative;
+}
+
+.clisof{
+    background-color: #fff;
+    width: 500px;
+    height: 500px;
+    padding: 10px;
+    position: relative;
+
+}    
+
+.formclisof{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 20%;
+
+    font-family:'Big_Shoulders_ExtraBold';
+    font-size: 30px;
+}
