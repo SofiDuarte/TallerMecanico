@@ -350,6 +350,8 @@
     gap: 30px;
     padding: 20px;
     margin: 40px;
+    min-height: 100vh; /* que ocupe toda la pantalla */
+    
 }
 
 
@@ -493,61 +495,147 @@
 
 }
 
-/*CLIENTE*/
+                                    /*CLIENTE*/
 
-.cliente{
-    display:flex ;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
-    margin: 40px;
+.fondo_login{
+    /*fondo*/
+    background-image: url(fondos/c2.jpg);
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    margin: 10px auto 10px;
+
+
+
 }
 
-.cli1{
-    opacity: 20%;
+.formu_login{ 
+    background: rgba(255, 255, 255, 0.671) ;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 167px;
+    min-height: 100vh;
+    margin: 10px auto 10px;
 
-
-}
-
-.cli2{
-    background-color: #FFDABD;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 336px;
-}
-
-
-
-.fondoclisof{
-    display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center;  
-    background-image: linear-gradient( #FFC631,#FF8E31, #e75070 );
-    background-repeat: no-repeat; /*No repite la imagen.*/
-    margin: 20px auto 20px;
-    min-height: 50vh;  /*que ocupe toda la pantalla */
-    position: relative;
-}
-
-.clisof{
-    background-color: #fff;
-    width: 500px;
-    height: 500px;
-    padding: 10px;
-    position: relative;
-
-}    
-
-.formclisof{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
     text-align: center;
-    margin-top: 20%;
-
-    font-family:'Big_Shoulders_ExtraBold';
-    font-size: 30px;
+   
+    
 }
+
+.formu_login img{
+    width: 275px;
+    height: 75px;
+    
+}
+
+.formu_login h2{
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 20px;
+    
+}
+
+.formu_login label{
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 20px;
+    
+   
+    
+}
+
+.olvido{
+    font-family: 'Big_Shoulders_ExtraBold';
+    text-decoration: none; /* Saca el subrayado de los links */
+    border: none;
+    background-color: #fff;
+}
+
+
+
+.formu_empleados{
+    /*formulario empleados*/
+    
+    justify-content: center;
+    align-content: center;
+    /*justify-items: center;*/
+    grid-column: 1/2;
+    margin-left: 25%; /*corre el espacio del formulario a la derecha*/
+
+    width: 465px;
+    height: 522px;
+    padding: 20px;
+    background-color: #ffffff;
+    position: relative;
+    border-radius: 40px;
+    
+    
+}
+
+.formu_empleados input{
+    border-color: #1FA0A0;
+    border-radius: 20px;
+    width: 292.74px;
+    height: 35.37px;
+  
+}
+
+.formu_empleados #ingreso1{
+    background-color: #1FA0A0;
+    border-color:#1FA0A0;
+    border-radius: 20px;
+    width: 95.19px;
+    height: 32.52px;
+
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 16px;
+}
+
+.formu_clientes{
+    /*formulario de clientes*/
+    grid-column: 2/3;
+    
+    align-content: center;
+    margin-left: 100px;
+    padding: 20px;
+
+    width: 463px;
+    height: 664px;
+    padding: 20px;
+    background-color: #ffffff;
+    position: relative;
+    border-radius: 40px;
+}
+
+
+.formu_clientes input{
+     border-color: #FF7400;
+    border-radius: 20px;
+    width: 292.74px;
+    height: 35.37px;
+}
+
+
+.formu_clientes .ingreso2{
+    background-color: #FF7400;
+    border-color: #FF7400;
+    border-radius: 20px;
+    width: 95.19px;
+    height: 32.52px;
+
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 16px;
+}
+
+.formu_clientes .registro2{
+    background-color: #ED2E57;
+    border-color: #ED2E57;
+    border-radius: 20px;
+    width: 95.19px;
+    height: 32.52px;
+
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 16px;
+
+}
+
+

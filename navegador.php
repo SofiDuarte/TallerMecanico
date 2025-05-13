@@ -18,11 +18,11 @@
             <a class="nav" href="http://localhost/tallermecanico/nosotros.php">Nosotros</a>
             <a class="nav" href="http://localhost/tallermecanico/servicios.php">Servicios</a>
             <a class="nav" href="http://localhost/tallermecanico/contacto.php">Contacto</a>
-            <a class="nav" href="tiene que ir la url de la pagian cliente">Cliente</a>
+            <a class="nav" href="tiene que ir la url de la pagian cliente">Login</a>
             
         </head>
     </div>
-<br><br><br>
+
 
 
 </body>
