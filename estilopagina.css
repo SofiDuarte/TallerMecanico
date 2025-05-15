@@ -579,7 +579,7 @@
   
 }
 
-.formu_empleados #ingreso1{
+.formu_empleados .ingreso1{
     background-color: #1FA0A0;
     border-color:#1FA0A0;
     border-radius: 20px;
