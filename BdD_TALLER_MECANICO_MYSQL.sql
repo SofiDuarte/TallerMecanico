@@ -87,15 +87,15 @@ ORDER BY
 
 
 
-INSERT INTO Clientes VALUES ('28090318','Miguel123','Miguel Martinez','Pedro Lozano 452','Caba','1145269854');
-INSERT INTO Clientes VALUES ('19786413','Maria123','María García','Ascasubi 1342','Buenos Aires','1167439855');
-INSERT INTO Clientes VALUES ('32489632','Juan123','Juan Pérez','San Martin 514','Caba','1167349281');
-INSERT INTO Clientes VALUES ('41298533','Carlos123','Carlos Rodríguez',NULL,'Mendoza',NULL);
-INSERT INTO Clientes VALUES ('18762965','Laura 123','Laura Martínez',NULL,NULL,'3515555678');
-INSERT INTO Clientes VALUES ('27552991','Ale123','Alejandro López',NULL,NULL,NULL);
-INSERT INTO Clientes VALUES ('43796532','Sergio123','Sergio Benitez','Av.Saenz 708','Caba','1147552201');
-INSERT INTO Clientes VALUES ('30164750','Maria123','Maria Sotelo','Tandil 6940','Caba','1122083320');
-INSERT INTO Clientes VALUES ('22870111','Juan123','Juan Villalba','Monroe 87','Lanus','1137081077');
+INSERT INTO Clientes VALUES ('28090318','Miguel@123','Miguel Martinez','Pedro Lozano 452','Caba','1145269854');
+INSERT INTO Clientes VALUES ('19786413','Maria@123','María García','Ascasubi 1342','Buenos Aires','1167439855');
+INSERT INTO Clientes VALUES ('32489632','Juan@123','Juan Pérez','San Martin 514','Caba','1167349281');
+INSERT INTO Clientes VALUES ('41298533','Carlos@123','Carlos Rodríguez',NULL,'Mendoza',NULL);
+INSERT INTO Clientes VALUES ('18762965','Laura@123','Laura Martínez',NULL,NULL,'3515555678');
+INSERT INTO Clientes VALUES ('27552991','Ale@123','Alejandro López',NULL,NULL,NULL);
+INSERT INTO Clientes VALUES ('43796532','Sergio@123','Sergio Benitez','Av.Saenz 708','Caba','1147552201');
+INSERT INTO Clientes VALUES ('30164750','Maria@123','Maria Sotelo','Tandil 6940','Caba','1122083320');
+INSERT INTO Clientes VALUES ('22870111','Juan@123','Juan Villalba','Monroe 87','Lanus','1137081077');
 INSERT INTO Vehiculos VALUES ('AB307CI','18762965','Volkswagen','Gol trend','2017','Negro', 'HTV 1.6');
 INSERT INTO Vehiculos VALUES ('GHI410','32489632','Citroen','Xsara','2007','Rojo', 'L416V 1.8');
 INSERT INTO Vehiculos VALUES ('AE489AB','28090318','Peugeot','208','2020',NULL, NULL);
@@ -165,10 +165,10 @@ INSERT INTO Orden_trabajo (orden_numero, servicio_codigo, complejidad, orden_kil
 INSERT INTO Orden_trabajo (orden_numero, servicio_codigo, complejidad, orden_kilometros) VALUES (00000010,'SDI001','1', '119832');
 INSERT INTO Orden_trabajo (orden_numero, servicio_codigo, complejidad, orden_kilometros) VALUES (00000011,'D001','1', '43909');
 INSERT INTO Orden_trabajo (orden_numero, servicio_codigo, complejidad, orden_kilometros) VALUES (00000012,'S002','1', '67413');
-INSERT INTO Empleados VALUES ('30700247','Chris123','Christian Caprarulo','mecanico');
-INSERT INTO Empleados VALUES ('44671150','Sofia123','Sofia Duarte','recepcionista');
-INSERT INTO Empleados VALUES ('24874723','Stella123','Stella Brzostowski','recepcionista');
-INSERT INTO Empleados VALUES ('47651867','Martin123','Martin Caprarulo','mecanico');
+INSERT INTO Empleados VALUES ('30700247','Chris@123','Christian Caprarulo','mecanico');
+INSERT INTO Empleados VALUES ('44671150','Sofia@123','Sofia Duarte','recepcionista');
+INSERT INTO Empleados VALUES ('24874723','Stella@123','Stella Brzostowski','recepcionista');
+INSERT INTO Empleados VALUES ('47651867','Martin@123','Martin Caprarulo','mecanico');
 
 
 DELIMITER $$
