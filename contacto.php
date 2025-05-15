@@ -18,26 +18,26 @@
     
     <br>
     <h2 class="contacto">Contacto</h2>
-    <form  action="" method="" class="formulario1"> <!-- SUMAR PHP DONDE LLEVA LOS DATOS -->
+    <form class="form" action="enviar_consulta.php" method="post"> <!-- PHP DONDE LLEVA LOS DATOS -->
             
         <div class="form_1">
                 <label for="nom">Nombre</label>
-                <input type="text" value="" id="nom" placeholder="  Martina Elías González">
+                <input type="text" name="nombre" id="nom" placeholder="Martina Elías González" required>
             </div>
 
             <div class="form_2">
                 <label for="tel">Telefono de Contacto</label>
-                <input type="tel"  value="" name="" id="" placeholder=" 113585764">
+                <input type="tel" name="telefono" id="tel" placeholder="113585764" required>
             </div>
 
             <div class="form_3">
                 <label for="mail">Email</label>
-                <input type="email" name="mail" id="mail" placeholder=" martina.gonzalez24@gmail.com">
+                <input type="email" name="email" id="mail" placeholder="martina.gonzalez24@gmail.com" required>
             </div>
             
             <div class="form_4">
                 <label for="cons">Consulta</label>
-                <textarea name="" placeholder=" Dejanos tu consulta" id="cons" cols="10px" rows="20"></textarea>
+                <textarea name="consulta" id="cons" placeholder="Dejanos tu consulta" cols="30" rows="10" required></textarea>
             </div>
             
             <button>Enviar</button>
