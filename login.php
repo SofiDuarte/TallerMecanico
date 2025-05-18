@@ -13,7 +13,7 @@
         include("navegador.php");
     ?>
     
-    <div class="fondo_login">
+    <section class="fondo_login">
         <div class="formu_login">
 
              <div class="formu_empleados"> 
@@ -59,8 +59,8 @@
             </div>
    
 
-    </div>
-</div>
+    </section>
+
     
 
         

@@ -14,7 +14,7 @@
     ?>
     
     <br>
-    <div class="serv">
+    <section class="serv">
         <div > 
            <div class="item_serv">
                 <img src="servicios/1.jpg" alt="">
@@ -86,7 +86,7 @@
             <h2>MOTOR COMPLETO</h2>
         <h3>DESARME Y REPARACION COMPLETA DE MOTOR</h3>
         </div>  
-    </div>
+    </section >
 
     <?php 
         include("piedepagina.php");
