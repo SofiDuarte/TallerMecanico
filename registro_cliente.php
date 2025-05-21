@@ -19,7 +19,7 @@
         <img src="fondos/registro_cli.jpg" alt="" class="img_registro1">
         <section class="registro">
             
-            <h2>Hola Usuario</h2>
+            <img class="logo_registro" src="iconos/form_clientes.png" alt="">
             <h3>Ingrese sus datos</h3>
 
             <form action="" class="form_registro" >

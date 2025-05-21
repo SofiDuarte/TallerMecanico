@@ -49,18 +49,19 @@
         <h2 class="recepcion_titulos">NUEVA ORDEN</h2>
         <br>
         <form action="" class="form_orden">
-            <label  for="ord_num" class="ord_form">Orden Número</label>
-            <input type="number" name="ord_num" id="ord_num" class="ord_form1">
             <label for="veh_pat" class="patente_form">Vehiculo Patente</label>
             <input type="text" name="veh_pat" id="veh_pat" class="patente_form1">
             <label for="fecha" class="fecha_form">Fecha</label>
             <input type="datetime" name="fecha" class="fecha_form1">
-            <label for="serv_cod" class="serv_form">Servicio Codigo</label>
-            <input type="text" name="serv_cod" id="serv_cod" class="serv_form1">
             <label for="complejidad" class="compl_form">Complejidad</label>
             <input type="number" name="complejidad" id="complejidad" class="compl_form1">
             <label for="kilometraje" class="kil_form">Kilometraje</label>
             <input type="text" name="kilometraje" id="kilometraje" class="kil_form1">
+            <label for="serv_cod" class="serv_form">Servicio Codigo</label>
+            <input type="text" name="serv_cod" id="serv_cod" class="serv_form1">
+            <label for="descripcion" class="serv_desc">Descripcion/Observacion</label>
+            <textarea  class="serv_desc1" name="descripcion" id="descripcion" cols="" rows=""></textarea>
+
 
             <input class="guardar_rec" type="submit" value="Guardar" name="guardar_rec">
             
@@ -92,5 +93,7 @@
     <?php 
         include("piedepagina.php");
     ?>
+
+
 </body>
 </html>

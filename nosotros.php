@@ -48,7 +48,7 @@
         <h3>Compromiso con la Seguridad</h3>
         <br>
         <p> 
-            La seguridad de tu vehículo es nuestra principal prioridad. Desde frenos hasta suspensión, cada servicio que realizamos está orientado a asegurarnos de que tu auto esté siempre en condiciones óptimas para la carretera.
+            La seguridad de tu vehículo es nuestra principal prioridad. 
         </p>
         <br><br>
         </div>
