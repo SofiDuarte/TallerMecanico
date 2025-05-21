@@ -149,7 +149,6 @@
     min-height: 80vh; /* que ocupe toda la pantalla */
     position: relative;
 
-
 }
 
 .in{
@@ -171,27 +170,25 @@
 }
 
 .prom-opi{
-    font-family: 'Big_Shoulders_Regular';
-    font-weight: normal;
-    color: rgb( 203, 92, 0);/*CB5C00*/
-    text-align: left;
-    margin-left: 30px;
-    padding: 20px;
-
     display: grid;
     grid-template-columns: repeat(2, 1fr); 
     grid-column-gap: 30px;
     
 }
 
-
+.prom-opi h2{
+    font-family: 'Big_Shoulders_Regular';
+    font-weight: normal;
+    color: #CB5C00;
+    text-align: left;
+    margin-left: 30px;
+    padding: 20px;
+}
 
 .prom-opi_img{
     width: 300px;
     height: 300px;
     margin-left: 25%;
-    
-    
 }
 
 /*CARRUCEL INICIO*/
@@ -327,37 +324,51 @@
 
 }
 
-.elegirnos{
+.elegirnos h2{
     font-family: 'AlumniSans_Medium';
-    font-size: 20px;
+    font-size: 25px;
     align-items: center;
     justify-content:center; 
     text-align: center;
-    padding: 100px;
-    
+
 }
 
+.resp{
+    align-items: center;
+    text-align: center;
+    margin: auto 100px 40px;
+}
+.resp h3{
+    font-family: 'AlumniSans_Regular';
+    font-size: 20px; 
+}
 
+.resp p{
+    font-family: 'AlumniSans_Light';
+    font-size: 20px;
+}
                                                      /*SERVICIO*/
 .serv {
     display: grid;
     grid-template-columns: repeat(3, 1fr); 
     gap: 30px;
-    padding: 20px;
     margin: 40px;
     min-height: 100vh; /* que ocupe toda la pantalla */
+    justify-items: center;
+    align-items: center;
     
 }
 
+.item_serv{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
 
 .item_serv img{
     width: 300px;
     height: 200px;
     border-radius: 10px;
-    margin-left: 25%;
-   
-
-    
 }
 
 .serv h2{
@@ -375,9 +386,7 @@
     align-items: center;
     justify-content:center; 
     text-align: center;
-
 }
-
 
                                                 /*CONTACTO*/
 .contacto{
@@ -500,8 +509,6 @@
     min-height: 100vh;
     margin: 10px auto 10px;
 
-
-
 }
 
 .formu_login{ 
@@ -521,21 +528,16 @@
 .formu_login img{
     width: 275px;
     height: 75px;
-    
 }
 
 .formu_login h2{
     font-family: 'Big_Shoulders_Medium';
-    font-size: 20px;
-    
+    font-size: 20px; 
 }
 
 .formu_login label{
     font-family: 'Big_Shoulders_Medium';
     font-size: 20px;
-    
-   
-    
 }
 
 .olvido{
@@ -545,16 +547,13 @@
     background-color: #fff;
 }
 
-
-
 .formu_empleados{
     /*formulario empleados*/
     
     justify-content: center;
     align-content: center;
-    /*justify-items: center;*/
     grid-column: 1/2;
-    margin-left: 25%; /*corre el espacio del formulario a la derecha*/
+    margin-left: 40%; /*corre el espacio del formulario a la derecha*/
 
     width: 465px;
     height: 522px;
@@ -562,8 +561,6 @@
     background-color: #ffffff;
     position: relative;
     border-radius: 40px;
-    
-    
 }
 
 .formu_empleados input{
@@ -603,12 +600,11 @@
 
 
 .formu_clientes input{
-     border-color: #FF7400;
+    border-color: #FF7400;
     border-radius: 20px;
     width: 292.74px;
     height: 35.37px;
 }
-
 
 .formu_clientes .ingreso2{
     background-color: #FF7400;
@@ -631,7 +627,6 @@
     font-family: 'Big_Shoulders_Medium';
     font-size: 16px;
 }
-
 
                                 /*RECEPCIONISTA*/
 /*boton que lleva al formulario de clientes*/
@@ -656,28 +651,39 @@
 }
 
  /*titulos de los formularios*/
-h2{
+.nuevo_cli h2{
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 20px;
+    text-align: center;
+}
+.nueva_ord h2{
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 20px;
+    text-align: center;
+}
+.busqueda_cli h2{
     font-family: 'Big_Shoulders_Medium';
     font-size: 20px;
     text-align: center;
 }
 
+
 /*label de todos los formularios */
 .form_recp_clinuv label{
     font-family: 'Big_Shoulders_Medium';
-    font-size: 16px;
+    font-size: 18px;
     align-content: center;
     margin-left: 25px;
 }
 .form_orden label{
    font-family: 'Big_Shoulders_Medium';
-   font-size: 16px;
+   font-size: 18px;
    align-content: center;
    margin-left: 25px;
 }
 .form_busqueda label{
    font-family: 'Big_Shoulders_Medium';
-   font-size: 16px;
+   font-size: 18px;
    align-content: center;
    text-align: center;
 }
@@ -742,6 +748,7 @@ h2{
     display: grid;
     grid-template-columns: repeat(3 , 1fr);
     grid-template-rows: repeat(6, auto);  
+    margin: 10px;
    
 }
 
@@ -758,6 +765,7 @@ h2{
     display: grid;
     grid-template-columns: repeat(3 , 1fr);
     grid-template-rows: repeat(6, auto); 
+    margin: 10px;
 }
 
 /*Formulario de Busqueda*/
@@ -773,6 +781,7 @@ h2{
     display: grid;
     grid-template-columns: repeat(3 , 1fr);
     grid-template-rows: repeat(3, auto);
+    margin: 10px;
 }
 
  /*nuevos clientes*/
@@ -847,6 +856,18 @@ h2{
 
 
                                     /*MECANICO*/
+.consulta{
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 30px;
+    text-align: center;
+}
+.actualizar{
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 30px;
+    text-align: center;
+}
+
+   
 .form_consulta{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -939,7 +960,7 @@ h2{
 .buscar_mec{
     background-color: #FFD054;
     border-color:#FFD054; 
-    border-radius: 10px;
+    border-radius: 40px;
     grid-column: 3/4;
     grid-row: -2/-1;
 
@@ -952,22 +973,20 @@ h2{
     justify-self: end;
 }
 
-    /*ACTUALIZACION*/
+            /*ACTUALIZACION*/
 .form_actualizacion{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     align-content: center;
     justify-content: center;
     justify-items: center;
-    margin: 40px
-
 }
 /*Kilometraje*/
 .kilometraje{
+    grid-column: 1/2;
     border-style: solid;
     border-color: #3AAFAF;
     border-width: 5px;
-    grid-column: 1/2;
     padding: 40px;
     align-content: center;
     text-align: center;
@@ -995,10 +1014,10 @@ h2{
 
 /*Complejidad*/
 .complejidad{
+    grid-column: 2/3;
     border-style: solid;
     border-color: #3AAFAF;
     border-width: 5px;
-    grid-column: 2/3;
     padding: 40px;
     align-content: center;
     text-align: center;
@@ -1028,6 +1047,7 @@ h2{
     flex-wrap: nowrap;
     flex-direction: row;
     justify-content: flex-end;
+    margin-left: 20px;
 
 }
 .guardar_mec1{
@@ -1043,4 +1063,183 @@ h2{
     font-size: 16px;
     align-items: end;
 
+}
+
+                                                                    /*REGISTRO CLIENTES*/
+.pagina_registro{
+    display: grid;
+    grid-template-columns: repeat(3 , 1fr);
+    align-content: center;
+}
+
+.pagina_registro img{
+    height: 779px;
+    opacity: 30%;
+}
+.img_registro1{
+    grid-column: 1/2;
+    margin-left: 30%;
+}
+.img_registro2{
+    grid-column: 3/4;
+    margin-left: 0.5%;
+}
+
+.registro{
+    grid-column: 2 / 3;
+    border-style: solid;
+    border-color: #3AAFAF;
+    border-width: 5px;
+    padding: 10px;
+    width: 563px;
+    height: 785px;
+    margin-left: 5%;
+    text-align: center;
+}
+
+
+.registro h2{
+    font-family: 'Big_Shoulders_ExtraBold';
+    font-size: 24px;
+    text-align: center;
+}
+.registro h3{
+    font-family: 'Big_Shoulders_Regular';
+    font-size: 20px;
+    text-align: center;
+
+}
+.form_registro{
+    margin-top: 20px;
+}
+
+.registro label{
+    font-family: 'Big_Shoulders_Regular';
+    font-size: 20px;
+    text-align: center;
+}
+.registro input{
+    height: 30px;
+    width: 337px;
+    border-radius: 5px;
+    align-content: center;
+    margin-left: 16px;
+}
+ 
+.bot_registro{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+}
+.boton_registro{
+    border-radius: 40px;
+    background-color: #ED2E57;
+    border-color:#ED2E57; 
+    margin: 5px;
+    width:113px;
+    height: 35.52px;
+
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 16px;
+    text-align: center;
+}
+
+
+                                        /*MODIFICAR CLIENTE*/
+
+.modif_cli{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: auto 40px auto;
+}
+
+.modif_cli img{
+    height: 830px;
+    opacity: 30%;
+}
+.modif_img1{
+    grid-column: 1/2;
+    margin-left: 2.5%;
+}
+.modif_img2{
+    grid-column: 3/4;
+    margin-left: 0.5%;
+}
+
+.modificar_cliente{
+    grid-column: 2/3; 
+    align-content: center;
+    justify-items: center;
+    border-style: solid;
+    border-color: #000000
+}
+.modificar_cliente h2{
+    font-family: 'Big_Shoulders_ExtraBold';
+    font-size: 30px;
+    text-align: center;
+}
+.modificar_cliente h3{
+    font-family: 'Big_Shoulders_Regular';
+    font-size: 24px;
+    text-align: center;
+}
+
+.modificar_cliente table{
+    margin-top: 60px;
+    width: 595px;
+    height: 457px;
+    margin-right: 80px;
+}
+
+.modificar_cliente th{
+
+    font-family: 'AlumniSans_Medium';
+    font-size: 24px;
+    text-align: center;
+}
+
+.datos_unicos{
+    background-color: #F04F72;
+    border-radius: 5px;
+    font-family: 'AlumniSans_Light';
+    font-size: 24px;
+    text-align: center;  
+}
+
+.datos_modificados{
+    background-color: #cecece;
+    border-radius: 5px;
+    font-family: 'AlumniSans_Light';
+    font-size: 24px;
+    text-align: center;
+}
+
+.guardar_mod{
+    border-radius: 40px;
+    background-color: #ED2E57;
+    border-color:#ED2E57; 
+    margin: 30px;
+    width: 188px;
+    height: 35px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 18px;
+    display: flex;
+    justify-self: end;
+}
+
+.solicitar_mod{
+    border-radius: 40px;
+    background-color: #FFC631;
+    border-color:#FFC631; 
+    margin: 30px;
+    width: 188px;
+    height: 35px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 18px;
+    display: flex;
+    justify-self: start;
+  
 }

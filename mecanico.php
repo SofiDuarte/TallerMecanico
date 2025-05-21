@@ -12,9 +12,9 @@
     <?php 
         include("navegador.php");
     ?>
-    <br>
+    <br><br>
     <section >
-        <h2>Consultas</h2>
+        <h2 class="consulta">Consultas</h2>
         <form action="" class="form_consulta">
             <div class="cons_ordenes">
                 <label for="ordenes" >PATENTE DEL VEHICULO</label>
@@ -32,11 +32,10 @@
                 <h3>Trabajos a realizar</h3>
                 <input type="text" name="trabajos_realizar" id="trabajos_realizar">
             </div>
-            <input class="buscar_mec" type="submit" value="Buscar" name="buscar_rec" class="form2_orden2"><!--MISMO BOTON QUE RECEPCIONISTA -->
-        </form>
+            <input class="buscar_mec" type="submit" value="Buscar" name="buscar_rec" class="form2_orden2">
     </section>
-    <section >
-        <h2>Actualizar</h2>
+    <section>
+        <h2 class="actualizar" >Actualizar</h2>
         <form action="" class="form_actualizacion">
             <div class="kilometraje"> 
                 <h3>Kilometraje</h3>
@@ -64,7 +63,7 @@
             <input class="guardar_mec1"  type="submit" value="Guardar" name="guardar_rec">
         </div>
     </section>
-
+    <br><br><br>
 
 
 

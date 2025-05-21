@@ -13,10 +13,10 @@
         include("navegador.php");
     ?>
     <br>
-    <a href="" class="registro_recepcionista">Nuevo Cliente</a>
+    <a href="http://localhost/tallermecanico/registro_cliente.php" class="registro_recepcionista">Nuevo Cliente</a>
     <section class="nuevo_cli"> 
         <br>
-        <h2 class="recepcion_titulos">NUEVO CLIENTE</h2>
+        <h2 class="recepcion_titulos">NUEVO VEHICULO</h2>
         <br>
         <form action="" class="form_recp_clinuv">
             <label  for="dni_cli" class="form_dni">DNI Cliente</label>
@@ -79,10 +79,10 @@
             <input type="text" name="vehiculo" id="vehiculo" class="form2_veh2">
 
             <label for="n_orden" class="form2_orden">Número de orden</label>
-            <input type="text" name="n_orden" id="n_orden">
+            <input type="text" name="n_orden" id="n_orden" class="form2_orden2" >
             
 
-            <input class="buscar_rec" type="submit" value="Buscar" name="buscar_rec" class="form2_orden2">
+            <input class="buscar_rec" type="submit" value="Buscar" name="buscar_rec" >
 
         </form>
     </article>
