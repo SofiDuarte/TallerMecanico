@@ -18,30 +18,30 @@
     
     <br>
     <h2 class="contacto">Contacto</h2>
-    <form class="form" action="enviar_consulta.php" method="post"> <!-- PHP DONDE LLEVA LOS DATOS -->
-            
-        <div class="form_1">
-                <label for="nom">Nombre</label>
-                <input type="text" name="nombre" id="nom" placeholder="Martina Elías González" required>
-            </div>
+<form class="formulario1" action="enviar_consulta.php" method="post">
+    <div class="form_1">
+        <label for="nom">Nombre</label>
+        <input type="text" name="nombre" id="nom" placeholder="Martina Elías González" required>
+    </div>
 
-            <div class="form_2">
-                <label for="tel">Telefono de Contacto</label>
-                <input type="tel" name="telefono" id="tel" placeholder="113585764" required>
-            </div>
+    <div class="form_2">
+        <label for="tel">Teléfono</label>
+        <input type="tel" name="telefono" id="tel" placeholder="113585764" required>
+    </div>
 
-            <div class="form_3">
-                <label for="mail">Email</label>
-                <input type="email" name="email" id="mail" placeholder="martina.gonzalez24@gmail.com" required>
-            </div>
-            
-            <div class="form_4">
-                <label for="cons">Consulta</label>
-                <textarea name="consulta" id="cons" placeholder="Dejanos tu consulta" cols="30" rows="10" required></textarea>
-            </div>
-            
-            <button>Enviar</button>
-        </form>
+    <div class="form_3">
+        <label for="mail">Email</label>
+        <input type="email" name="email" id="mail" placeholder="martina.gonzalez24@gmail.com" required>
+    </div>
+
+    <div class="form_4">
+        <label for="cons">Consulta</label>
+        <textarea name="consulta" id="cons" placeholder="Dejanos tu consulta" cols="30" rows="10" required></textarea>
+    </div>
+
+    <button type="submit">Enviar consulta</button>
+</form>
+
 </div>
 
     <div class="ubi">
