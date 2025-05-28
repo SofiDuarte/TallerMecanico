@@ -697,11 +697,14 @@
     margin-top: 5px;
     margin-left: 20px;
 }
-.form_orden input{
+.form_orden select {
     height: 30px;
     border-radius: 20px;
     align-content: center;
     margin-left: 15px;
+    padding: 5px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 16px;
 }
 .form_busqueda input{
     height: 30px;
@@ -709,6 +712,14 @@
     align-content: center;
     margin-left: 15px;
     
+}
+.servicio_desc {
+    grid-column: 3 / 4;
+    grid-row: 3 / 4;
+    font-family: 'AlumniSans_Light';
+    font-size: 14px;
+    color: #333;
+    margin-left: 15px;
 }
 
 /*botones*/
@@ -724,6 +735,20 @@
     justify-self: end;
 
 }
+
+.imprimir_rec{
+    border-radius: 40px;
+    background-color: #3AAFAF;
+    border-color:#3AAFAF; 
+    margin: 5px;
+    width: 188px;
+    height: 34.67px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 16px;
+    
+
+}
+
 .buscar_rec{
     background-color: #FFD054;
     border-color:#FFD054; 
@@ -829,7 +854,7 @@
 .serv_form1{grid-column: 3/4;grid-row: 2/3;}
 
 .kil_form{grid-column: 1/2;grid-row: 3/4;}
-.kil_form1{grid-column: 1/2;grid-row: 4//5;}
+.kil_form1{grid-column: 1/2;grid-row: 4/5;}
 
 .compl_form{grid-column: 2/3;grid-row: 3/4;}
 .compl_form1{grid-column: 2/3;grid-row: 4/5;}
@@ -1202,4 +1227,54 @@
     width: 765px;
     display: flex;
     align-items: center
+}
+
+/*MODALES PERSONALIZADOS*/
+dialog {
+    width: 40%;
+    max-width: 500px;
+    border: none;
+    border-radius: 15px;
+    background-color: #fff5e6;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    padding: 25px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 18px;
+    color: rgb(153, 0, 33); 
+    text-align: center;
+    margin: auto;
+    top: 20%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+dialog button {
+    background-color: #FF7400;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 10px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 16px;
+    cursor: pointer;
+}
+
+dialog button:hover {
+    background-color: #cc5d00;
+}
+
+dialog[open] {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }

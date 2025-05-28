@@ -1,3 +1,57 @@
+<?php
+$modalVehiculoNoRegistrado = false;
+$modalOrdenNoExiste = false;
+$modalOrdenFinalizada = false;
+$modalVehiculoNoEncontrado = false;
+$modalOrdenNoEncontrada = false;
+$modalOrdenFinalizada = false;
+
+try {
+    $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql;port=3307", "root", "");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['buscar_rec'])) {
+        $patente = strtoupper(trim($_GET['historial'] ?? ''));
+        $ordenNum = trim($_GET['trabajos_realizar'] ?? '');
+
+        if (!empty($patente)) {
+            $stmt = $pdo->prepare("SELECT * FROM vehiculos WHERE vehiculo_patente = :patente");
+            $stmt->execute(['patente' => $patente]);
+
+            if ($stmt->rowCount() > 0) {
+                header("Location: historico_vehiculo.php?patente=" . urlencode($patente));
+                exit();
+            } else {
+                $modalVehiculoNoRegistrado = true;
+            }
+        } elseif (!empty($ordenNum)) {
+            $stmt = $pdo->prepare("
+                SELECT ot.orden_estado
+                FROM orden_trabajo ot
+                JOIN ordenes o ON o.orden_numero = ot.orden_numero
+                WHERE o.orden_numero = :orden
+                LIMIT 1
+            ");
+            $stmt->execute(['orden' => $ordenNum]);
+
+            if ($stmt->rowCount() === 0) {
+                $modalOrdenNoExiste = true;
+            } else {
+                $estado = $stmt->fetchColumn();
+                if ($estado == 1) {
+                    $modalOrdenFinalizada = true;
+                } else {
+                    header("Location: ordenes_pendientes.php?orden=" . urlencode($ordenNum));
+                    exit();
+                }
+            }
+        }
+    }
+} catch (PDOException $e) {
+    echo "Error de conexión: " . $e->getMessage();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +61,37 @@
     <link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>"> 
     <title>Document</title>
 </head>
+
+<!-- MODAL VEHICULO NO REGISTRADO -->
+<?php if ($modalVehiculoNoRegistrado): ?>
+<dialog open id="modal_vehiculo_no_registrado">
+    <p style="text-align:center;"><strong>Vehículo no registrado</strong></p>
+    <div style="text-align:center;">
+        <button onclick="document.getElementById('modal_vehiculo_no_registrado').close()">Cerrar</button>
+    </div>
+</dialog>
+<?php endif; ?>
+
+<!-- MODAL ORDEN NO EXISTE -->
+<?php if ($modalOrdenNoExiste): ?>
+<dialog open id="modal_orden_inexistente">
+    <p style="text-align:center;"><strong>Orden inexistente</strong></p>
+    <div style="text-align:center;">
+        <button onclick="document.getElementById('modal_orden_inexistente').close()">Cerrar</button>
+    </div>
+</dialog>
+<?php endif; ?>
+
+<!-- MODAL ORDEN FINALIZADA -->
+<?php if ($modalOrdenFinalizada): ?>
+<dialog open id="modal_orden_finalizada">
+    <p style="text-align:center;"><strong>La orden ya fue finalizada</strong></p>
+    <div style="text-align:center;">
+        <button onclick="document.getElementById('modal_orden_finalizada').close()">Cerrar</button>
+    </div>
+</dialog>
+<?php endif; ?>
+
 <body>
 
     <?php 
@@ -21,14 +106,14 @@
         <form action="" class="consulta">
 
             <div class="cons_historial">
-                <label for="historial">PATENTE DEL VEHICULO</label>
-                <h3>Historial del vehiculo</h3>
+                <label for="historial">HISTORIAL DEL VEHICULO</label>
+                <h3>Patente del vehiculo</h3>
                 <input type="text" name="historial" id="historial">
             </div>
             <br>
             <div class="cons_trabajo">
-                <label for="trabajos_realizar">ORDEN DE NÚMERO</label>
-                <h3>Trabajos a realizar</h3>
+                <label for="trabajos_realizar">TRABAJOS A REALIZAR</label>
+                <h3>Numero de Orden</h3>
                 <input type="text" name="trabajos_realizar" id="trabajos_realizar">
             </div>
             <br>
