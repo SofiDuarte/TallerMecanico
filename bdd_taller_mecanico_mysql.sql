@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3307
--- Tiempo de generación: 28-05-2025 a las 00:41:50
+-- Tiempo de generación: 30-05-2025 a las 01:23:17
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -52,7 +52,8 @@ INSERT INTO `clientes` (`cliente_DNI`, `cliente_contrasena`, `cliente_nombre`, `
 ('30700247', '$2y$10$ztBbHUGcQV46QSb4k0dB4OxeVBikZnIZeSi9E9IifYdQbB1IK0y/K', 'Christian Caprarulo', 'Portela 1136', 'CABA', '01157172522', 'christian.caprarulo@gmail.com', NULL),
 ('32489632', '$2y$10$isL6a3BO9M9Afhqpn84LGuZH0DfLR0jFYsVHeDa2sB4I1KPhigem.', 'Juan Pérez', 'San Martin 514', 'Caba', '1167349281', '', NULL),
 ('41298533', '$2y$10$BkSZA7Oo/WbXyBgbSgU5LOgXvoB1LLbv6qp./sPf6vr1PN5xeFVnq', 'Carlos Rodríguez', NULL, 'Mendoza', NULL, '', NULL),
-('43796532', '$2y$10$ZT.y6r.9A6mqqNOvX4w1/.JCD9VQQrfc.qnDp2RItDSelpkxqmxU6', 'Sergio Benitez', 'Av.Saenz 708', 'Caba', '1147552201', '', NULL);
+('43796532', '$2y$10$ZT.y6r.9A6mqqNOvX4w1/.JCD9VQQrfc.qnDp2RItDSelpkxqmxU6', 'Sergio Benitez', 'Av.Saenz 708', 'Caba', '1147552201', '', NULL),
+('44671150', '$2y$10$puw7dci8b2nvSEyCSSTi2udf7WJLdcWB.Fv/advhZVFlmFuNFUN5y', 'Sofia Duarte Villan', 'Homero 919', 'CABA', '1135932021', 'sofiduvi@gmail.com', NULL);
 
 -- --------------------------------------------------------
 
@@ -123,7 +124,8 @@ INSERT INTO `ordenes` (`orden_numero`, `orden_fecha`, `vehiculo_patente`, `orden
 (10, '2020-03-25', 'AA459FT', NULL),
 (11, '2020-06-04', 'POD166', NULL),
 (12, '2020-08-06', 'AB307CI', NULL),
-(13, '2025-05-25', 'GCR891', NULL);
+(13, '2025-05-25', 'GCR891', NULL),
+(14, '2025-05-29', 'A221GAR', NULL);
 
 -- --------------------------------------------------------
 
@@ -165,7 +167,8 @@ INSERT INTO `orden_trabajo` (`orden_numero`, `servicio_codigo`, `complejidad`, `
 (10, 'SDI00', 1, NULL, '119832', '', 0),
 (11, 'D001', 1, NULL, '43909', '', 1),
 (12, 'S002', 1, NULL, '67413', '', 0),
-(13, 'D001', 1, 5500.00, '1000', 'NINGUNO', 0);
+(13, 'D001', 1, 5500.00, '1000', 'NINGUNO', 1),
+(14, 'FR002', 1, 13860.00, '1338', 'La clienta dice que no frena un carajo.', 0);
 
 --
 -- Disparadores `orden_trabajo`
@@ -259,6 +262,7 @@ CREATE TABLE `vehiculos` (
 --
 
 INSERT INTO `vehiculos` (`vehiculo_patente`, `cliente_DNI`, `vehiculo_marca`, `vehiculo_modelo`, `vehiculo_anio`, `vehiculo_color`, `vehiculo_motor`) VALUES
+('A221GAR', '44671150', 'Bajaja', 'Rouser', '2024', 'Negro', '125cc'),
 ('AA459FT', '30164750', 'Toyota', 'Corolla', '2016', 'Blanco', 'VVTI 1.8'),
 ('AB307CI', '18762965', 'Volkswagen', 'Gol trend', '2017', 'Negro', 'HTV 1.6'),
 ('AE489AB', '28090318', 'Peugeot', '208', '2020', NULL, NULL),
