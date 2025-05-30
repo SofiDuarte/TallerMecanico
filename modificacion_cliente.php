@@ -25,7 +25,7 @@ if (isset($_GET['dni'])) {
 
 $mensaje = "";
 
-$pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql;port=3307", "root", "");
+$pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $stmt = $pdo->prepare("SELECT * FROM clientes WHERE cliente_DNI = :dni");
 $stmt->execute(['dni' => $dni]);

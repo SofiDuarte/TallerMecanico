@@ -19,7 +19,7 @@ $datosOrden = [];
 $modalOrdenNoEncontrada = false;
 
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql;port=3307", "root", "");
+    $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // FORMULARIO NUEVO VEHICULO
