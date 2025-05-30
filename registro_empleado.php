@@ -4,7 +4,7 @@ $modalEmpleadoRegistrado = false;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['registrar_empleado'])) {
     try {
-        $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql;port=3307", "root", "");
+        $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $dni = $_POST['dni_empleado'];

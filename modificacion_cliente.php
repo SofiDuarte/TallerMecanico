@@ -25,7 +25,7 @@ if (isset($_GET['dni'])) {
 
 $mensaje = "";
 
-$pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql;port=3307", "root", "");
+$pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $stmt = $pdo->prepare("SELECT * FROM clientes WHERE cliente_DNI = :dni");
 $stmt->execute(['dni' => $dni]);
@@ -95,54 +95,54 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['solicitar'])) {
     <title>Modificar Cliente</title>
 </head>
 <body>
-<?php include("navegador.php"); ?>
-<br>
-<section class="modif_cli">
-    <img class="modif_img1" src="fondos/hola.usuario.jpg" alt="">
+    <?php include("nav_cli.php"); ?>
+    <br>
+    <section class="modif_cli">
+        <img class="modif_img1" src="fondos/hola.usuario.jpg" alt="">
 
-    <section class="modificar_cliente">
-        <h2>Hola <?= htmlspecialchars($cliente['cliente_nombre']) ?></h2>
-        <h3>Modificar Datos</h3>
-        <form method="post">
-            <table>
-                <tr>
-                    <th>DNI</th>
-                    <td class="datos_unicos"><?= htmlspecialchars($cliente['cliente_DNI']) ?></td>
-                </tr>
-                <tr>
-                    <th>NOMBRE</th>
-                    <td class="datos_unicos"><?= htmlspecialchars($cliente['cliente_nombre']) ?></td>
-                </tr>
-                <tr>
-                    <th>Dirección</th>
-                    <td><input type="text" class="datos_modificados" name="direccion" value="<?= htmlspecialchars($cliente['cliente_direccion']) ?>"></td>
-                </tr>
-                <tr>
-                    <th>Localidad</th>
-                    <td><input type="text" class="datos_modificados" name="localidad" value="<?= htmlspecialchars($cliente['cliente_localidad']) ?>"></td>
-                </tr>
-                <tr>
-                    <th>Teléfono</th>
-                    <td><input type="text" class="datos_modificados" name="telefono" value="<?= htmlspecialchars($cliente['cliente_telefono']) ?>"></td>
-                </tr>
-                <tr>
-                    <th>E-Mail</th>
-                    <td><input type="email" class="datos_modificados" name="correo" value="<?= htmlspecialchars($cliente['cliente_email']) ?>"></td>
-                </tr>
-                <tr>
-                    <th>Contraseña</th>
-                    <td><input type="text" class="datos_modificados" name="clave" value="<?= htmlspecialchars($cliente['cliente_contrasena']) ?>"></td>
-                </tr>
-            </table>
-            <div>
-                <input class="guardar_mod" type="submit" value="Guardar" name="guardar_rec">
-                <input class="solicitar_mod" type="submit" value="Solicitar Turno" name="solicitar">
-            </div>
-        </form>
+        <section class="modificar_cliente">
+            <h2>Hola <?= htmlspecialchars($cliente['cliente_nombre']) ?></h2>
+            <h3>Modificar Datos</h3>
+            <form method="post">
+                <table>
+                    <tr>
+                        <th>DNI</th>
+                        <td class="datos_unicos"><?= htmlspecialchars($cliente['cliente_DNI']) ?></td>
+                    </tr>
+                    <tr>
+                        <th>NOMBRE</th>
+                        <td class="datos_unicos"><?= htmlspecialchars($cliente['cliente_nombre']) ?></td>
+                    </tr>
+                    <tr>
+                        <th>Dirección</th>
+                        <td><input type="text" class="datos_modificados" name="direccion" value="<?= htmlspecialchars($cliente['cliente_direccion']) ?>"></td>
+                    </tr>
+                    <tr>
+                        <th>Localidad</th>
+                        <td><input type="text" class="datos_modificados" name="localidad" value="<?= htmlspecialchars($cliente['cliente_localidad']) ?>"></td>
+                    </tr>
+                    <tr>
+                        <th>Teléfono</th>
+                        <td><input type="text" class="datos_modificados" name="telefono" value="<?= htmlspecialchars($cliente['cliente_telefono']) ?>"></td>
+                    </tr>
+                    <tr>
+                        <th>E-Mail</th>
+                        <td><input type="email" class="datos_modificados" name="correo" value="<?= htmlspecialchars($cliente['cliente_email']) ?>"></td>
+                    </tr>
+                    <tr>
+                        <th>Contraseña</th>
+                        <td><input type="text" class="datos_modificados" name="clave" value="<?= htmlspecialchars($cliente['cliente_contrasena']) ?>"></td>
+                    </tr>
+                </table>
+                <div class="bot_modf">
+                    <input class="guardar_mod" type="submit" value="Guardar" name="guardar_rec">
+                    <input class="solicitar_mod" type="submit" value="Solicitar Turno" name="solicitar">
+                </div>
+            </form>
+        </section>
+
+        <img class="modif_img2" src="fondos/hola.usuario.jpg" alt="">
     </section>
-
-    <img class="modif_img2" src="fondos/hola.usuario.jpg" alt="">
-</section>
 
 <!-- MODAL DATOS GUARDADOS -->
 <?php if ($modalGuardadoExito): ?>

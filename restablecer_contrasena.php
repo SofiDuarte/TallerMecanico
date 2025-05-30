@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["token"])) {
     $token = $_GET["token"];
 
     try {
-        $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql;port=3307", "root", "");
+        $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // VERIFICAR TOKEN
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["token"]) && isset($_P
         $mensaje = "La contraseña no cumple los requisitos mínimos.";
     } else {
         try {
-            $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql;port=3307", "root", "");
+            $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             $stmt = $pdo->prepare("UPDATE clientes SET cliente_contrasena = :clave, token_recuperacion = NULL WHERE token_recuperacion = :token");

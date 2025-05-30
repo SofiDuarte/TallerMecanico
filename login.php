@@ -6,7 +6,7 @@ $mensajeErrorEmpleado = "";
 // LOGIN CLIENTE
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['login_cliente'])) {
     try {
-        $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql;port=3307", "root", "");
+        $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql;port=3306", "root", "");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $dni = $_POST['dni'];
@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['login_empleado'])) {
         include("navegador.php");
     ?>
     
-    <section class="fondo_login">
+    <section class="fondo_login"> 
         <div class="formu_login">
             <!-- FORMULARIO LOGIN EMPLEADO -->
             <div class="formu_empleados"> 
@@ -181,10 +181,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['login_empleado'])) {
                 return true;
             }
             </script>
+     </section>
+
+
     <?php 
         include("piedepagina.php");
     ?>
-     
+
 
 </body>
 </html>
