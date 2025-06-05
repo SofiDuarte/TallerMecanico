@@ -1,3 +1,7 @@
+<?php
+require_once 'conexion_base.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

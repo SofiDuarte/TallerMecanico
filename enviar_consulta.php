@@ -1,4 +1,10 @@
 <?php
+
+// Incluir PHPMailer
+require 'phpmailer/src/Exception.php';
+require 'phpmailer/src/PHPMailer.php';
+require 'phpmailer/src/SMTP.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -20,10 +26,7 @@ if (!$nombre || !$telefono || !$email || !$consulta) {
 }
 
 
-// Incluir PHPMailer
-require 'phpmailer/src/Exception.php';
-require 'phpmailer/src/PHPMailer.php';
-require 'phpmailer/src/SMTP.php';
+
 
 try {
     // ENVÍO AL TALLER

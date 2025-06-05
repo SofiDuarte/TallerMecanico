@@ -1,19 +1,17 @@
 <?php
 session_start();
+require 'conexion_base.php';
 $mensajeErrorCliente = "";
 $mensajeErrorEmpleado = "";
 
 // LOGIN CLIENTE
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['login_cliente'])) {
     try {
-        $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
         $dni = $_POST['dni'];
         $claveIngresada = $_POST['clave'];
 
         $sql = "SELECT * FROM clientes WHERE cliente_DNI = :dni";
-        $stmt = $pdo->prepare($sql);
+        $stmt = $conexion->prepare($sql);
         $stmt->execute(['dni' => $dni]);
 
         if ($stmt->rowCount() === 1) {
@@ -39,14 +37,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['login_cliente'])) {
 // LOGIN EMPLEADO
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['login_empleado'])) {
     try {
-        $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
         $dni_emp = $_POST['dni_empleado'];
         $claveIngresada = $_POST['clave_empleado'];
 
         $sql = "SELECT * FROM empleados WHERE empleado_DNI = :dni";
-        $stmt = $pdo->prepare($sql);
+        $stmt = $conexion->prepare($sql);
         $stmt->execute(['dni' => $dni_emp]);
 
         if ($stmt->rowCount() === 1) {

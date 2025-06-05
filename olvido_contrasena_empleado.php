@@ -2,6 +2,7 @@
 require 'phpmailer/src/Exception.php';
 require 'phpmailer/src/PHPMailer.php';
 require 'phpmailer/src/SMTP.php';
+require_once 'conexion_base.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -22,11 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     try {
-        $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
         $sql = "SELECT empleado_nombre, empleado_email FROM empleados WHERE empleado_DNI = :dni";
-        $stmt = $pdo->prepare($sql);
+        $stmt = $conexion->prepare($sql);
         $stmt->execute(['dni' => $dni]);
 
         if ($stmt->rowCount() === 1) {
@@ -36,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $token = bin2hex(random_bytes(32));
 
-            $update = $pdo->prepare("UPDATE empleados SET token_recuperacion = :token WHERE empleado_DNI = :dni");
+            $update = $conexion->prepare("UPDATE empleados SET token_recuperacion = :token WHERE empleado_DNI = :dni");
             $update->execute(['token' => $token, 'dni' => $dni]);
 
             $link = "http://localhost/tallermecanico/restablecer_contrasena_empleado.php?token=$token";

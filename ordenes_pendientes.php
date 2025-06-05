@@ -1,4 +1,7 @@
 <?php
+require_once 'conexion_base.php';
+require_once 'verificar_sesion_empleado.php';
+
 $modalError = false;
 $modalFinalizado = false;
 $modalExito = false;
@@ -7,9 +10,6 @@ $mensajeModal = "";
 $datosOrden = [];
 
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     $ordenNum = trim($_GET['orden'] ?? '');
 
     if (empty($ordenNum)) {
@@ -17,8 +17,7 @@ try {
         $mensajeModal = "No se especificó el número de orden.";
     } else {
         // OBTENER DATOS DE ORDEN
-        $stmt = $pdo->prepare("
-            SELECT o.orden_numero, o.vehiculo_patente, o.orden_fecha,
+        $stmt = $conexion->prepare(" SELECT o.orden_numero, o.vehiculo_patente, o.orden_fecha,
                    v.vehiculo_marca, v.vehiculo_modelo, v.vehiculo_anio,
                    s.servicio_nombre, ot.complejidad, ot.orden_kilometros,
                    ot.orden_comentario, ot.orden_estado
@@ -56,8 +55,7 @@ try {
                 $km = (int)$km; // Asegura tipo entero
 
                 // VERIFICAR QUE KILOMETRAJE NO SEA MENOR AL ANTERIOR
-                $stmt = $pdo->prepare("
-                    SELECT orden_kilometros FROM orden_trabajo
+                $stmt = $conexion->prepare(" SELECT orden_kilometros FROM orden_trabajo
                     WHERE orden_numero = :orden
                 ");
                 $stmt->execute(['orden' => $ordenNum]);
@@ -71,8 +69,7 @@ try {
              
             // SOLO ACTUALIZA SI NO HUBO ERRORES
             if (!$modalError) {
-                $stmt = $pdo->prepare("
-                    UPDATE orden_trabajo
+                $stmt = $conexion->prepare("UPDATE orden_trabajo
                     SET complejidad = :comp, orden_kilometros = :km,
                         orden_comentario = :comentario, orden_estado = 1
                     WHERE orden_numero = :orden

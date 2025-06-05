@@ -1,13 +1,13 @@
 <?php
+require_once("conexion_base.php");
+require_once 'verificar_sesion_empleado.php';
+
 $mostrarModalError = false;
 $mensajeModal = "";
 $datosVehiculo = [];
 $ordenesVehiculo = [];
 
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     $patente = strtoupper(trim($_GET['patente'] ?? ''));
 
     if (empty($patente)) {
@@ -15,7 +15,7 @@ try {
         $mensajeModal = "No se proporcionó una patente.";
     } else {
         // VERIFICAR QUE EL VEHICULO EXISTE
-        $stmt = $pdo->prepare("SELECT * FROM vehiculos WHERE vehiculo_patente = :patente");
+        $stmt = $conexion->prepare("SELECT * FROM vehiculos WHERE vehiculo_patente = :patente");
         $stmt->execute(['patente' => $patente]);
 
         if ($stmt->rowCount() === 0) {
@@ -25,8 +25,7 @@ try {
             $datosVehiculo = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // OBTENER HISTORIAL DE ORDENES
-            $stmt = $pdo->prepare("
-                SELECT o.orden_numero, o.orden_fecha, s.servicio_nombre, ot.orden_estado, ot.servicio_codigo, 
+            $stmt = $conexion->prepare("SELECT o.orden_numero, o.orden_fecha, s.servicio_nombre, ot.orden_estado, ot.servicio_codigo, 
                        ot.orden_kilometros, ot.complejidad, ot.orden_comentario
                 FROM ordenes o
                 JOIN orden_trabajo ot ON o.orden_numero = ot.orden_numero

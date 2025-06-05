@@ -4,6 +4,8 @@ session_start();
 require 'phpmailer/src/Exception.php';
 require 'phpmailer/src/PHPMailer.php';
 require 'phpmailer/src/SMTP.php';
+require_once 'conexion_base.php';
+require_once 'verificar_sesion_cliente.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -13,23 +15,12 @@ $modalGuardadoExito = false;
 $modalTurnoExito = false;
 $modalErrorMail = false;
 
-// PERMITIR OBTENER EL DNI DESDE GET o SESSION
-if (isset($_GET['dni'])) {
-    $dni = $_GET['dni'];
-} elseif (isset($_SESSION['cliente_dni'])) {
-    $dni = $_SESSION['cliente_dni'];
-} else {
-    header("Location: login.php");
-    exit();
-}
-
 $mensaje = "";
 
-$pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$stmt = $pdo->prepare("SELECT * FROM clientes WHERE cliente_DNI = :dni");
+//OBTENER LOS DATOS DEL CLIENTE
+$stmt = $conexion->prepare("SELECT * FROM clientes WHERE cliente_DNI = :dni");
 $stmt->execute(['dni' => $dni]);
-$cliente = $stmt->fetch();
+$cliente = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // GUARDAR CAMBIOS
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['guardar_rec'])) {
@@ -38,14 +29,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['guardar_rec'])) {
     $telefono  = $_POST['telefono'];
     $correo    = $_POST['correo'];
     $clave     = $_POST['clave'];
+    
+    // GUARDAR CONTRASEÑA SI NO HUBO CAMBIOS
+    if (!empty($clave)) {
+        $claveHasheada = password_hash($clave, PASSWORD_DEFAULT);
+    } else {
+        $claveHasheada = $cliente['cliente_contrasena'];
+    }
 
-    $update = $pdo->prepare("UPDATE clientes SET cliente_direccion = :dir, cliente_localidad = :loc, cliente_telefono = :tel, cliente_email = :mail, cliente_contrasena = :clave WHERE cliente_DNI = :dni");
+    $update = $conexion->prepare("UPDATE clientes SET cliente_direccion = :dir, cliente_localidad = :loc, cliente_telefono = :tel, cliente_email = :mail, cliente_contrasena = :clave WHERE cliente_DNI = :dni");
     $update->execute([
         'dir'   => $direccion,
         'loc'   => $localidad,
         'tel'   => $telefono,
         'mail'  => $correo,
-        'clave' => $clave,
+        'clave' => $claveHasheada,
         'dni'   => $dni
     ]);
 
@@ -131,7 +129,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['solicitar'])) {
                     </tr>
                     <tr>
                         <th>Contraseña</th>
-                        <td><input type="text" class="datos_modificados" name="clave" value="<?= htmlspecialchars($cliente['cliente_contrasena']) ?>"></td>
+                        <td>
+                            <input type="password" class="datos_modificados" name="clave"
+                                minlength="8" maxlength="15"
+                                pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,15}$"
+                                title="Debe tener entre 8 y 15 caracteres, al menos una mayúscula, un número y un símbolo"
+                                placeholder="********">
+                        </td>
                     </tr>
                 </table>
                 <div class="bot_modf">

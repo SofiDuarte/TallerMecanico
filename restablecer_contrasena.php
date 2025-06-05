@@ -1,4 +1,6 @@
 <?php
+require_once 'conexion_base.php';
+
 $mensaje = "";
 $modalClaveRestablecida = false;
 
@@ -6,11 +8,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["token"])) {
     $token = $_GET["token"];
 
     try {
-        $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
         // VERIFICAR TOKEN
-        $stmt = $pdo->prepare("SELECT * FROM clientes WHERE token_recuperacion = :token");
+        $stmt = $conexion->prepare("SELECT * FROM clientes WHERE token_recuperacion = :token");
         $stmt->execute(['token' => $token]);
 
         if ($stmt->rowCount() !== 1) {
@@ -32,10 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["token"]) && isset($_P
         $mensaje = "La contraseña no cumple los requisitos mínimos.";
     } else {
         try {
-            $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            $stmt = $pdo->prepare("UPDATE clientes SET cliente_contrasena = :clave, token_recuperacion = NULL WHERE token_recuperacion = :token");
+            $stmt = $conexion->prepare("UPDATE clientes SET cliente_contrasena = :clave, token_recuperacion = NULL WHERE token_recuperacion = :token");
             $stmt->execute(['clave' => $nueva, 'token' => $token]);
 
             $modalClaveRestablecida = true;

@@ -1,4 +1,6 @@
 <?php
+require 'conexion_base.php';
+require_once 'verificar_sesion_empleado.php';
 $modalVehiculoNoRegistrado = false;
 $modalOrdenNoExiste = false;
 $modalOrdenFinalizada = false;
@@ -7,15 +9,12 @@ $modalOrdenNoEncontrada = false;
 $modalOrdenFinalizada = false;
 
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['buscar_rec'])) {
         $patente = strtoupper(trim($_GET['historial'] ?? ''));
         $ordenNum = trim($_GET['trabajos_realizar'] ?? '');
 
         if (!empty($patente)) {
-            $stmt = $pdo->prepare("SELECT * FROM vehiculos WHERE vehiculo_patente = :patente");
+            $stmt = $conexion->prepare("SELECT * FROM vehiculos WHERE vehiculo_patente = :patente");
             $stmt->execute(['patente' => $patente]);
 
             if ($stmt->rowCount() > 0) {

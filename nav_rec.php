@@ -14,7 +14,7 @@
         <div class="recepcionista_navegador">
             <a  href="http://localhost/tallermecanico/inicio.php"><img class="login" src="iconos/WA_Sport.jpg" alt="Logotipo de WA Sport" ></a>
             <a class="nav" href="">Volver </a> <!--poner link para que vuelva a la pag recep -->
-            <a class="nav" href="http://localhost/tallermecanico/login.php">Log Out</a>
+            <a class="nav" href="http://localhost/tallermecanico/logout.php">Log Out</a>
 
         </div>
     </header>

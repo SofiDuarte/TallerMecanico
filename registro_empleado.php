@@ -1,12 +1,11 @@
 <?php
+require_once 'conexion_base.php';
+
 $mensajeRegistro = "";
 $modalEmpleadoRegistrado = false;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['registrar_empleado'])) {
     try {
-        $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
         $dni = $_POST['dni_empleado'];
         $nombre = $_POST['nombre_empleado'];
         $email = $_POST['email_empleado'];
@@ -15,13 +14,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['registrar_empleado'])
         $clave = password_hash($clave_original, PASSWORD_DEFAULT);
 
         // Verificar si el DNI ya existe
-        $check = $pdo->prepare("SELECT * FROM empleados WHERE empleado_DNI = :dni");
+        $check = $conexion->prepare("SELECT * FROM empleados WHERE empleado_DNI = :dni");
         $check->execute(['dni' => $dni]);
 
         if ($check->rowCount() > 0) {
             $mensajeRegistro = "Ya existe un empleado con ese DNI.";
         } else {
-            $insert = $pdo->prepare("INSERT INTO empleados (empleado_DNI, empleado_nombre, empleado_email, empleado_roll, empleado_contrasena)
+            $insert = $conexion->prepare("INSERT INTO empleados (empleado_DNI, empleado_nombre, empleado_email, empleado_roll, empleado_contrasena)
                 VALUES (:dni, :nombre, :email, :rol, :clave)");
 
             $insert->execute([

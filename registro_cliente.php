@@ -1,12 +1,11 @@
 <?php
+require 'conexion_base.php';
+
 $mensajeRegistro = "";
 $modalRegistroExitoso = false;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['registrar_cliente'])) {
     try {
-        $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
         $dni = $_POST['dni_registro'];
         $nombre = $_POST['nombre_registro'];
         $direccion = $_POST['direcc_registro'];
@@ -17,13 +16,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['registrar_cliente']))
         $clave = password_hash($clave_original, PASSWORD_DEFAULT);
 
         // Verificar si el DNI ya existe
-        $check = $pdo->prepare("SELECT * FROM clientes WHERE cliente_DNI = :dni");
+        $check = $conexion->prepare("SELECT * FROM clientes WHERE cliente_DNI = :dni");
         $check->execute(['dni' => $dni]);
 
         if ($check->rowCount() > 0) {
             $mensajeRegistro = "Ya existe un cliente registrado con ese DNI.";
         } else {
-            $insert = $pdo->prepare("INSERT INTO clientes (cliente_DNI, cliente_nombre, cliente_direccion, cliente_localidad, cliente_telefono, cliente_email, cliente_contrasena)
+            $insert = $conexion->prepare("INSERT INTO clientes (cliente_DNI, cliente_nombre, cliente_direccion, cliente_localidad, cliente_telefono, cliente_email, cliente_contrasena)
                 VALUES (:dni, :nombre, :direccion, :localidad, :telefono, :correo, :clave)");
 
             $insert->execute([

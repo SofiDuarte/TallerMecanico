@@ -2,6 +2,7 @@
 require 'phpmailer/src/Exception.php';
 require 'phpmailer/src/PHPMailer.php';
 require 'phpmailer/src/SMTP.php';
+require_once 'conexion_base.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -21,11 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     try {
-        $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
         $sql = "SELECT cliente_nombre, cliente_email FROM clientes WHERE cliente_DNI = :dni";
-        $stmt = $pdo->prepare($sql);
+        $stmt = $conexion->prepare($sql);
         $stmt->execute(['dni' => $dni]);
 
         if ($stmt->rowCount() === 1) {

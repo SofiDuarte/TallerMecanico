@@ -1,4 +1,7 @@
 <?php
+require 'conexion_base.php';
+require_once 'verificar_sesion_empleado.php';
+
 // VARIABLES DE MODAL
 $clienteInexistente = false;
 $vehiculoExistente = false;
@@ -19,9 +22,6 @@ $datosOrden = [];
 $modalOrdenNoEncontrada = false;
 
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", "");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     // FORMULARIO NUEVO VEHICULO
     if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nuevo_vehiculo'])) {
         $dni     = trim($_POST['vehiculo_dni'] ?? '');
@@ -38,14 +38,14 @@ try {
             goto fin;
         } else {
             // VERIFICAR SI EL CLIENTE EXISTE
-            $stmt = $pdo->prepare("SELECT * FROM clientes WHERE cliente_DNI = :dni");
+            $stmt = $conexion->prepare("SELECT * FROM clientes WHERE cliente_DNI = :dni");
             $stmt->execute(['dni' => $dni]);
 
             if ($stmt->rowCount() === 0) {
                 $clienteInexistente = true;
             } else {
             // VERIFICAR SI LA PATENTE YA EXISTE
-                $stmt = $pdo->prepare("SELECT v.*, c.cliente_nombre, c.cliente_email 
+                $stmt = $conexion->prepare("SELECT v.*, c.cliente_nombre, c.cliente_email 
                     FROM vehiculos v 
                     JOIN clientes c ON v.cliente_DNI = c.cliente_DNI 
                     WHERE v.vehiculo_patente = :patente");
@@ -56,7 +56,7 @@ try {
                         $vehiculoExistenteDatos = $stmt->fetch(PDO::FETCH_ASSOC);
                 } else {
                 // INSERTAR VEHICULO
-                    $insert = $pdo->prepare("INSERT INTO vehiculos 
+                    $insert = $conexion->prepare("INSERT INTO vehiculos 
                             (vehiculo_patente, vehiculo_marca, vehiculo_modelo, vehiculo_anio, vehiculo_color, vehiculo_motor, cliente_DNI)
                             VALUES (:patente, :marca, :modelo, :anio, :color, :motor, :dni)");
                     $insert->execute([
@@ -92,7 +92,7 @@ try {
                 $modalErrorKilometraje = true;
         } else {
             // VERIFICAR SI EL VEHICULO EXISTE
-            $stmt = $pdo->prepare("SELECT * FROM vehiculos WHERE vehiculo_patente = :patente");
+            $stmt = $conexion->prepare("SELECT * FROM vehiculos WHERE vehiculo_patente = :patente");
             $stmt->execute(['patente' => $patente]);
 
             if ($stmt->rowCount() === 0) {
@@ -100,7 +100,7 @@ try {
                 goto fin;
             } else {
                 // VERIFICAR QUE KILOMETRAJE NO SEA MENOR AL ANTERIOR
-                $stmt = $pdo->prepare("SELECT MAX(ot.orden_kilometros) as max_km 
+                $stmt = $conexion->prepare("SELECT MAX(ot.orden_kilometros) as max_km 
                         FROM orden_trabajo ot 
                         JOIN ordenes o ON ot.orden_numero = o.orden_numero 
                         WHERE o.vehiculo_patente = :patente");
@@ -145,7 +145,7 @@ try {
     }
 
     // PARA TRAER SERVICIO PARA EL SELECT
-    $servicios = $pdo->query("SELECT servicio_codigo, servicio_nombre FROM servicios")->fetchAll(PDO::FETCH_ASSOC);
+    $servicios = $conexion->query("SELECT servicio_codigo, servicio_nombre FROM servicios")->fetchAll(PDO::FETCH_ASSOC);
 
     // FORMULARIO NUEVA ORDEN
     if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['buscar_rec'])) {
@@ -155,7 +155,7 @@ try {
         
         // BUSQUEDA POR DNI
         if (!empty($buscarDNI)) {
-            $stmt = $pdo->prepare("SELECT cliente_DNI FROM clientes WHERE cliente_DNI = :dni");
+            $stmt = $conexion->prepare("SELECT cliente_DNI FROM clientes WHERE cliente_DNI = :dni");
             $stmt->execute(['dni' => $buscarDNI]);
 
             if ($stmt->rowCount() > 0) {
@@ -166,7 +166,7 @@ try {
     }
         // BUSQUEDA POR VEHICULO
         } elseif (!empty($buscarVeh)) {
-            $stmt = $pdo->prepare("SELECT * FROM vehiculos WHERE vehiculo_patente = :patente");
+            $stmt = $conexion->prepare("SELECT * FROM vehiculos WHERE vehiculo_patente = :patente");
             $stmt->execute(['patente' => $buscarVeh]);
             if ($stmt->rowCount() > 0) {
                 $datosVehiculo = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -176,7 +176,7 @@ try {
             }
         // BUSQUEDA POR ORDEN
         } elseif (!empty($buscarOrden)) {
-            $stmt = $pdo->prepare("SELECT o.orden_numero, o.orden_fecha, o.vehiculo_patente,
+            $stmt = $conexion->prepare("SELECT o.orden_numero, o.orden_fecha, o.vehiculo_patente,
                                         ot.servicio_codigo, ot.complejidad, ot.orden_kilometros,
                                         ot.orden_comentario, ot.orden_estado
                                 FROM ordenes o
