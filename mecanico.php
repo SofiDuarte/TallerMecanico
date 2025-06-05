@@ -95,7 +95,7 @@ try {
 <body>
 
     <?php 
-        include("navegador.php");
+        include("nav_mecanico.php");
     ?>
     <br><br><br><br>
     <section class="form_consulta">

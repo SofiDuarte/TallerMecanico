@@ -74,7 +74,7 @@ fin:
 
 <body>
     <?php 
-        include("navegador.php");
+        include("nav_cli.php");
     ?>
 
     <br><br>

@@ -373,7 +373,7 @@ fin:
 <?php endif; ?>
 <body>
     <?php 
-        include("navegador.php");
+        include("nav_rec.php");
     ?>
     <br>
     <a href="http://localhost/tallermecanico/registro_cliente.php" class="registro_recepcionista">Nuevo Cliente</a>

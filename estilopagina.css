@@ -3,12 +3,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
+}
   
-  html, body {
+html, body {
     width: 100%;
     height: 100%;
-  }
+}
 
 @font-face {
     font-family: AlumniSans_Light ;
@@ -499,7 +499,7 @@
 
 }
 
-                                    /*CLIENTE*/
+                                    /*LOGIN*/
 
 .fondo_login{
     /*fondo*/
@@ -521,8 +521,6 @@
 
     align-items: center;
     text-align: center;
-   
-    
 }
 
 .formu_login img{
@@ -542,6 +540,7 @@
 
 .olvido{
     font-family: 'Big_Shoulders_ExtraBold';
+    font-size: 15px;
     text-decoration: none; /* Saca el subrayado de los links */
     border: none;
     background-color: #fff;
@@ -568,7 +567,7 @@
     border-radius: 20px;
     width: 292.74px;
     height: 35.37px;
-  
+    text-align: center;
 }
 
 .formu_empleados .ingreso1{
@@ -604,6 +603,7 @@
     border-radius: 20px;
     width: 292.74px;
     height: 35.37px;
+    text-align: center;
 }
 
 .formu_clientes .ingreso2{
@@ -621,14 +621,36 @@
     background-color: #ED2E57;
     border-color: #ED2E57;
     border-radius: 20px;
-    width: 95.19px;
-    height: 32.52px;
+    text-decoration: none;
+    padding: 7px;
 
     font-family: 'Big_Shoulders_Medium';
     font-size: 16px;
+    color: #000;
 }
 
                                 /*RECEPCIONISTA*/
+/*navegador*/
+.nav_recepcionista {
+    width: 100%;
+    height: 91px;
+    padding: 10px;
+    background-color: rgb(255, 161, 84); /*FFA154*/
+    display: flex;
+    align-items: center; /* Centra verticalmente */
+    justify-content: space-between; /* Espacia logo a la izquierda y menú a la derecha */
+}
+
+.recepcionista_navegador {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 790px; /* Separación entre links */
+    width: 100%;
+    
+}
+
 /*boton que lleva al formulario de clientes*/
 .registro_recepcionista{
     background-color: #ED2E57;
@@ -791,6 +813,11 @@
     grid-template-columns: repeat(3 , 1fr);
     grid-template-rows: repeat(6, auto); 
     margin: 10px;
+
+}
+.form_orden input{
+    margin-top: 5px;
+    border-radius: 10px;
 }
 
 /*Formulario de Busqueda*/
@@ -848,7 +875,10 @@
 .patente_form1{grid-column: 1/2;grid-row: 2/3;}
 
 .fecha_form{grid-column: 2/3;grid-row: 1/2; }
-.fecha_form1{grid-column: 2/3;grid-row: 2/3;}
+.fecha_form1{
+    grid-column: 2/3;
+    grid-row: 2/3;
+     }
 
 .serv_form{grid-column: 3/4;grid-row: 1/2;}
 .serv_form1{grid-column: 3/4;grid-row: 2/3;}
@@ -985,6 +1015,14 @@
 }
 
                                                                     /*REGISTRO CLIENTES*/
+.nav_cli{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px; /* Separación entre links */
+    width: 100%;
+
+}
 .pagina_registro{
     display: grid;
     grid-template-columns: repeat(3 , 1fr);
@@ -992,13 +1030,13 @@
 }
 
 .img_registro1{
-    height: 779px;
+    height: 810px;
     opacity: 30%;
     grid-column: 1/2;
     margin-left: 30%;
 }
 .img_registro2{
-    height: 779px;
+    height: 810px;
     opacity: 30%;
     grid-column: 3/4;
     margin-left: 0.5%;
@@ -1016,7 +1054,7 @@
     border-width: 5px;
     padding: 10px;
     width: 563px;
-    height: 785px;
+    height: 810px;
     margin-left: 5%;
     text-align: center;
 }
@@ -1077,15 +1115,10 @@
 .modif_cli img{
     height: 830px;
     opacity: 30%;
+    margin: 0px 10px;
 }
-.modif_img1{
-    grid-column: 1/2;
-    margin-left: 2.5%;
-}
-.modif_img2{
-    grid-column: 3/4;
-    margin-left: 0.5%;
-}
+.modif_img1{grid-column: 1/2;}
+.modif_img2{ grid-column: 3/4;}
 
 .modificar_cliente{
     grid-column: 2/3; 
@@ -1125,6 +1158,8 @@
     font-family: 'AlumniSans_Light';
     font-size: 24px;
     text-align: center;  
+    width: 487.99px;
+    height: 36.99px;
 }
 
 .datos_modificados{
@@ -1133,6 +1168,15 @@
     font-family: 'AlumniSans_Light';
     font-size: 24px;
     text-align: center;
+    width: 487.99px;
+    height: 36.99px;
+}
+
+.bot_modf{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
 }
 
 .guardar_mod{
@@ -1144,8 +1188,6 @@
     height: 35px;
     font-family: 'Big_Shoulders_Medium';
     font-size: 18px;
-    display: flex;
-    justify-self: end;
 }
 
 .solicitar_mod{
@@ -1157,15 +1199,13 @@
     height: 35px;
     font-family: 'Big_Shoulders_Medium';
     font-size: 18px;
-    display: flex;
-    justify-self: start;
 }
 
 
-/*ORDENES*/
+                                                /*ORDENES
 .ordenes{
-    width: 80vw;   /* 100% del ancho de la ventana */
-    height: 80vh;  /* 100% del alto de la ventana */
+    width: 80vw;   /* 100% del ancho de la ventana 
+    height: 80vh;  /* 100% del alto de la ventana 
     margin-left: 10%;
     display: flex;
     flex-direction: column;
@@ -1227,7 +1267,7 @@
     width: 765px;
     display: flex;
     align-items: center
-}
+}*/
 
 /*MODALES PERSONALIZADOS*/
 dialog {

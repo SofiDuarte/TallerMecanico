@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['login_empleado'])) {
         include("navegador.php");
     ?>
     
-    <section class="fondo_login">
+    <section class="fondo_login"> 
         <div class="formu_login">
             <!-- FORMULARIO LOGIN EMPLEADO -->
             <div class="formu_empleados"> 
@@ -181,10 +181,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['login_empleado'])) {
                 return true;
             }
             </script>
+     </section>
+
+
     <?php 
         include("piedepagina.php");
     ?>
-     
+
 
 </body>
 </html>
