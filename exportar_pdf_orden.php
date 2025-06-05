@@ -11,7 +11,7 @@ $pdo = new PDO("mysql:host=localhost;dbname=bdd_taller_mecanico_mysql", "root", 
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $stmt = $pdo->prepare("
-    SELECT o.orden_numero, o.orden_fecha, o.vehiculo_patente,
+SELECT o.orden_numero, o.orden_fecha, o.vehiculo_patente,
            v.vehiculo_marca, v.vehiculo_modelo, v.vehiculo_anio,
            s.servicio_nombre, ot.complejidad, ot.orden_kilometros,
            ot.orden_comentario, ot.orden_estado
