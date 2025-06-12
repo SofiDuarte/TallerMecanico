@@ -17,8 +17,10 @@
     <br>
     <section class="nosotros">
         <p class="nst">
-            En WA Sport, nos comprometemos con la transparencia y el servicio al cliente. Nuestro objetivo es que cada cliente reciba un trato personalizado, siempre informado sobre el estado de su vehículo y las opciones disponibles para su reparación o mantenimiento.
-            Tu satisfacción es nuestra prioridad, y nos aseguramos de que cada visita a nuestro taller sea una experiencia confiable y libre de preocupaciones.
+            En WA SPORT abrimos nuestras puertas hace más de 15 años con una única misión: brindar un servicio mecánico honesto, profesional y de calidad. Desde nuestros inicios, trabajamos con dedicación para ganarnos la confianza de cada cliente que confía en nosotros, y hoy nos enorgullece decir que muchos de ellos nos siguen eligiendo desde el primer día.
+            Nos especializamos en el mantenimiento integral de vehículos, ofreciendo atención personalizada, diagnósticos precisos y soluciones eficientes. Nuestro equipo de trabajo combina experiencia, formación técnica y pasión por los autos, lo que garantiza resultados confiables y duraderos.
+            Creemos que la clave de un buen servicio está en el respeto, la transparencia y la atención al detalle. Por eso, en WA SPORT no solo reparamos autos: cuidamos a quienes los conducen. Que no son solo clientes sino amigos.
+            Gracias por ser parte de nuestra historia. Y si todavía no nos conocés, te invitamos a hacerlo. Acá siempre vas a encontrar un equipo listo para ayudarte.
         </p>
     </section>
     <br>

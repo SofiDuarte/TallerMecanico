@@ -15,7 +15,10 @@ $modalGuardadoExito = false;
 $modalTurnoExito = false;
 $modalErrorMail = false;
 
+
 $mensaje = "";
+
+$dni = $_SESSION['cliente_dni'];
 
 //OBTENER LOS DATOS DEL CLIENTE
 $stmt = $conexion->prepare("SELECT * FROM clientes WHERE cliente_DNI = :dni");
@@ -140,6 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['solicitar'])) {
                 </table>
                 <div class="bot_modf">
                     <input class="guardar_mod" type="submit" value="Guardar" name="guardar_rec">
+                    <a href="registro_vehiculo.php" class="solicitar_mod">Registrar Vehículo</a>
                     <input class="solicitar_mod" type="submit" value="Solicitar Turno" name="solicitar">
                 </div>
             </form>
@@ -148,37 +152,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['solicitar'])) {
         <img class="modif_img2" src="fondos/hola.usuario.jpg" alt="">
     </section>
 
-<!-- MODAL DATOS GUARDADOS -->
-<?php if ($modalGuardadoExito): ?>
-<dialog open>
-    <p><strong>Datos guardados con éxito.</strong></p>
-    <form method="get" action="modificacion_cliente.php">
-        <button type="submit">Aceptar</button>
-    </form>
-</dialog>
-<?php endif; ?>
+    <!-- MODAL DATOS GUARDADOS -->
+    <?php if ($modalGuardadoExito): ?>
+    <dialog open>
+        <p><strong>Datos guardados con éxito.</strong></p>
+        <form method="get" action="modificacion_cliente.php">
+            <button type="submit">Aceptar</button>
+        </form>
+    </dialog>
+    <?php endif; ?>
 
-<!-- MODAL TURNO SOLICITADO -->
-<?php if ($modalTurnoExito): ?>
-<dialog open>
-    <p><strong>Turno solicitado con éxito.</strong></p>
-    <form method="get" action="modificacion_cliente.php">
-        <button type="submit">Aceptar</button>
-    </form>
-</dialog>
-<?php endif; ?>
+    <!-- MODAL TURNO SOLICITADO -->
+    <?php if ($modalTurnoExito): ?>
+    <dialog open>
+        <p><strong>Turno solicitado con éxito.</strong></p>
+        <form method="get" action="modificacion_cliente.php">
+            <button type="submit">Aceptar</button>
+        </form>
+    </dialog>
+    <?php endif; ?>
 
-<!-- MODAL ERROR ENVIO DE CORREO -->
-<?php if ($modalErrorMail): ?>
-<dialog open>
-    <p><strong>Error al enviar el correo.</strong></p>
-    <form method="get" action="modificacion_cliente.php">
-        <button type="submit">Volver</button>
-    </form>
-</dialog>
-<?php endif; ?>
+    <!-- MODAL ERROR ENVIO DE CORREO -->
+    <?php if ($modalErrorMail): ?>
+    <dialog open>
+        <p><strong>Error al enviar el correo.</strong></p>
+        <form method="get" action="modificacion_cliente.php">
+            <button type="submit">Volver</button>
+        </form>
+    </dialog>
+    <?php endif; ?>
 
-<br>
-<?php include("piedepagina.php"); ?>
+    <br>
+    <?php include("piedepagina.php"); ?>
+    <script src="control_inactividad.js"></script>
 </body>
 </html>

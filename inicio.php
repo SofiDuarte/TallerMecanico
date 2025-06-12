@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>"> 
     <title>WA </title>
+    
 </head>
 <body>
     <?php 
@@ -96,6 +97,6 @@
     <?php 
         include("piedepagina.php");
     ?>
-
+    <script src="logout_control.js"></script>
 </body>
 </html>

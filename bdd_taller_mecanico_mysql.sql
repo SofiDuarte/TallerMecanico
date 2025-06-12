@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3307
--- Tiempo de generación: 30-05-2025 a las 01:23:17
+-- Tiempo de generación: 13-06-2025 a las 01:02:16
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -49,8 +49,9 @@ INSERT INTO `clientes` (`cliente_DNI`, `cliente_contrasena`, `cliente_nombre`, `
 ('27552991', '$2y$10$TPPOV5Q7xnNTsR3PwMamTe68VNo7eBQkfvRV.1zESaCYNO5BGguZ2', 'Alejandro López', NULL, NULL, NULL, '', NULL),
 ('28090318', '$2y$10$4yPA4IJbyFidZn5fybqYgeI6L1/ByLyna1A.Kgljndsw/fqhz8u6e', 'Miguel Martinez', 'Pedro Lozano 452', 'Caba', '1145269854', '', NULL),
 ('30164750', '$2y$10$HObPHxeBfMcrhRmwpd3A5On8.vWBy56uZnRonzI4MCZMrRkdbWNR6', 'Maria Sotelo', 'Tandil 6940', 'Caba', '1122083320', '', NULL),
-('30700247', '$2y$10$ztBbHUGcQV46QSb4k0dB4OxeVBikZnIZeSi9E9IifYdQbB1IK0y/K', 'Christian Caprarulo', 'Portela 1136', 'CABA', '01157172522', 'christian.caprarulo@gmail.com', NULL),
+('30700247', '$2y$10$AsaGr0rb8ZjPzAw7ZjVEc.qwa/nJPC1NCo0CMtLaIHzZYNqYVa5Oy', 'Christian Caprarulo', 'Portela 1136', 'CABA', '01157172522', 'christian.caprarulo@gmail.com', NULL),
 ('32489632', '$2y$10$isL6a3BO9M9Afhqpn84LGuZH0DfLR0jFYsVHeDa2sB4I1KPhigem.', 'Juan Pérez', 'San Martin 514', 'Caba', '1167349281', '', NULL),
+('32690367', '$2y$10$WvQLICi2WXZ/kOVx5yhtke3SSOwafNFq1KdP/mUdx0u8lg0Hzh9GG', 'Adrian Favio Caprarulo', 'Jose Ingenieros', 'San Justo', '1157316427', 'adrian.caprarulo@gmail.com', NULL),
 ('41298533', '$2y$10$BkSZA7Oo/WbXyBgbSgU5LOgXvoB1LLbv6qp./sPf6vr1PN5xeFVnq', 'Carlos Rodríguez', NULL, 'Mendoza', NULL, '', NULL),
 ('43796532', '$2y$10$ZT.y6r.9A6mqqNOvX4w1/.JCD9VQQrfc.qnDp2RItDSelpkxqmxU6', 'Sergio Benitez', 'Av.Saenz 708', 'Caba', '1147552201', '', NULL),
 ('44671150', '$2y$10$puw7dci8b2nvSEyCSSTi2udf7WJLdcWB.Fv/advhZVFlmFuNFUN5y', 'Sofia Duarte Villan', 'Homero 919', 'CABA', '1135932021', 'sofiduvi@gmail.com', NULL);

@@ -308,10 +308,10 @@ html, body {
 
 .nst{
     /*sector texto*/
-    height: 80vh;
+    height: 90vh;
     background: rgb(255, 255, 255) ;
     font-family: 'AlumniSans_Medium';
-    font-size: 20px;/*tamaño de fuente*/
+    font-size: 30px;/*tamaño de fuente*/
     color: #000000;/*color de fuente*/
    
     position: relative;
@@ -320,7 +320,7 @@ html, body {
     justify-content:center;
     text-align: center;
     opacity: 80%; 
-    padding: 70px;
+    padding: 100px;
 
 }
 
@@ -913,6 +913,34 @@ html, body {
 
 
                                     /*MECANICO*/
+
+.nav_mecanico {
+    width: 100%;
+    height: 91px;
+    padding: 10px;
+    background-color: rgb(255, 161, 84); /*FFA154*/
+    display: flex;
+    align-items: center; /* Centra verticalmente */
+    justify-content: space-between; /* Espacia logo a la izquierda y menú a la derecha */
+}
+
+.mecanico_navegador {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 790px; /* Separación entre links */
+    width: 100%;
+    
+}
+
+.botonera_mecanico {
+    display: flex;
+    gap: 20px;
+    margin-left: auto; /* Empuja el grupo hacia la derecha */
+    align-items: center;
+}
+
 .consulta{
     font-family: 'Big_Shoulders_Medium';
     font-size: 30px;
@@ -1014,7 +1042,23 @@ html, body {
     justify-self: end;
 }
 
-                                                                    /*REGISTRO CLIENTES*/
+.nav-button {
+    font-family: 'Big_Shoulders_ExtraBold';
+    font-size: large;
+    text-decoration: none; /* Saca el subrayado de los links */
+    color: rgb(153, 0 , 33); /* 990021 */
+    margin: 30px;
+}
+
+.nav-button:hover {
+    background-color: rgb(255, 198, 49); /*FFC631*/
+    border-radius: 10px;
+    border-color: rgb(255, 198, 49); /*FFC631*/
+    padding: 10;
+    text-align: center;
+}
+
+                            /*REGISTRO CLIENTES*/
 .nav_cli{
     display: flex;
     justify-content: space-between;
@@ -1023,6 +1067,23 @@ html, body {
     width: 100%;
 
 }
+
+.nav-button {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0 10px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.nav-button:hover {
+    text-decoration: none;
+}
+
 .pagina_registro{
     display: grid;
     grid-template-columns: repeat(3 , 1fr);
@@ -1190,17 +1251,22 @@ html, body {
     font-size: 18px;
 }
 
-.solicitar_mod{
+.solicitar_mod {
+    display: inline-block;
+    text-align: center;
+    line-height: 35px;
+    text-decoration: none;         /* Para que el enlace no tenga subrayado */
     border-radius: 40px;
     background-color: #FFC631;
-    border-color:#FFC631; 
-    margin: 30px;
+    border: 1px solid #FFC631;
+    margin: 10px 5px;
     width: 188px;
     height: 35px;
     font-family: 'Big_Shoulders_Medium';
     font-size: 18px;
+    color: black;                  /* Asegura visibilidad del texto */
+    cursor: pointer;
 }
-
 
                                                 /*ORDENES
 .ordenes{

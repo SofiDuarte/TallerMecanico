@@ -73,7 +73,7 @@ fin:
 
 <body>
     <?php 
-        include("nav_cli.php");
+        include("navegador.php");
     ?>
 
     <br><br>
@@ -135,10 +135,8 @@ fin:
 
     </section>    
 
-<br><br>
-
-    <?php 
-        include("piedepagina.php");
-    ?>
+    <br><br>
+    <?php include("piedepagina.php");?>
+    <script src="control_inactividad.js"></script>
 </body>
 </html>

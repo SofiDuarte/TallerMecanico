@@ -8,6 +8,18 @@ $modalVehiculoNoEncontrado = false;
 $modalOrdenNoEncontrada = false;
 $modalOrdenFinalizada = false;
 
+// Consulta para el modal de órdenes pendientes
+$stmtPendientes = $conexion->query("
+    SELECT o.orden_fecha, v.vehiculo_marca, v.vehiculo_modelo, v.vehiculo_anio,
+           o.orden_numero, s.servicio_nombre
+    FROM ordenes o
+    JOIN orden_trabajo ot ON o.orden_numero = ot.orden_numero
+    JOIN servicios s ON ot.servicio_codigo = s.servicio_codigo
+    JOIN vehiculos v ON o.vehiculo_patente = v.vehiculo_patente
+    WHERE ot.orden_estado = 0
+");
+$ordenesPendientes = $stmtPendientes->fetchAll(PDO::FETCH_ASSOC);
+
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['buscar_rec'])) {
         $patente = strtoupper(trim($_GET['historial'] ?? ''));
@@ -18,14 +30,13 @@ try {
             $stmt->execute(['patente' => $patente]);
 
             if ($stmt->rowCount() > 0) {
-                header("Location: historico_vehiculo.php?patente=" . urlencode($patente));
+                header("Location: historico_vehiculo_mecanico.php?patente=" . urlencode($patente));
                 exit();
             } else {
                 $modalVehiculoNoRegistrado = true;
             }
         } elseif (!empty($ordenNum)) {
-            $stmt = $pdo->prepare("
-                SELECT ot.orden_estado
+            $stmt = $conexion->prepare("SELECT ot.orden_estado
                 FROM orden_trabajo ot
                 JOIN ordenes o ON o.orden_numero = ot.orden_numero
                 WHERE o.orden_numero = :orden
@@ -59,6 +70,8 @@ try {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>"> 
     <title>Document</title>
+    
+
 </head>
 
 <!-- MODAL VEHICULO NO REGISTRADO -->
@@ -91,8 +104,43 @@ try {
 </dialog>
 <?php endif; ?>
 
+<!-- MODAL ÓRDENES PENDIENTES -->
+<dialog id="modal_ordenes_pendientes">
+    <h3 style="text-align:center;">Órdenes Pendientes</h3>
+    <table border="1" style="width:100%; border-collapse:collapse;">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Año</th>
+                <th>N° Orden</th>
+                <th>Servicio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($ordenesPendientes as $orden): ?>
+            <tr>
+                <td><?= htmlspecialchars($orden['orden_fecha']) ?></td>
+                <td><?= htmlspecialchars($orden['vehiculo_marca']) ?></td>
+                <td><?= htmlspecialchars($orden['vehiculo_modelo']) ?></td>
+                <td><?= htmlspecialchars($orden['vehiculo_anio']) ?></td>
+                <td><?= htmlspecialchars($orden['orden_numero']) ?></td>
+                <td><?= htmlspecialchars($orden['servicio_nombre']) ?></td>
+                <td>
+                    <a href="ordenes_pendientes.php?orden=<?= urlencode($orden['orden_numero']) ?>" title="Ver Orden">
+                        🔍
+                    </a>
+                </td>    
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <div style="text-align:center; margin-top:20px;">
+        <button onclick="document.getElementById('modal_ordenes_pendientes').close()">Cerrar</button>
+    </div>
+</dialog>
 <body>
-
     <?php 
         include("nav_mecanico.php");
     ?>
@@ -124,13 +172,7 @@ try {
     </section>
 
     <br><br><br><br><br>
-    
-
-
-
-    <?php 
-        include("piedepagina.php");
-    ?>
-
+    <?php include("piedepagina.php");?>
+    <script src="control_inactividad.js"></script>
 </body>
-</html>
+</html> 

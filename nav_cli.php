@@ -6,8 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>">
     <title>Navegador </title>
-
-
 </head>
 <body>
     <header class="encabezado">
@@ -17,12 +15,11 @@
             <a class="nav" href="http://localhost/tallermecanico/nosotros.php">Nosotros</a>
             <a class="nav" href="http://localhost/tallermecanico/servicios.php">Servicios</a>
             <a class="nav" href="http://localhost/tallermecanico/contacto.php">Contacto</a>
+            <a class="nav" href="http://localhost/tallermecanico/vehiculo_cliente.php">Vehículo</a>
             <a class="nav" href="http://localhost/tallermecanico/logout.php">Log Out</a>
             
         </div>
     </header>
-
-
 </body>
 </html> 
 

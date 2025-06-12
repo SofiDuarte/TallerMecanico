@@ -10,12 +10,19 @@
 </head>
 <body>
 
-    <header class="nav_recepcionista">
-        <div class="recepcionista_navegador">
-            <a  href="http://localhost/tallermecanico/inicio.php"><img class="login" src="iconos/WA_Sport.jpg" alt="Logotipo de WA Sport" ></a>
-            <a class="nav" href="">Volver </a> <!--poner link para que vuelva a la pag mecanico -->
-            <a class="nav" href="http://localhost/tallermecanico/logout.php">Log Out</a>
+    <header class="nav_mecanico">
+        <div class="mecanico_navegador">
+            <a  href="http://localhost/tallermecanico/inicio.php">
+                <img class="login" src="iconos/WA_Sport.jpg" alt="Logotipo de WA Sport" >
+            </a>
 
+            <div class="botonera_mecanico">
+                <a href="#" class="nav" onclick="document.getElementById('modal_ordenes_pendientes').showModal(); return false;">
+                    Órdenes Pendientes
+                </a>
+                <a class="nav" href="http://localhost/tallermecanico/mecanico.php">Volver </a>
+                <a class="nav" href="http://localhost/tallermecanico/logout.php">Log Out</a>
+            </div>
         </div>
     </header>
 </body>

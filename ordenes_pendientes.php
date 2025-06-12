@@ -98,73 +98,72 @@ try {
     <link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>">
 </head>
 <body>
+    <?php include("nav_mecanico.php"); ?>
+    <br>
 
-<?php include("navegador.php"); ?>
-<br>
+    <!-- MODAL ERROR -->
+    <?php if ($modalError): ?>
+    <dialog open>
+        <p style="text-align:center;"><strong><?= htmlspecialchars($mensajeModal) ?></strong></p>
+        <div style="text-align:center;"><button onclick="this.closest('dialog').close()">Cerrar</button></div>
+    </dialog>
 
-<!-- MODAL ERROR -->
-<?php if ($modalError): ?>
-<dialog open>
-    <p style="text-align:center;"><strong><?= htmlspecialchars($mensajeModal) ?></strong></p>
-    <div style="text-align:center;"><button onclick="this.closest('dialog').close()">Cerrar</button></div>
-</dialog>
+    <!-- MODAL FINALIZADO -->
+    <?php elseif ($modalFinalizado): ?>
+    <dialog open>
+        <p style="text-align:center;"><strong>La orden ya fue finalizada.</strong></p>
+        <div style="text-align:center;"><button onclick="this.closest('dialog').close()">Cerrar</button></div>
+    </dialog>
 
-<!-- MODAL FINALIZADO -->
-<?php elseif ($modalFinalizado): ?>
-<dialog open>
-    <p style="text-align:center;"><strong>La orden ya fue finalizada.</strong></p>
-    <div style="text-align:center;"><button onclick="this.closest('dialog').close()">Cerrar</button></div>
-</dialog>
+    <!-- MODAL EXITO -->
+    <?php elseif ($modalExito): ?>
+    <dialog open>
+        <p style="text-align:center;"><strong>Orden Nº <?= htmlspecialchars($ordenNum) ?> finalizada con éxito.</strong></p>
+        <form method="get" action="mecanico.php" style="text-align:center;">
+            <button type="submit">Volver</button>
+        </form>
+    </dialog>
+    <?php endif; ?>
 
-<!-- MODAL EXITO -->
-<?php elseif ($modalExito): ?>
-<dialog open>
-    <p style="text-align:center;"><strong>Orden Nº <?= htmlspecialchars($ordenNum) ?> finalizada con éxito.</strong></p>
-    <form method="get" action="mecanico.php" style="text-align:center;">
-        <button type="submit">Volver</button>
-    </form>
-</dialog>
-<?php endif; ?>
+    <?php if (!empty($datosOrden) && !$modalFinalizado): ?>
+    <section class="nueva_ord">
+        <h2 class="recepcion_titulos">
+            <?= htmlspecialchars($datosOrden['vehiculo_patente']) ?> - 
+            <?= htmlspecialchars($datosOrden['vehiculo_marca']) ?> - 
+            <?= htmlspecialchars($datosOrden['vehiculo_modelo']) ?> - 
+            <?= htmlspecialchars($datosOrden['vehiculo_anio']) ?>
+        </h2>
 
-<?php if (!empty($datosOrden) && !$modalFinalizado): ?>
-<section class="nueva_ord">
-    <h2 class="recepcion_titulos">
-        <?= htmlspecialchars($datosOrden['vehiculo_patente']) ?> - 
-        <?= htmlspecialchars($datosOrden['vehiculo_marca']) ?> - 
-        <?= htmlspecialchars($datosOrden['vehiculo_modelo']) ?> - 
-        <?= htmlspecialchars($datosOrden['vehiculo_anio']) ?>
-    </h2>
+        <form method="post" class="form_orden">
+            <input type="hidden" name="orden_numero" value="<?= htmlspecialchars($datosOrden['orden_numero']) ?>">
 
-    <form method="post" class="form_orden">
-        <input type="hidden" name="orden_numero" value="<?= htmlspecialchars($datosOrden['orden_numero']) ?>">
+            <p><strong>Servicio:</strong> <?= htmlspecialchars($datosOrden['servicio_nombre']) ?></p>
 
-        <p><strong>Servicio:</strong> <?= htmlspecialchars($datosOrden['servicio_nombre']) ?></p>
+            <label for="complejidad" class="compl_form">Complejidad</label>
+            <select name="complejidad" id="complejidad" class="compl_form1">
+                <option value="1" <?= $datosOrden['complejidad'] == 1 ? 'selected' : '' ?>>Baja (1)</option>
+                <option value="2" <?= $datosOrden['complejidad'] == 2 ? 'selected' : '' ?>>Media (2)</option>
+                <option value="3" <?= $datosOrden['complejidad'] == 3 ? 'selected' : '' ?>>Alta (3)</option>
+            </select>
 
-        <label for="complejidad" class="compl_form">Complejidad</label>
-        <select name="complejidad" id="complejidad" class="compl_form1">
-            <option value="1" <?= $datosOrden['complejidad'] == 1 ? 'selected' : '' ?>>Baja (1)</option>
-            <option value="2" <?= $datosOrden['complejidad'] == 2 ? 'selected' : '' ?>>Media (2)</option>
-            <option value="3" <?= $datosOrden['complejidad'] == 3 ? 'selected' : '' ?>>Alta (3)</option>
-        </select>
+            <label for="orden_kilometros" class="kil_form">Kilometraje</label>
+            <input type="text" name="orden_kilometros" id="orden_kilometros" class="kil_form1" value="<?= htmlspecialchars($datosOrden['orden_kilometros']) ?>" required>
 
-        <label for="orden_kilometros" class="kil_form">Kilometraje</label>
-        <input type="text" name="orden_kilometros" id="orden_kilometros" class="kil_form1" value="<?= htmlspecialchars($datosOrden['orden_kilometros']) ?>" required>
+            <label for="orden_comentario" class="serv_desc">Comentario</label>
+            <textarea name="orden_comentario" id="orden_comentario" class="serv_desc1"><?= htmlspecialchars($datosOrden['orden_comentario']) ?></textarea>
 
-        <label for="orden_comentario" class="serv_desc">Comentario</label>
-        <textarea name="orden_comentario" id="orden_comentario" class="serv_desc1"><?= htmlspecialchars($datosOrden['orden_comentario']) ?></textarea>
-
-        <input class="guardar_rec" type="submit" value="Finalizar" name="finalizar">
-        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-        <a href="exportar_pdf_orden.php?orden=<?= htmlspecialchars($datosOrden['orden_numero']) ?>" 
-           target="_blank" class="imprimir_rec" style="text-align: center; text-decoration: none; line-height: 34.67px;">
-            🖨️ Imprimir
-        </a>            
-        </div>
-    </form>
-</section>
-<?php endif; ?>
-
-<br>
-<?php include("piedepagina.php"); ?>
+            <input class="guardar_rec" type="submit" value="Finalizar" name="finalizar">
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+            <a href="exportar_pdf_orden.php?orden=<?= htmlspecialchars($datosOrden['orden_numero']) ?>" 
+            target="_blank" class="imprimir_rec" style="text-align: center; text-decoration: none; line-height: 34.67px;">
+                🖨️ Imprimir
+            </a>            
+            </div>
+        </form>
+    </section>
+    <?php endif; ?>
+    <br>
+    <?php include("piedepagina.php"); ?>
+    <script src="control_inactividad.js"></script>
 </body>
 </html>

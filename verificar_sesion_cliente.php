@@ -1,10 +1,9 @@
 <?php
-// PERMITIR ORTENER EL DNI DESDE GET o SESSION
-if (isset($_GET['dni'])) {
-    $dni = $_GET['dni'];
-} elseif (isset($_SESSION['cliente_dni'])) {
-    $dni = $_SESSION['cliente_dni'];
-} else {
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['cliente_dni'])) {
     header("Location: login.php");
     exit();
 }
+?>

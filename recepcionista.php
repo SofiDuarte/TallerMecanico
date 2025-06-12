@@ -159,7 +159,7 @@ try {
             $stmt->execute(['dni' => $buscarDNI]);
 
             if ($stmt->rowCount() > 0) {
-                header("Location: modificacion_cliente.php?dni=" . urlencode($buscarDNI));
+                header("Location: modificacion_cliente_recepcionista.php?dni=" . urlencode($buscarDNI));
                 exit();
     } else {
         $clienteInexistente = true;
@@ -376,7 +376,7 @@ fin:
         include("nav_rec.php");
     ?>
     <br>
-    <a href="http://localhost/tallermecanico/registro_cliente.php" class="registro_recepcionista">Nuevo Cliente</a>
+    
     <section class="nuevo_cli"> 
         <br>
         <h2 class="recepcion_titulos">NUEVO VEHICULO</h2>
@@ -458,10 +458,7 @@ fin:
 
     <br>
 
-    <?php 
-        include("piedepagina.php");
-    ?>
-
-
+    <?php include("piedepagina.php");?>
+    <script src="control_inactividad.js"></script>
 </body>
 </html>
