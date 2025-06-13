@@ -101,7 +101,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['guardar_rec'])) {
                 </table>
                 <div class="bot_modf">
                     <input class="guardar_mod" type="submit" value="Guardar" name="guardar_rec">
-                    <a href="registro_vehiculo_recepcionista.php" class="solicitar_mod">Registrar Vehículo</a>
                 </div>
             </form>
         </section>

@@ -47,14 +47,16 @@ html, body {
     background-color: rgb(255, 161, 84); /*FFA154*/
     display: flex;
     align-items: center; /* Centra verticalmente */
-    justify-content: space-between; /* Espacia logo a la izquierda y menú a la derecha */
+    justify-content: space-between; /* Espacia logo a la izquierda y menu a la derecha */
 }
 
-.navegacion {
+.navegacion{
     display: flex;
     align-items: center;
-    gap: 30px; /* Separación entre links */
+    justify-content: space-between;
+    gap: 30px; /* Separacion entre links */
     width: 100%;
+    
 }
 
 .login {
@@ -68,7 +70,7 @@ html, body {
     font-size: large;
     text-decoration: none; /* Saca el subrayado de los links */
     color: rgb(153, 0 , 33); /* 990021 */
-    margin-right: 30px;
+    margin-right: 20px;;
 }
 .nav:hover{
     background-color: rgb(255, 198, 49); /*FFC631*/
@@ -157,8 +159,9 @@ html, body {
     background: rgb(255, 255, 255) ;
     font-family: 'AlumniSans_Medium';
     font-size: 30px;/*tamaño de fuente*/
+    line-height: 50px;
     color: #000000;/*color de fuente*/
-   
+    
     position: relative;
     display: flex;
     align-items: center;
@@ -308,19 +311,19 @@ html, body {
 
 .nst{
     /*sector texto*/
-    height: 90vh;
+    height: 80vh;
     background: rgb(255, 255, 255) ;
     font-family: 'AlumniSans_Medium';
     font-size: 30px;/*tamaño de fuente*/
     color: #000000;/*color de fuente*/
-   
+    line-height: 45px;
     position: relative;
     display: flex;
     align-items: center;
     justify-content:center;
     text-align: center;
-    opacity: 80%; 
-    padding: 100px;
+    opacity: 85%; 
+    padding: 70px;
 
 }
 
@@ -330,17 +333,23 @@ html, body {
     align-items: center;
     justify-content:center; 
     text-align: center;
-
 }
 
 .resp{
     align-items: center;
     text-align: center;
-    margin: auto 100px 40px;
+    margin: auto 10px 40px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 5px;
+    justify-content: space-around;
+    justify-items: center;
 }
 .resp h3{
     font-family: 'AlumniSans_Regular';
     font-size: 20px; 
+    text-align: center;
 }
 
 .resp p{
@@ -394,6 +403,7 @@ html, body {
     font-size: 25px;
     align-items: center;
     text-align: center;
+    background-color: #FFD054 ;
 }
 
 
@@ -401,9 +411,10 @@ html, body {
 
 
 .formulario1{
+    background-image: linear-gradient(#FFD054 , #FFC631 , #FFB800) ;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
     padding-left: 40px;
     padding: 10px 50px 20px;
 }
@@ -413,20 +424,16 @@ html, body {
     grid-column: 1/2;
     grid-row: 1/2;
 }
-
 .form_2{
     display: grid;
     grid-column: 2/3;
     grid-row: 1/2;
 }
-
-
 .form_3{
     display: grid;
     grid-column: 1 / 3;
     grid-row: 2 / 3;
 }
-
 .form_4{
     display: grid;
     grid-column: 1 / 3;
@@ -443,7 +450,6 @@ html, body {
     border-radius: 5px;
     height: 40px;
     color: #cacaca;
-    
 }
 
 .formulario1 button{
@@ -457,6 +463,7 @@ html, body {
     align-content: center;
     grid-column: 2/3;
     margin-left: 80%;
+    margin-top: 5px;
 }
 
 .ubi{
@@ -464,8 +471,6 @@ html, body {
     flex-direction: row;
     gap: 30px;
     padding: 60px;
-    
-
 }
 
 .ubi iframe{
@@ -473,7 +478,6 @@ html, body {
     width: 400px;
     height: 410px;
     border:0;
- 
 }
 
 .datos{
@@ -496,7 +500,6 @@ html, body {
     font-size: 20px;/*tamaño de fuente*/
     color: #000000;/*color de fuente*/
     text-decoration: none;
-
 }
 
                                     /*LOGIN*/
@@ -646,9 +649,14 @@ html, body {
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
-    gap: 790px; /* Separación entre links */
     width: 100%;
-    
+}
+
+.botonera_recepcionista{
+    display: flex;
+    gap: 40px;
+    margin-left: auto; /* Empuja el grupo hacia la derecha */
+    align-items: center;
 }
 
 /*boton que lleva al formulario de clientes*/
@@ -702,6 +710,7 @@ html, body {
    font-size: 18px;
    align-content: center;
    margin-left: 25px;
+   margin: 2px;
 }
 .form_busqueda label{
    font-family: 'Big_Shoulders_Medium';
@@ -718,7 +727,15 @@ html, body {
     align-content: center;
     margin-top: 5px;
     margin-left: 20px;
+    
 }
+.form_orden input{
+    border-radius: 10px;
+    margin-top: 4px;
+
+    
+} 
+
 .form_orden select {
     height: 30px;
     border-radius: 20px;
@@ -755,7 +772,6 @@ html, body {
     font-family: 'Big_Shoulders_Medium';
     font-size: 16px;
     justify-self: end;
-
 }
 
 .imprimir_rec{
@@ -767,8 +783,6 @@ html, body {
     height: 34.67px;
     font-family: 'Big_Shoulders_Medium';
     font-size: 16px;
-    
-
 }
 
 .buscar_rec{
@@ -929,14 +943,13 @@ html, body {
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
-    gap: 790px; /* Separación entre links */
     width: 100%;
     
 }
 
 .botonera_mecanico {
     display: flex;
-    gap: 20px;
+    gap: 40px;
     margin-left: auto; /* Empuja el grupo hacia la derecha */
     align-items: center;
 }
@@ -948,11 +961,20 @@ html, body {
 }
 
 .form_consulta{
+    
+/*background-color: #1fa0a046 ;
+background-image: linear-gradient(#ffa15467 , #ff8e318e , #ff730086);
+background-color: #ffa15467;
+background-image: url(fondos/mecanico_fond2.jpg);*/
+    border:#1fa0a065;
+    border-style: solid;
+    min-height: 76vh;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     justify-items: center;
     gap: 20px;
-    margin: 20px
+    margin: 20px auto 20px;
+ 
 }
 
 .form_consulta img{
@@ -972,12 +994,12 @@ html, body {
     text-align: center;
 }
 .cons_historial{
-    background-color: #ffd15475;
+    background-color: #ffd154;
     width:534px ;
     height:195px ; 
 }
 .cons_trabajo{
-    background-color: #ffd15475;
+    background-color: #ffd154;
     width:534px ;
     height:195px ;
 }
@@ -1058,6 +1080,117 @@ html, body {
     text-align: center;
 }
 
+                                        /*historico vehiculos mecanico*/
+
+.his_vehiculo_mec{
+    min-height: 76vh; /* que ocupe toda la pantalla */
+}
+.his_vehiculo_mec h2{
+    font-family: 'AlumniSans_Regular';
+    text-align: center;
+}
+
+.his_vehimec_tab {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.his_vehimec_tab th, .his_vehimec_tab td {
+    border: 1px solid #FF8E31;
+    padding: 10px;
+    font-family: 'Big_Shoulders_Regular';
+    font-size: 18px;
+    text-align: center;
+}
+
+.his_vehimec_tab th {
+  background-color: #ff8e31a8;
+  font-weight: bold;
+  font-size: 16px;
+}
+.boton_historial{text-decoration: none;}
+
+                            /*ORDENES PENDIENTES */
+.orden_prendiente{
+    min-height: 76vh;
+    border-radius: 10px;
+    border-color: rgb(255, 198, 49); /*FFC631*/
+    border-style: solid;
+    margin: auto 10% auto;
+}
+.orden_prendiente h2{
+    font-family: 'Big_Shoulders_ExtraBold';
+    font-size: 25px;
+    text-align: center;
+}
+
+.form_ordenpen h2{
+    font-family: 'AlumniSans_Medium';
+    font-size: 25px;
+    margin-left: 25px;
+    text-align: start;
+}
+.form_ordenpen p{
+    font-family: 'AlumniSans_Light';
+    font-size: 20px;
+    margin-left: 35px;
+    text-align: start;
+}
+
+.form_ordenpen label{
+    font-family: 'AlumniSans_Medium';
+    font-size: 25px;
+    margin-left: 25px;
+    text-align: start;
+}
+.form_ordenpen input{
+    width: 412px;
+    height: 30px;
+    border-radius: 20px;
+    align-content: center;
+    margin-left: 10px;
+}
+
+.ordpen_compl{
+    width: 300px;
+    height: 25px;
+    text-align: center;
+    border-radius: 20px;
+    margin-left: 10px;
+}
+
+.bot_ordpen{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.ordpen_fin{
+    border-radius: 40px;
+    background-color: #3AAFAF;
+    border-color:#3AAFAF; 
+    margin: 5px;
+    width: 188px;
+    height: 34.67px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 16px;
+}
+.imprimir_ordpen{
+    text-align: center;
+    text-decoration: none; 
+    border-radius: 40px;
+    background-color: #3AAFAF;
+    border-color:#3AAFAF; 
+    margin: 5px;
+    width: 412px;
+    height: 30px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 16px;
+    color: #000;
+}
+
+
                             /*REGISTRO CLIENTES*/
 .nav_cli{
     display: flex;
@@ -1065,7 +1198,6 @@ html, body {
     align-items: center;
     gap: 30px; /* Separación entre links */
     width: 100%;
-
 }
 
 .nav-button {
@@ -1094,13 +1226,12 @@ html, body {
     height: 810px;
     opacity: 30%;
     grid-column: 1/2;
-    margin-left: 30%;
+    margin-left: 15%;
 }
 .img_registro2{
     height: 810px;
     opacity: 30%;
     grid-column: 3/4;
-    margin-left: 0.5%;
 }
 
 .logo_registro{
@@ -1140,6 +1271,7 @@ html, body {
     width: 337px;
     border-radius: 5px;
     align-content: center;
+    text-align: center;
     margin-left: 16px;
 }
  
@@ -1268,74 +1400,139 @@ html, body {
     cursor: pointer;
 }
 
-                                                /*ORDENES
-.ordenes{
-    width: 80vw;   /* 100% del ancho de la ventana 
-    height: 80vh;  /* 100% del alto de la ventana 
-    margin-left: 10%;
+                                               /*REGISTRO VEHICLOS CLIENTE*/
+.reg_veh_cli{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: auto 40px auto;
+}
+
+.reg_veh_cli img{
+    height: 830px;
+    opacity: 30%;
+    margin: 0px 10px;
+}
+
+.reg_vehcli_form{
+    grid-column: 2/3; 
+    align-content: center;
+    justify-items: center;
+    border-style: solid;
+    border-color: #000000;
+}
+
+
+.reg_vehcli_form h2{
+    font-family: 'Big_Shoulders_ExtraBold';
+    font-size: 30px;
+    text-align: center;
+}
+.reg_vehcli_form h3{
+    font-family: 'Big_Shoulders_Regular';
+    font-size: 24px;
+    text-align: center;
+}
+
+.reg_vehcli_form table{
+    margin-top: 60px;
+    width: 595px;
+    height: 457px;
+    margin:  20px 40px 20px;
+    
+}
+
+.reg_vehcli_form th{
+    font-family: 'AlumniSans_Medium';
+    font-size: 24px;
+    text-align: center;
+}
+
+.datos_unicos{
+    background-color: #F04F72;
+    border-radius: 5px;
+    font-family: 'AlumniSans_Light';
+    font-size: 24px;
+    text-align: center;  
+    width: 487.99px;
+    height: 36.99px;
+}
+
+.datos_modificados{
+    background-color: #cecece;
+    border-radius: 5px;
+    font-family: 'AlumniSans_Light';
+    font-size: 24px;
+    text-align: center;
+    width: 487.99px;
+    height: 36.99px;
+}
+
+.bot_modf{
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    justify-content: center;
     align-items: center;
 }
 
-.ordenes h2{
-    font-family: 'Big_Shoulders_Medium';
-    font-size: 25px;
-}
-.ordenes table{
-    margin: 20px auto 20px;
-    width: 1000px;
-    height: 90px;
-
-}
-.ordenes  th{
-    font-family: 'AlumniSans_Medium';
-    font-size: 24px;
-    text-align: center;
-}
-.ordenes td{
-    font-family: 'AlumniSans_Medium';
-    font-size: 24px;
-    text-align: center;
-}
-
-.finalizar_ord{
+.guardar_mod{
     border-radius: 40px;
-    background-color: #FF8E31;
-    border-color:#FF8E31; 
+    background-color: #ED2E57;
+    border-color:#ED2E57; 
     margin: 30px;
     width: 188px;
     height: 35px;
     font-family: 'Big_Shoulders_Medium';
     font-size: 18px;
-    display: flex;
-    justify-self: center;
 }
 
-.datos_unicos2{
-    background-color: #ff8e31b2;
-    border-radius: 5px;
-    font-family: 'AlumniSans_Light';
-    font-size: 24px;
-    text-align: center;  
+.solicitar_mod {
+    display: inline-block;
+    text-align: center;
+    line-height: 35px;
+    text-decoration: none;         /* Para que el enlace no tenga subrayado */
+    border-radius: 40px;
+    background-color: #FFC631;
+    border: 1px solid #FFC631;
+    margin: 10px 5px;
+    width: 188px;
+    height: 35px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 18px;
+    color: black;                  /* Asegura visibilidad del texto */
+    cursor: pointer;
 }
 
-.desc_ord{
-    font-family: 'AlumniSans_Light';
-    font-size: 24px;
-    text-align: center;  
+                                                /*VEHICULOS CLIENTE */
+.veh_cli{
+    min-height: 80vh; /* que ocupe toda la pantalla */
+}
+.veh_cli h2{
+    font-family: 'Big_Shoulders_ExtraBold';
+    text-align: center;
 }
 
-.desc_ord1{
-    height: 117px; 
-    width: 765px;
-    display: flex;
-    align-items: center
-}*/
+.vehcli_tab {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
 
-/*MODALES PERSONALIZADOS*/
+.vehcli_tab th, .vehcli_tab td {
+    border: 1px solid #FF8E31;
+    padding: 10px;
+    font-family: 'Big_Shoulders_Regular';
+    font-size: 18px;
+    text-align: center;
+}
+
+.vehcli_tab th {
+  background-color: #ff8e31a8;
+  font-weight: bold;
+  font-size: 16px;
+}
+.boton_historial{text-decoration: none;}
+
+                                            /*MODALES PERSONALIZADOS*/
 dialog {
     width: 40%;
     max-width: 500px;
@@ -1384,3 +1581,6 @@ dialog[open] {
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+
+

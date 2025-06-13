@@ -17,9 +17,20 @@
     <br>
     <section class="nosotros">
         <p class="nst">
-            En WA SPORT abrimos nuestras puertas hace más de 15 años con una única misión: brindar un servicio mecánico honesto, profesional y de calidad. Desde nuestros inicios, trabajamos con dedicación para ganarnos la confianza de cada cliente que confía en nosotros, y hoy nos enorgullece decir que muchos de ellos nos siguen eligiendo desde el primer día.
-            Nos especializamos en el mantenimiento integral de vehículos, ofreciendo atención personalizada, diagnósticos precisos y soluciones eficientes. Nuestro equipo de trabajo combina experiencia, formación técnica y pasión por los autos, lo que garantiza resultados confiables y duraderos.
-            Creemos que la clave de un buen servicio está en el respeto, la transparencia y la atención al detalle. Por eso, en WA SPORT no solo reparamos autos: cuidamos a quienes los conducen. Que no son solo clientes sino amigos.
+            En WA SPORT abrimos nuestras puertas hace más de 15 años con una única misión: brindar un servicio mecánico honesto, profesional y de calidad. 
+            <br>
+            Desde nuestros inicios, trabajamos con dedicación para ganarnos la confianza de cada cliente que confía en nosotros, y hoy nos enorgullece decir que 
+            <br>
+            muchos de ellos nos siguen eligiendo desde el primer día.
+            <br>
+            Nos especializamos en el mantenimiento integral de vehículos, ofreciendo atención personalizada, diagnósticos precisos y soluciones eficientes.
+            <br>
+            Nuestro equipo de trabajo combina experiencia, formación técnica y pasión por los autos, lo que garantiza resultados confiables y duraderos.
+            <br>
+            Creemos que la clave de un buen servicio está en el respeto, la transparencia y la atención al detalle. Por eso, en WA SPORT no solo reparamos autos: 
+            <br>
+            cuidamos a quienes los conducen. Que no son solo clientes sino amigos.
+            <br>
             Gracias por ser parte de nuestra historia. Y si todavía no nos conocés, te invitamos a hacerlo. Acá siempre vas a encontrar un equipo listo para ayudarte.
         </p>
     </section>
@@ -29,33 +40,46 @@
         <h2>¿POR QÚE ELEGIRNOS? </h2>
         <br><br><br>
         <div class="resp">
-        <h3>Experiencia y Profesionalismo </h3>
-        <br>
-        <p>     
-            Con años de experiencia en el sector, nuestro equipo de mecánicos altamente capacitados tiene el conocimiento y las habilidades para manejar una amplia gama de servicios automotrices. Ya sea una reparación compleja o un mantenimiento rutinario, puedes confiar en nosotros.
-        </p>
-        <br><br>
-        <h3>Calidad y Confianza </h3>
-        <br>
-        <p>
-            Utilizamos herramientas de última tecnología y repuestos de alta calidad, garantizando que cada reparación se realice bajo los más estrictos estándares. Nuestra prioridad es ofrecerte un trabajo bien hecho, que te brinde confianza y seguridad.
-        </p>
-        <br><br>
-        <h3>Atención Personalizada </h3>
-        <br>
-        <p> 
-             En WA Sport nos preocupamos por cada cliente. Ofrecemos un servicio personalizado, escuchamos tus necesidades y te asesoramos de manera honesta y profesional para que tomes las mejores decisiones para tu auto.
-        </p>
-        <br><br>
-        <h3>Compromiso con la Seguridad</h3>
-        <br>
-        <p> 
-            La seguridad de tu vehículo es nuestra principal prioridad. 
-        </p>
-        <br><br>
+            <div>
+                <h3>Experiencia y Profesionalismo </h3>
+                <br>
+                 <p> 
+                     Años de experiencia y un equipo capacitado nos permiten resolver desde 
+                     <br>
+                     mantenimientos simples hasta reparaciones complejas.   
+                </p>
+            </div>
+            <div>
+                <h3>Calidad y Confianza </h3>
+                <br>
+                <p>
+                    Trabajamos con tecnología avanzada y repuestos de calidad,
+                    <br>
+                    asegurando resultados confiables y seguros.
+                </p>
+            </div>
+            <div>
+                <h3>Atención Personalizada </h3>
+                <br>
+                <p>
+                    En WA Sport escuchamos tus necesidades 
+                    <br>
+                    y te asesoramos con honestidad para cuidar tu auto.
+                </p>
+            </div>
+            <div>
+                <h3>Compromiso con la Seguridad</h3>
+                <br>
+                <p>
+                    Cuidamos cada detalle para garantizar el óptimo funcionamiento de tu vehículo 
+                    <br>
+                    y tu tranquilidad al conducir.
+                </p>
+            </div>
+            <br>
         </div>
     </section>
-
+    <br><br>
     <?php 
         include("piedepagina.php");
     ?>

@@ -21,7 +21,7 @@ require_once 'conexion_base.php';
 </div>
     
     <br>
-    <h2 class="contacto">Contacto</h2>
+    <h2 class="contacto">Contactanos</h2>
 <form class="formulario1" action="enviar_consulta.php" method="post">
     <div class="form_1">
         <label for="nom">Nombre</label>
@@ -40,7 +40,7 @@ require_once 'conexion_base.php';
 
     <div class="form_4">
         <label for="cons">Consulta</label>
-        <textarea name="consulta" id="cons" placeholder="Dejanos tu consulta" cols="30" rows="10" required></textarea>
+        <textarea name="consulta" id="cons" placeholder="Dejanos tu consulta" cols="30" rows="10" required style="height: 257px; width: 1803px;"></textarea>
     </div>
 
     <button type="submit">Enviar consulta</button>

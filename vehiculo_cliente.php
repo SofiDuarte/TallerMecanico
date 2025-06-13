@@ -17,49 +17,15 @@ $sinVehiculos = count($vehiculos) === 0;
     <meta charset="UTF-8">
     <link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>">
     <title>Mis Vehículos</title>
-
-    <style>
-        table {
-            width: 90%;
-            margin: 0px 70px;
-            border-collapse: collapse;
-            margin-top: 15px;
-            table-layout: fixed;
-
-        }
-        th, td {
-            border: 1px solid #000;
-            padding: 2px 10px; 
-            text-align: center;
-            font-family: 'AlumniSans_Light';
-            font-size: 18px;
-            /*height: 10px;*/
-            line-height: 1.1; 
-            vertical-align: middle;
-        }
-        th {
-            background-color: #ddd;
-            font-family: 'Big_Shoulders_Medium';
-            font-size: 20px;
-            /*height: 30px;*/
-            padding: 2px 10px;
-        }
-        .boton_historial {
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-        }
-    </style>
-
 </head>
 <body>
     <?php include("nav_cli.php"); ?>
     <br>
-    <section class="modif_cli">
-        <img class="modif_img1" src="fondos/hola.usuario.jpg" alt="">
-        <section class="modificar_cliente">
+    <section class="veh_cli">
+        <br>
             <h2>Mis Vehículos</h2>
+
+        <section  >
             <?php if ($sinVehiculos): ?>
                 <dialog open>
                     <p><strong>No tiene vehículos registrados.</strong></p>
@@ -71,15 +37,19 @@ $sinVehiculos = count($vehiculos) === 0;
                     </form>
                 </dialog>
             <?php else: ?>
-                <table>
-                    <tr>
-                        <th>Patente</th>
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Año</th>
-                        <th>Kilometraje</th>
-                        <th>Histórico</th>
-                    </tr>
+            <br>
+            
+                <table class="vehcli_tab">
+                    <thead>
+                        <tr>
+                            <th>PATENTE</th>
+                            <th>MARCA</th>
+                            <th>MODELO</th>
+                            <th>AÑO</th>
+                            <th>KILOMETRAJE</th>
+                            <th>HISTORICO</th>
+                        </tr>
+                    </thead>
                     <?php foreach ($vehiculos as $vehiculo): ?>
                         <?php
                         // Último kilometraje del vehículo
@@ -94,6 +64,7 @@ $sinVehiculos = count($vehiculos) === 0;
                         $km = $stmtKm->fetchColumn();
                         ?>
                         <tr>
+                        <!-- <tr class="resu_vehcli"> -->
                             <td><?= htmlspecialchars($vehiculo['vehiculo_patente']) ?></td>
                             <td><?= htmlspecialchars($vehiculo['vehiculo_marca']) ?></td>
                             <td><?= htmlspecialchars($vehiculo['vehiculo_modelo']) ?></td>
@@ -108,12 +79,12 @@ $sinVehiculos = count($vehiculos) === 0;
                     <?php endforeach; ?>
                 </table>
                 <br>
+        </section>
                 <div style="text-align:center;">
                     <a href="modificacion_cliente.php" class="solicitar_mod">Volver</a>
                 </div>
             <?php endif; ?>
-        </section>
-        <img class="modif_img2" src="fondos/hola.usuario.jpg" alt="">
+
     </section>
     <br>
     <?php include("piedepagina.php"); ?>

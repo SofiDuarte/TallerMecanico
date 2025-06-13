@@ -1,6 +1,6 @@
 <?php
 require_once('tcpdf/tcpdf.php');
-require_once 'conexion_base.php';
+require_once ('conexion_base.php');
 
 $ordenNum = $_GET['orden'] ?? '';
 

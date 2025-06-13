@@ -144,7 +144,7 @@ try {
     <?php 
         include("nav_mecanico.php");
     ?>
-    <br><br><br><br>
+
     <section class="form_consulta">
         <div class="imagen_cons1">
             <img src="iconos/form_empleados.png" alt="">
@@ -153,14 +153,16 @@ try {
         <form action="" class="consulta">
 
             <div class="cons_historial">
+                <br>
                 <label for="historial">HISTORIAL DEL VEHICULO</label>
                 <h3>Patente del vehiculo</h3>
                 <input type="text" name="historial" id="historial">
             </div>
             <br>
             <div class="cons_trabajo">
+                <br>
                 <label for="trabajos_realizar">TRABAJOS A REALIZAR</label>
-                <h3>Numero de Orden</h3>
+                <h3>Número de Orden</h3>
                 <input type="text" name="trabajos_realizar" id="trabajos_realizar">
             </div>
             <br>
@@ -171,7 +173,6 @@ try {
         </div>
     </section>
 
-    <br><br><br><br><br>
     <?php include("piedepagina.php");?>
     <script src="control_inactividad.js"></script>
 </body>

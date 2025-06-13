@@ -81,7 +81,7 @@ fin:
 
 
     <section class="pagina_registro">
-        <img src="fondos/registro_cli.jpg" alt="" class="img_registro1">
+        <img src="fondos/registro_cli_recp.jpg" alt="" class="img_registro1">
         <section class="registro">
             
             <img class="logo_registro" src="iconos/form_clientes.png" alt="">
@@ -132,7 +132,7 @@ fin:
                 <?php endif; ?>
 
         </section>
-        <img src="fondos/registro_cli.jpg" alt="" class="img_registro2">
+        <img src="fondos/registro_cli_recp.jpg" alt="" class="img_registro2">
 
     </section>    
 

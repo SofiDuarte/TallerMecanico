@@ -15,8 +15,11 @@
     </div>    
     <section class="inicio">
         <p class="in">
-            Nos especializamos en brindar servicios de reparación y mantenimiento automotriz de alta calidad. 
-            Con años de experiencia en el sector, nuestro equipo de mecánicos altamente capacitados se dedica a ofrecer soluciones eficientes y confiables para tu vehículo, asegurando su rendimiento óptimo y tu seguridad en la carretera.
+            Nos especializamos en brindar servicios de reparación y mantenimiento automotriz de alta calidad.
+            <br> 
+            Con años de experiencia en el sector, nuestro equipo de mecánicos altamente capacitados se dedica a
+            <br>
+            ofrecer soluciones eficientes y confiables para tu vehículo, asegurando su rendimiento óptimo y tu seguridad en la carretera.
         </p>
     </section>
     <br>

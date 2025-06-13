@@ -44,10 +44,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['guardar_vehiculo'])) 
 <body>
     <?php include("nav_cli.php"); ?>
     <br>
-    <section class="modif_cli">
-        <img class="modif_img1" src="fondos/hola.usuario.jpg" alt="">
+    <section class="reg_veh_cli">
+        <img class="modif_img1" src="fondos/reg_vehiculo.jpg" alt="">
 
-        <section class="modificar_cliente">
+        <section class="reg_vehcli_form">
             <h2><?= htmlspecialchars($cliente['cliente_nombre']) ?></h2>
             <h3>Registrar Nuevo Vehículo</h3>
             <form method="post">
@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['guardar_vehiculo'])) 
             </form>
         </section>
 
-        <img class="modif_img2" src="fondos/hola.usuario.jpg" alt="">
+        <img class="modif_img2" src="fondos/reg_vehiculo.jpg" alt="">
     </section>
 
     <!-- MODAL VEHICULO GUARDADO -->

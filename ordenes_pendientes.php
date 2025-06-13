@@ -90,7 +90,7 @@ try {
     $mensajeModal = "Error en la base de datos: " . $e->getMessage();
 }
 ?>
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -126,7 +126,8 @@ try {
     <?php endif; ?>
 
     <?php if (!empty($datosOrden) && !$modalFinalizado): ?>
-    <section class="nueva_ord">
+    <section class="orden_prendiente">
+        <br><br>
         <h2 class="recepcion_titulos">
             <?= htmlspecialchars($datosOrden['vehiculo_patente']) ?> - 
             <?= htmlspecialchars($datosOrden['vehiculo_marca']) ?> - 
@@ -134,30 +135,37 @@ try {
             <?= htmlspecialchars($datosOrden['vehiculo_anio']) ?>
         </h2>
 
-        <form method="post" class="form_orden">
+        <form method="post" class="form_ordenpen">
             <input type="hidden" name="orden_numero" value="<?= htmlspecialchars($datosOrden['orden_numero']) ?>">
+            <h2>Servicio</h2> 
+            <p> <?= htmlspecialchars($datosOrden['servicio_nombre']) ?></p>
 
-            <p><strong>Servicio:</strong> <?= htmlspecialchars($datosOrden['servicio_nombre']) ?></p>
-
-            <label for="complejidad" class="compl_form">Complejidad</label>
-            <select name="complejidad" id="complejidad" class="compl_form1">
+            <br><br>
+            <label for="complejidad">Complejidad</label>
+            <select name="complejidad" id="complejidad" class="ordpen_compl">
                 <option value="1" <?= $datosOrden['complejidad'] == 1 ? 'selected' : '' ?>>Baja (1)</option>
                 <option value="2" <?= $datosOrden['complejidad'] == 2 ? 'selected' : '' ?>>Media (2)</option>
                 <option value="3" <?= $datosOrden['complejidad'] == 3 ? 'selected' : '' ?>>Alta (3)</option>
             </select>
+            <br><br>
 
-            <label for="orden_kilometros" class="kil_form">Kilometraje</label>
+            <label for="orden_kilometros">Kilometraje</label>
             <input type="text" name="orden_kilometros" id="orden_kilometros" class="kil_form1" value="<?= htmlspecialchars($datosOrden['orden_kilometros']) ?>" required>
 
-            <label for="orden_comentario" class="serv_desc">Comentario</label>
-            <textarea name="orden_comentario" id="orden_comentario" class="serv_desc1"><?= htmlspecialchars($datosOrden['orden_comentario']) ?></textarea>
+            <br><br>
+            <label for="orden_comentario"> Comentario</label>
+            <br>
+            <textarea name="orden_comentario" id="orden_comentario" style="height: 103px; width: 1231px; margin-left: 5%;"><?= htmlspecialchars($datosOrden['orden_comentario']) ?></textarea>
 
-            <input class="guardar_rec" type="submit" value="Finalizar" name="finalizar">
-            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-            <a href="exportar_pdf_orden.php?orden=<?= htmlspecialchars($datosOrden['orden_numero']) ?>" 
-            target="_blank" class="imprimir_rec" style="text-align: center; text-decoration: none; line-height: 34.67px;">
-                🖨️ Imprimir
-            </a>            
+            <br><br>
+            
+            <div class="bot_ordpen">
+
+                <input class="ordpen_fin" type="submit" value="Finalizar" name="finalizar">
+                <a href="exportar_pdf_orden.php?orden=<?= htmlspecialchars($datosOrden['orden_numero']) ?>" 
+                target="_blank" class="imprimir_ordpen" >
+                    🖨️ Imprimir
+                </a>            
             </div>
         </form>
     </section>

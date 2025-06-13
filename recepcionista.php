@@ -216,7 +216,7 @@ fin:
     <p style="text-align:center;"><strong>Cliente inexistente</strong></p>
     <div style="text-align:center;">
         <button onclick="document.getElementById('modal_cliente_inexistente').close()">Cerrar</button>
-        <a href="registro_cliente.php"><button>Nuevo Cliente</button></a>
+        <a href="registro_cliente_recepcionista.php"><button>Nuevo Cliente</button></a>
     </div>
 </dialog>
 <?php endif; ?>
