@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $token = bin2hex(random_bytes(32));
 
-            $update = $pdo->prepare("UPDATE clientes SET token_recuperacion = :token WHERE cliente_DNI = :dni");
+            $update = $conexion->prepare("UPDATE clientes SET token_recuperacion = :token WHERE cliente_DNI = :dni");
             $update->execute(['token' => $token, 'dni' => $dni]);
 
             $link = "http://localhost/tallermecanico/restablecer_contrasena.php?token=$token";

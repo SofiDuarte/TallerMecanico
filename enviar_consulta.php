@@ -83,7 +83,7 @@ try {
 
     echo "<script>alert('Su consulta fue enviada con éxito.'); window.location.href = 'contacto.php';</script>";
 
-catch (Exception $e) {
+}catch (Exception $e) {
    echo "<script>alert('Error al enviar el correo: {$mail->ErrorInfo}'); window.location.href = 'contacto.php';</script>";
 }
 

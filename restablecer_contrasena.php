@@ -83,7 +83,7 @@ fin:
                        pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,15}$"
                        title="Debe tener entre 8 y 15 caracteres, una mayúscula, un número y un símbolo."><br><br>
 
-                <button type="submit" class="boton_registro">Guardar nueva contraseña</button>
+                <button type="submit" class="boton_registro">Guardar </button>
             </form>
         <?php else: ?>
             <p style="text-align:center;">Enlace inválido o ya utilizado.</p>
