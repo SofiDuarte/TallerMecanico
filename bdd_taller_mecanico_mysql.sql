@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3307
--- Tiempo de generación: 13-06-2025 a las 01:02:16
+-- Tiempo de generación: 16-06-2025 a las 05:20:29
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -43,18 +43,20 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`cliente_DNI`, `cliente_contrasena`, `cliente_nombre`, `cliente_direccion`, `cliente_localidad`, `cliente_telefono`, `cliente_email`, `token_recuperacion`) VALUES
+('11179113', '$2y$10$XZ4MO8mXG4/GO6YTtfbvVO0lwE/BqX2DkIuC97ESE2f6N/b3O1K/S', 'Ana Maria Gomes Rosa', 'Portela 1136', 'CABA', '1166890208', 'anamaria396424@gmail.com', NULL),
 ('18762965', '$2y$10$tYDuZiiScaJgGqJE8SLtguuhgyIGYD8kcrx.gUkeSL/rA98G6TXaO', 'Laura Martínez', NULL, NULL, '3515555678', 'christian.caprarulo@gmail.com', NULL),
 ('19786413', '$2y$10$xzLTMTIzZHSbk0Fsq0/HUeaoHAGzfWLJ5duC5X96k3I9IyFZ2Ui6i', 'María García', 'Ascasubi 1342', 'Buenos Aires', '1167439855', '', NULL),
 ('22870111', '$2y$10$Uz1AKpqPJ/07.s7IHOokq.1klFUIMmj1YpN4/Sxz3ZkAmq92oGoVi', 'Juan Villalba', 'Monroe 87', 'Lanus', '1137081077', '', NULL),
 ('27552991', '$2y$10$TPPOV5Q7xnNTsR3PwMamTe68VNo7eBQkfvRV.1zESaCYNO5BGguZ2', 'Alejandro López', NULL, NULL, NULL, '', NULL),
 ('28090318', '$2y$10$4yPA4IJbyFidZn5fybqYgeI6L1/ByLyna1A.Kgljndsw/fqhz8u6e', 'Miguel Martinez', 'Pedro Lozano 452', 'Caba', '1145269854', '', NULL),
 ('30164750', '$2y$10$HObPHxeBfMcrhRmwpd3A5On8.vWBy56uZnRonzI4MCZMrRkdbWNR6', 'Maria Sotelo', 'Tandil 6940', 'Caba', '1122083320', '', NULL),
-('30700247', '$2y$10$AsaGr0rb8ZjPzAw7ZjVEc.qwa/nJPC1NCo0CMtLaIHzZYNqYVa5Oy', 'Christian Caprarulo', 'Portela 1136', 'CABA', '01157172522', 'christian.caprarulo@gmail.com', NULL),
+('30700247', '$2y$10$ho/z/4IPCiRt7yQlGPZnU.IB9YgPFve6PqSvcO4Jspm/wUYDv1/JS', 'Christian Caprarulo', 'Portela 1136', 'CABA', '01157172522', 'christian.caprarulo@gmail.com', 'b6c493c0d6996a23f1b1c6243ed1ea02c908eec989fbf62200a4efefe94086af'),
 ('32489632', '$2y$10$isL6a3BO9M9Afhqpn84LGuZH0DfLR0jFYsVHeDa2sB4I1KPhigem.', 'Juan Pérez', 'San Martin 514', 'Caba', '1167349281', '', NULL),
 ('32690367', '$2y$10$WvQLICi2WXZ/kOVx5yhtke3SSOwafNFq1KdP/mUdx0u8lg0Hzh9GG', 'Adrian Favio Caprarulo', 'Jose Ingenieros', 'San Justo', '1157316427', 'adrian.caprarulo@gmail.com', NULL),
 ('41298533', '$2y$10$BkSZA7Oo/WbXyBgbSgU5LOgXvoB1LLbv6qp./sPf6vr1PN5xeFVnq', 'Carlos Rodríguez', NULL, 'Mendoza', NULL, '', NULL),
 ('43796532', '$2y$10$ZT.y6r.9A6mqqNOvX4w1/.JCD9VQQrfc.qnDp2RItDSelpkxqmxU6', 'Sergio Benitez', 'Av.Saenz 708', 'Caba', '1147552201', '', NULL),
-('44671150', '$2y$10$puw7dci8b2nvSEyCSSTi2udf7WJLdcWB.Fv/advhZVFlmFuNFUN5y', 'Sofia Duarte Villan', 'Homero 919', 'CABA', '1135932021', 'sofiduvi@gmail.com', NULL);
+('44671150', '$2y$10$puw7dci8b2nvSEyCSSTi2udf7WJLdcWB.Fv/advhZVFlmFuNFUN5y', 'Sofia Duarte Villan', 'Homero 919', 'CABA', '1135932021', 'sofiduvi@gmail.com', NULL),
+('47651867', '$2y$10$ujHC4B1Rac0BNRT3vM5lteCFosundlBVPW/734vNucl3ebDAwTO92', 'Martin Damian Caprarulo', 'Portela 1136', 'CABA', '1157379981', 'martin.d.caprarulo@gmail.com', NULL);
 
 -- --------------------------------------------------------
 
@@ -68,18 +70,21 @@ CREATE TABLE `empleados` (
   `empleado_nombre` varchar(50) NOT NULL,
   `empleado_roll` varchar(255) NOT NULL,
   `empleado_email` text NOT NULL,
-  `token_recuperacion` varchar(255) DEFAULT NULL
+  `token_recuperacion` varchar(255) DEFAULT NULL,
+  `empleado_direccion` varchar(50) DEFAULT NULL,
+  `empleado_localidad` varchar(15) DEFAULT NULL,
+  `empleado_telefono` varchar(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `empleados`
 --
 
-INSERT INTO `empleados` (`empleado_DNI`, `empleado_contrasena`, `empleado_nombre`, `empleado_roll`, `empleado_email`, `token_recuperacion`) VALUES
-('24874723', '$2y$10$D4u9GL/1rhsdVbWBLeyv2urFR9/OdEL89KcO028uFKFxJ3bpuxOt6', 'Stella Brzostowski', 'recepcionista', '0', NULL),
-('30700247', '$2y$10$TZQtjVmYfrIcqxqU/EkeSe7nPgEkIz25dKNmRRs4idnF86HLx162.', 'Christian Caprarulo', 'mecanico', 'christian.caprarulo@gmail.com', NULL),
-('44671150', '$2y$10$8I/M3RbRn.FUuovkMkvJO.WGcLxWXaq689Xg5xQ.AU73w7INxmSEK', 'Sofia Duarte', 'recepcionista', '0', NULL),
-('47651867', '$2y$10$nyqZ/3LasLxH/FfKUhp5MeBSACkABS.mF12eZ5zJoSVhzKqrRWm9u', 'Martin Caprarulo', 'mecanico', 'martin.d.caprarulo@gmail.com', NULL);
+INSERT INTO `empleados` (`empleado_DNI`, `empleado_contrasena`, `empleado_nombre`, `empleado_roll`, `empleado_email`, `token_recuperacion`, `empleado_direccion`, `empleado_localidad`, `empleado_telefono`) VALUES
+('24874723', '$2y$10$D4u9GL/1rhsdVbWBLeyv2urFR9/OdEL89KcO028uFKFxJ3bpuxOt6', 'Stella Brzostowski', 'recepcionista', '0', NULL, 'Pedro M. Obligado 1489', 'Laferrere', NULL),
+('30700247', '$2y$10$TZQtjVmYfrIcqxqU/EkeSe7nPgEkIz25dKNmRRs4idnF86HLx162.', 'Christian Caprarulo', 'mecanico', 'christian.caprarulo@gmail.com', 'c8b9d38cdfcadc04e2b96decdc25b0b25ce5430f5ca4a6ed3fb9ca75965ab649', 'Portela 1136', 'CABA', '1157172522'),
+('44671150', '$2y$10$8I/M3RbRn.FUuovkMkvJO.WGcLxWXaq689Xg5xQ.AU73w7INxmSEK', 'Sofia Duarte', 'recepcionista', 'sofiduvi@gmail.com', '85d6877e5029ba391ce5d2a72d48151ab00a14a36f9d1830f0abd8672f8424eb', 'Homero 919', 'CABA', ''),
+('47651867', '$2y$10$nyqZ/3LasLxH/FfKUhp5MeBSACkABS.mF12eZ5zJoSVhzKqrRWm9u', 'Martin Caprarulo', 'mecanico', 'martin.d.caprarulo@gmail.com', NULL, 'Portela 1136', 'CABA', '1157379981');
 
 -- --------------------------------------------------------
 
@@ -126,7 +131,8 @@ INSERT INTO `ordenes` (`orden_numero`, `orden_fecha`, `vehiculo_patente`, `orden
 (11, '2020-06-04', 'POD166', NULL),
 (12, '2020-08-06', 'AB307CI', NULL),
 (13, '2025-05-25', 'GCR891', NULL),
-(14, '2025-05-29', 'A221GAR', NULL);
+(14, '2025-05-29', 'A221GAR', NULL),
+(16, '2025-06-15', 'UWL004', NULL);
 
 -- --------------------------------------------------------
 
@@ -169,7 +175,8 @@ INSERT INTO `orden_trabajo` (`orden_numero`, `servicio_codigo`, `complejidad`, `
 (11, 'D001', 1, NULL, '43909', '', 1),
 (12, 'S002', 1, NULL, '67413', '', 0),
 (13, 'D001', 1, 5500.00, '1000', 'NINGUNO', 1),
-(14, 'FR002', 1, 13860.00, '1338', 'La clienta dice que no frena un carajo.', 0);
+(14, 'FR002', 1, 13860.00, '1338', 'La clienta dice que no frena un carajo.', 0),
+(16, 'SD001', 1, 20020.00, '85021', 'Hace un ruidito', 0);
 
 --
 -- Disparadores `orden_trabajo`
@@ -274,7 +281,8 @@ INSERT INTO `vehiculos` (`vehiculo_patente`, `cliente_DNI`, `vehiculo_marca`, `v
 ('GHI410', '32489632', 'Citroen', 'Xsara', '2007', 'Rojo', 'L416V 1.8'),
 ('JKM733', '32489632', 'Susuki', 'Fun', NULL, 'Gris', NULL),
 ('NJK038', '30164750', 'Chevrolet', 'Corsa', '2011', 'Azul', NULL),
-('POD166', '22870111', 'Dodge', 'Journey', '2015', 'Verde', 'DOHC Penta');
+('POD166', '22870111', 'Dodge', 'Journey', '2015', 'Verde', 'DOHC Penta'),
+('UWL004', '30700247', 'FIAT', '128 IAVA', '1973', NULL, NULL);
 
 -- --------------------------------------------------------
 

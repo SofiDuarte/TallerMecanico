@@ -925,6 +925,92 @@ html, body {
 
 .buscar_rec{grid-column: 3/4;grid-row: -2/-1;}
 
+                                        /*MODIFICAR RECEPCIONISTA*/
+
+.modif_rec{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: auto 40px auto;
+}
+
+.modif_rec img{
+    height: 830px;
+    opacity: 30%;
+    margin: 0px 10px;
+}
+
+.modif_img1{grid-column: 1/2;}
+.modif_img2{ grid-column: 3/4;}
+
+.modificar_recepcionista{
+    grid-column: 2/3; 
+    align-content: center;
+    justify-items: center;
+    border-style: solid;
+    border-color: #000000
+}
+.modificar_recepcionista h2{
+    font-family: 'Big_Shoulders_ExtraBold';
+    font-size: 30px;
+    text-align: center;
+}
+.modificar_recepcionista h3{
+    font-family: 'Big_Shoulders_Regular';
+    font-size: 24px;
+    text-align: center;
+}
+
+.modificar_recepcionista table{
+    margin-top: 60px;
+    width: 595px;
+    height: 457px;
+    margin-right: 80px;
+}
+
+.modificar_recepcionista th{
+
+    font-family: 'AlumniSans_Medium';
+    font-size: 24px;
+    text-align: center;
+}
+
+.datos_unicos{
+    background-color: #F04F72;
+    border-radius: 5px;
+    font-family: 'AlumniSans_Light';
+    font-size: 24px;
+    text-align: center;  
+    width: 487.99px;
+    height: 36.99px;
+}
+
+.datos_modificados{
+    background-color: #cecece;
+    border-radius: 5px;
+    font-family: 'AlumniSans_Light';
+    font-size: 24px;
+    text-align: center;
+    width: 487.99px;
+    height: 36.99px;
+}
+
+.bot_modf{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.guardar_mod{
+    border-radius: 40px;
+    background-color: #ED2E57;
+    border-color:#ED2E57; 
+    margin: 30px;
+    width: 188px;
+    height: 35px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 18px;
+}
 
                                     /*MECANICO*/
 
@@ -1190,6 +1276,92 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
     color: #000;
 }
 
+                                        /*MODIFICAR MECANICO*/
+
+.modif_mec{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: auto 40px auto;
+}
+
+.modif_mec img{
+    height: 830px;
+    opacity: 30%;
+    margin: 0px 10px;
+}
+
+.modif_img1{grid-column: 1/2;}
+.modif_img2{ grid-column: 3/4;}
+
+.modificar_mecanico{
+    grid-column: 2/3; 
+    align-content: center;
+    justify-items: center;
+    border-style: solid;
+    border-color: #000000
+}
+.modificar_mecanico h2{
+    font-family: 'Big_Shoulders_ExtraBold';
+    font-size: 30px;
+    text-align: center;
+}
+.modificar_mecanico h3{
+    font-family: 'Big_Shoulders_Regular';
+    font-size: 24px;
+    text-align: center;
+}
+
+.modificar_mecanico table{
+    margin-top: 60px;
+    width: 595px;
+    height: 457px;
+    margin-right: 80px;
+}
+
+.modificar_mecanico th{
+
+    font-family: 'AlumniSans_Medium';
+    font-size: 24px;
+    text-align: center;
+}
+
+.datos_unicos{
+    background-color: #F04F72;
+    border-radius: 5px;
+    font-family: 'AlumniSans_Light';
+    font-size: 24px;
+    text-align: center;  
+    width: 487.99px;
+    height: 36.99px;
+}
+
+.datos_modificados{
+    background-color: #cecece;
+    border-radius: 5px;
+    font-family: 'AlumniSans_Light';
+    font-size: 24px;
+    text-align: center;
+    width: 487.99px;
+    height: 36.99px;
+}
+
+.bot_modf{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.guardar_mod{
+    border-radius: 40px;
+    background-color: #ED2E57;
+    border-color:#ED2E57; 
+    margin: 30px;
+    width: 188px;
+    height: 35px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 18px;
+}
 
                             /*REGISTRO CLIENTES*/
 .nav_cli{

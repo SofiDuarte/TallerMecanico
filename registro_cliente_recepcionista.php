@@ -61,10 +61,9 @@ fin:
 <?php if ($modalRegistroExitoso): ?>
 <dialog open id="modal_registro_exitoso">
     <p style="text-align:center;"><strong>Registro exitoso</strong></p>
-    <p style="text-align:center;">Ya puede iniciar sesión.</p>
     <div style="text-align:center;">
-        <form method="get" action="login.php">
-            <button type="submit">Iniciar sesión</button>
+        <form method="get" action="recepcionista.php">
+            <button type="submit">Volver</button>
         </form>
     </div>
 </dialog>

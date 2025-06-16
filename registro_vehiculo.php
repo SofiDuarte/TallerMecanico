@@ -17,17 +17,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['guardar_vehiculo'])) 
     $marca = $_POST['marca'];
     $modelo = $_POST['modelo'];
     $anio = $_POST['anio'];
-    $km_actual = $_POST['km_actual'];
     $dni_cliente = $_SESSION['cliente_dni'];
 
-    $insert = $conexion->prepare("INSERT INTO vehiculos (vehiculo_patente, vehiculo_marca, vehiculo_modelo, vehiculo_anio, vehiculo_km, cliente_DNI)
-                                  VALUES (:pat, :marca, :modelo, :anio, :km, :dni)");
+    $insert = $conexion->prepare("INSERT INTO vehiculos (vehiculo_patente, vehiculo_marca, vehiculo_modelo, vehiculo_anio, cliente_DNI)
+                                  VALUES (:pat, :marca, :modelo, :anio, :dni)");
     $insert->execute([
         'pat'   => $patente,
         'marca' => $marca,
         'modelo'=> $modelo,
         'anio'  => $anio,
-        'km'    => $km_actual,
         'dni'   => $dni_cliente
     ]);
 
@@ -67,11 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['guardar_vehiculo'])) 
                     <tr>
                         <th>Año</th>
                         <td><input type="number" class="datos_modificados" name="anio" required min="1900" max="<?= date('Y') ?>"></td>
-                    </tr>
-                    <tr>
-                        <th>Kilometraje</th>
-                        <td><input type="number" class="datos_modificados" name="km_actual" required min="0"></td>
-                    </tr>
+                    </tr>                
                 </table>
                 <div class="bot_modf">
                     <input class="solicitar_mod" type="submit" name="guardar_vehiculo" value="Registrar Vehículo">

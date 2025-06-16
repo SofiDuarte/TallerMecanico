@@ -112,11 +112,11 @@ try {
                     goto fin;
                 } else {
                     // VERIFICA LA ULTIMA ORDEN
-                    $stmt = $pdo->query("SELECT MAX(orden_numero) AS ultimo FROM ordenes");
+                    $stmt = $conexion->query("SELECT MAX(orden_numero) AS ultimo FROM ordenes");
                     $ultimoNumero = $stmt->fetch(PDO::FETCH_ASSOC)['ultimo'] ?? 0;
                     $nuevoNumero = $ultimoNumero + 1;
                     // INSERT TABLA ORDENES
-                    $insertOrden = $pdo->prepare("INSERT INTO ordenes (orden_numero, orden_fecha, vehiculo_patente) 
+                    $insertOrden = $conexion->prepare("INSERT INTO ordenes (orden_numero, orden_fecha, vehiculo_patente) 
                                                     VALUES (:numero, :fecha, :patente)");
                     $insertOrden->execute([
                         'numero'  => $nuevoNumero,
@@ -127,7 +127,7 @@ try {
                     $ordenNumero = $nuevoNumero;
 
                     // INSERT TABLA ORDEN_TRABAJO
-                    $insertTrabajo = $pdo->prepare("INSERT INTO orden_trabajo 
+                    $insertTrabajo = $conexion->prepare("INSERT INTO orden_trabajo 
                         (orden_numero, servicio_codigo, complejidad, orden_kilometros, orden_comentario, orden_estado)
                         VALUES (:orden_numero, :servicio, :complejidad, :km, :comentario, 0)");
                     $insertTrabajo->execute([

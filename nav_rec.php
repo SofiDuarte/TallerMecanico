@@ -17,8 +17,9 @@
             </a>
             
             <div class="botonera_recepcionista">
+                <a class="nav" href="http://localhost/tallermecanico/modificacion_recepcionista.php" >Datos Personales</a>
                 <a class="nav" href="http://localhost/tallermecanico/registro_cliente_recepcionista.php" >Nuevo Cliente</a>
-                <a class="nav" href="http://localhost/tallermecanico/recepcionista.php">Volver </a> <!--poner link para que vuelva a la pag recep -->
+                <a class="nav" href="http://localhost/tallermecanico/recepcionista.php">Volver </a> 
                 <a class="nav" href="http://localhost/tallermecanico/logout.php">Log Out</a>
             </div>
         </div>

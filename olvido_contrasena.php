@@ -107,7 +107,7 @@ fin:
 <!-- MODAL ENLACE NO ENVIADO -->
 <?php if ($modalErrorEnvio): ?>
 <dialog open>
-    <p><strong>No se pudo enviar el correo. Intente nuevamente.</strong></p>
+    <p><strong>No se pudo enviar el correo. Verifique Datos.</strong></p>
     <form method="get" action="login.php">
         <button type="submit">Volver</button>
     </form>

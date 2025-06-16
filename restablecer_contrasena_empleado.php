@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["token"])) {
     }
 }
 
+// GUARDAR NUEVA CONTRASEÑA
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["token"]) && isset($_POST["nueva_contrasena"])) {
     $token = $_POST["token"];
     $nueva = $_POST["nueva_contrasena"];
@@ -29,8 +30,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["token"]) && isset($_P
         $mensaje = "La contraseña no cumple los requisitos mínimos.";
     } else {
         try {
+            $nueva_codificada = password_hash($nueva, PASSWORD_DEFAULT);
             $stmt = $conexion->prepare("UPDATE empleados SET empleado_contrasena = :clave, token_recuperacion = NULL WHERE token_recuperacion = :token");
-            $stmt->execute(['clave' => $nueva, 'token' => $token]);
+            $stmt->execute(['clave' => $nueva_codificada, 'token' => $token]);
 
             $modalClaveRestablecida = true;
             goto fin;

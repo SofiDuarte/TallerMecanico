@@ -17,6 +17,7 @@
             </a>
 
             <div class="botonera_mecanico">
+                <a class="nav" href="http://localhost/tallermecanico/modificacion_mecanico.php" >Datos Personales</a>
                 <a href="#" class="nav" onclick="document.getElementById('modal_ordenes_pendientes').showModal(); return false;">
                     Órdenes Pendientes
                 </a>
