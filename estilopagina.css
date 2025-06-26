@@ -1166,7 +1166,7 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
     text-align: center;
 }
 
-                                        /*historico vehiculos mecanico*/
+                                    /*HISTORICO VEHICULO MECANICO*/
 
 .his_vehiculo_mec{
     min-height: 76vh; /* que ocupe toda la pantalla */
@@ -1703,6 +1703,38 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
   font-size: 16px;
 }
 .boton_historial{text-decoration: none;}
+
+/*HISTORICO VEHICULO CLIENTE*/
+.his_vehiculo_cli{
+    min-height: 76vh; /* que ocupe toda la pantalla */
+}
+.his_vehiculo_cli h2{
+    font-family: 'AlumniSans_Regular';
+    text-align: center;
+}
+
+.his_vehicli_tab {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.his_vehicli_tab th, .his_vehicli_tab td {
+    border: 1px solid #FF8E31;
+    padding: 10px;
+    font-family: 'Big_Shoulders_Regular';
+    font-size: 18px;
+    text-align: center;
+}
+
+.his_vehicli_tab th {
+  background-color: #ff8e31a8;
+  font-weight: bold;
+  font-size: 16px;
+}
+.boton_historial{text-decoration: none; border: none;}
+
+
 
                                             /*MODALES PERSONALIZADOS*/
 dialog {

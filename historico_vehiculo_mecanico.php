@@ -93,8 +93,7 @@ try {
                         <td style="text-align: center;">
                             <button onclick="document.getElementById('modal_<?= $orden['orden_numero'] ?>').showModal()">🔍</button>
                             <button>
-                            <a href="exportar_pdf_orden.php?orden=<?= $orden['orden_numero'] ?>" target="_blank" class="icono-pdf">
-                                🖨️
+                            <a href="exportar_pdf_orden.php?orden=<?= $orden['orden_numero'] ?>" target="_blank" class="boton_historial">                                🖨️
                             </a></button>
                         </td>
                     </tr>

@@ -65,7 +65,7 @@ try {
         </div>
     </dialog>
     <?php elseif (!empty($datosVehiculo)): ?>
-        <section class="nueva_ord">
+        <section class="his_vehiculo_cli">
             <h2 class="recepcion_titulos">
                 <?= htmlspecialchars($datosVehiculo['vehiculo_patente']) ?> - 
                 <?= htmlspecialchars($datosVehiculo['vehiculo_marca']) ?> - 
@@ -73,7 +73,7 @@ try {
                 <?= htmlspecialchars($datosVehiculo['vehiculo_anio']) ?>
             </h2>
 
-            <table class="tabla_recepcion" style="width: 95%;">
+            <table class="his_vehicli_tab" style="width: 95%;">
                 <thead>
                     <tr>
                         <th>Orden Nº</th>
@@ -92,9 +92,9 @@ try {
                         <td><?= $orden['orden_estado'] == 1 ? "Finalizada" : "Pendiente" ?></td>
                         <td style="text-align: center;">
                             <button onclick="document.getElementById('modal_<?= $orden['orden_numero'] ?>').showModal()">🔍</button>
-                            <a href="exportar_pdf_orden.php?orden=<?= $orden['orden_numero'] ?>" target="_blank" class="icono-pdf">
-                                🖨️
-                            </a>
+                            <button>
+                            <a href="exportar_pdf_orden.php?orden=<?= $orden['orden_numero'] ?>" target="_blank" class="boton_historial">                                🖨️
+                            </a></button>
                         </td>
                     </tr>
                     <?php endforeach; ?>
