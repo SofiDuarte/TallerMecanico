@@ -83,8 +83,9 @@ try {
     $km          = $_POST['kilometraje'] ?? '';
     $servicio    = $_POST['serv_cod'] ?? '';
     $comentario  = trim($_POST['descripcion'] ?? '');
+    $mecanico = $_POST['mecanico_dni'] ?? '';
         //VERIFICAR CAMPOS VACIOS
-        if (empty($patente) || empty($fecha) || empty($complejidad) || empty($km) || empty($servicio)) {
+        if (empty($patente) || empty($fecha) || empty($complejidad) || empty($km) || empty($servicio) || empty($mecanico)) {
             $modalCamposIncompletos = true;
             goto fin;
         // VERIFICAR QUE KILOMETRAJE SEA NÚMERO ENTERO POSITIVO
@@ -128,14 +129,15 @@ try {
 
                     // INSERT TABLA ORDEN_TRABAJO
                     $insertTrabajo = $conexion->prepare("INSERT INTO orden_trabajo 
-                        (orden_numero, servicio_codigo, complejidad, orden_kilometros, orden_comentario, orden_estado)
-                        VALUES (:orden_numero, :servicio, :complejidad, :km, :comentario, 0)");
+                        (orden_numero, servicio_codigo, complejidad, orden_kilometros, orden_comentario, orden_estado, mecanico_DNI)
+                        VALUES (:orden_numero, :servicio, :complejidad, :km, :comentario, 0, :mecanico)");
                     $insertTrabajo->execute([
                         'orden_numero' => $ordenNumero,
                         'servicio'     => $servicio,
                         'complejidad'  => $complejidad,
                         'km'           => $km,
-                        'comentario'   => $comentario
+                        'comentario'   => $comentario,
+                        'mecanico'     => $mecanico
                     ]);
                     $modalOrdenRegistrada = true;
                     goto fin;
@@ -146,6 +148,9 @@ try {
 
     // PARA TRAER SERVICIO PARA EL SELECT
     $servicios = $conexion->query("SELECT servicio_codigo, servicio_nombre FROM servicios")->fetchAll(PDO::FETCH_ASSOC);
+    
+    // PARA TRAER MECANICO PARA EL SELECT
+    $mecanicos = $conexion->query("SELECT empleado_DNI, empleado_nombre FROM empleados WHERE empleado_roll = 'mecanico'")->fetchAll(PDO::FETCH_ASSOC);
 
     // FORMULARIO NUEVA ORDEN
     if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['buscar_rec'])) {
@@ -430,6 +435,15 @@ fin:
                 <?php endforeach; ?>
             </select>
             <label for="descripcion" class="serv_desc">Descripcion/Observacion</label>
+            <label for="mecanico_dni" class="mecanico_form">Mecánico</label>
+                <select name="mecanico_dni" id="mecanico_dni" class="mecanico_form1" required>
+                    <option value="">Seleccione un mecánico</option>
+                    <?php foreach ($mecanicos as $mec): ?>
+                        <option value="<?= htmlspecialchars($mec['empleado_DNI']) ?>">
+                            <?= htmlspecialchars($mec['empleado_nombre']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             <textarea  class="serv_desc1" name="descripcion" id="descripcion" cols="" rows=""></textarea>
             <input class="guardar_rec" type="submit" value="Guardar" name="nueva_orden">
         </form>

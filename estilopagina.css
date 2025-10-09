@@ -736,6 +736,14 @@ html, body {
     
 } 
 
+.form_turno {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
 .form_orden select {
     height: 30px;
     border-radius: 20px;
@@ -794,6 +802,19 @@ html, body {
     font-family: 'Big_Shoulders_Medium';
     font-size: 16px;
     justify-self: end;
+}
+
+.cancelar_boton {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #ccc;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+.cancelar_boton:hover {
+    background-color: #bbb;
 }
 
 /*formulario de Nuevo Cliente */
