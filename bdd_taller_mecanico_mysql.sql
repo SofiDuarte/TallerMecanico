@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3307
--- Tiempo de generación: 09-10-2025 a las 20:48:27
+-- Tiempo de generación: 10-10-2025 a las 01:07:09
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -160,23 +160,23 @@ CREATE TABLE `orden_trabajo` (
 --
 
 INSERT INTO `orden_trabajo` (`orden_numero`, `servicio_codigo`, `complejidad`, `costo_ajustado`, `orden_kilometros`, `orden_comentario`, `orden_estado`, `mecanico_DNI`, `turno_id`) VALUES
-(2, 'CLA00', 1, NULL, '120324', '', 1, NULL, NULL),
-(2, 'FR003', 1, NULL, '120324', '', 1, NULL, NULL),
-(2, 'SA001', 3, NULL, '120324', '', 0, NULL, NULL),
-(3, 'MT002', 2, NULL, '250341', '', 0, NULL, NULL),
-(4, 'CV001', 2, NULL, '60724', '', 0, NULL, NULL),
-(4, 'EB001', 2, NULL, '60724', '', 1, NULL, NULL),
-(5, 'CV001', 1, NULL, '71543', '', 0, NULL, NULL),
-(5, 'EB001', 1, NULL, '71543', '', 1, NULL, NULL),
-(6, 'SD002', 1, NULL, '47980', '', 1, NULL, NULL),
-(6, 'ST002', 2, NULL, '47980', '', 1, NULL, NULL),
-(7, 'FR001', 3, NULL, '56782', '', 0, NULL, NULL),
-(7, 'FR002', 3, NULL, '56782', '', 1, NULL, NULL),
-(8, 'SES00', 2, NULL, '25619', '', 0, NULL, NULL),
-(9, 'SEL00', 2, NULL, '94723', '', 1, NULL, NULL),
-(10, 'SDI00', 1, NULL, '119832', '', 0, NULL, NULL),
-(11, 'D001', 1, NULL, '43909', '', 1, NULL, NULL),
-(12, 'S002', 1, NULL, '67413', '', 0, NULL, NULL),
+(2, 'CLA00', 1, 7920.00, '120324', '', 1, NULL, NULL),
+(2, 'FR003', 1, 12540.00, '120324', '', 1, NULL, NULL),
+(2, 'SA001', 3, 24310.00, '120324', '', 0, NULL, NULL),
+(3, 'MT002', 2, 146880.00, '250341', '', 0, NULL, NULL),
+(4, 'CV001', 2, 87120.00, '60724', '', 0, NULL, NULL),
+(4, 'EB001', 2, 71760.00, '60724', '', 1, NULL, NULL),
+(5, 'CV001', 1, 79860.00, '71543', '', 0, NULL, NULL),
+(5, 'EB001', 1, 65780.00, '71543', '', 1, NULL, NULL),
+(6, 'SD002', 1, 30140.00, '47980', '', 1, NULL, NULL),
+(6, 'ST002', 2, 45840.00, '47980', '', 1, NULL, NULL),
+(7, 'FR001', 3, 15600.00, '56782', '', 0, NULL, NULL),
+(7, 'FR002', 3, 16380.00, '56782', '', 1, NULL, NULL),
+(8, 'SES00', 2, 47400.00, '25619', '', 0, NULL, NULL),
+(9, 'SEL00', 2, 11760.00, '94723', '', 1, NULL, NULL),
+(10, 'SDI00', 1, 14630.00, '119832', '', 0, NULL, NULL),
+(11, 'D001', 1, 5500.00, '43909', '', 1, NULL, NULL),
+(12, 'S002', 1, 24200.00, '67413', '', 0, NULL, NULL),
 (13, 'D001', 1, 5500.00, '1000', 'NINGUNO', 1, NULL, NULL),
 (14, 'FR002', 1, 13860.00, '1338', 'La clienta dice que no frena un carajo.', 0, NULL, NULL),
 (16, 'SD001', 1, 20020.00, '85021', 'Hace un ruidito', 0, NULL, NULL);
@@ -186,21 +186,41 @@ INSERT INTO `orden_trabajo` (`orden_numero`, `servicio_codigo`, `complejidad`, `
 --
 DELIMITER $$
 CREATE TRIGGER `before_insert_orden_trabajo` BEFORE INSERT ON `orden_trabajo` FOR EACH ROW BEGIN
-  DECLARE base_costo DECIMAL(8,2) DEFAULT 0;
+  DECLARE base_costo DECIMAL(10,2) DEFAULT 0;
+  DECLARE mult       DECIMAL(4,2)  DEFAULT 1;
 
-  -- Obtener el costo base del servicio
-  SELECT servicio_costo INTO base_costo
-  FROM Servicios
+  SELECT COALESCE(servicio_costo,0) INTO base_costo
+  FROM servicios
   WHERE servicio_codigo = NEW.servicio_codigo;
 
-  -- Calcular el costo ajustado según la complejidad
-  SET NEW.costo_ajustado = base_costo *
-    CASE NEW.complejidad
-      WHEN 1 THEN 1.1
-      WHEN 2 THEN 1.2
-      WHEN 3 THEN 1.3
-      ELSE 1
-    END;
+  SET mult = CASE NEW.complejidad
+               WHEN 1 THEN 1.10
+               WHEN 2 THEN 1.20
+               WHEN 3 THEN 1.30
+               ELSE 1
+             END;
+
+  SET NEW.costo_ajustado = ROUND(base_costo * mult, 2);
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `before_update_orden_trabajo` BEFORE UPDATE ON `orden_trabajo` FOR EACH ROW BEGIN
+  DECLARE base_costo DECIMAL(10,2) DEFAULT 0;
+  DECLARE mult       DECIMAL(4,2)  DEFAULT 1;
+
+  SELECT COALESCE(servicio_costo,0) INTO base_costo
+  FROM servicios
+  WHERE servicio_codigo = NEW.servicio_codigo;
+
+  SET mult = CASE NEW.complejidad
+               WHEN 1 THEN 1.10
+               WHEN 2 THEN 1.20
+               WHEN 3 THEN 1.30
+               ELSE 1
+             END;
+
+  SET NEW.costo_ajustado = ROUND(base_costo * mult, 2);
 END
 $$
 DELIMITER ;
