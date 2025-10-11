@@ -91,23 +91,24 @@ try {
 </head>
 <body>
 <?php include("nav_rec.php"); ?>
-<header><h1>Modificar Turno</h1></header>
-<main>
+
+<section class="turno_mod">
+    <h1>Modificar Turno</h1>
     <form method="post">
         <input type="hidden" name="turno_id" value="<?= htmlspecialchars($turno_id) ?>">
 
         <!-- Campos informativos -->
-        <div class="form_group"><strong>Cliente:</strong> <?= htmlspecialchars($turno['cliente_nombre']) ?></div>
-        <div class="form_group"><strong>Patente:</strong> <?= htmlspecialchars($turno['vehiculo_patente']) ?></div>
-        <div class="form_group"><strong>Vehículo:</strong> <?= htmlspecialchars($turno['vehiculo_marca'] . ' ' . $turno['vehiculo_modelo']) ?></div>
-        <div class="form_group"><strong>Fecha:</strong> <?= htmlspecialchars($turno['turno_fecha']) ?></div>
-        <div class="form_group"><strong>Hora:</strong> <?= substr($turno['turno_hora'], 0, 5) ?></div>
-        <div class="form_group"><strong>Estado:</strong> <?= htmlspecialchars($turno['turno_estado']) ?></div>
+        <div class="turno_mod-tit"><strong>Cliente</strong> <?= htmlspecialchars($turno['cliente_nombre']) ?></div>
+        <div class="turno_mod-tit"><strong>Patente</strong> <?= htmlspecialchars($turno['vehiculo_patente']) ?></div>
+        <div class="turno_mod-tit"><strong>Vehículo</strong> <?= htmlspecialchars($turno['vehiculo_marca'] . ' ' . $turno['vehiculo_modelo']) ?></div>
+        <div class="turno_mod-tit"><strong>Fecha</strong> <?= htmlspecialchars($turno['turno_fecha']) ?></div>
+        <div class="turno_mod-tit"><strong>Hora</strong> <?= substr($turno['turno_hora'], 0, 5) ?></div>
+        <div class="turno_mod-tit"><strong>Estado</strong> <?= htmlspecialchars($turno['turno_estado']) ?></div>
 
         <!-- Campos modificables -->
-        <div class="form_group">
-            <label for="mecanico_DNI">Mecánico:</label>
-            <select name="mecanico_DNI" id="mecanico_DNI" required>
+        <div class="turno_mod-tit">
+            <label for="mecanico_DNI">Mecánico</label>
+            <select class="turno_mod-sel" name="mecanico_DNI" id="mecanico_DNI" required>
                 <?php foreach ($mecanicos as $mec): ?>
                     <option value="<?= $mec['empleado_DNI'] ?>" <?= ($mec['empleado_DNI'] == $turno['mecanico_DNI_OT']) ? 'selected' : '' ?>>
                         <?= $mec['empleado_nombre'] ?>
@@ -116,9 +117,9 @@ try {
             </select>
         </div>
 
-        <div class="form_group">
-            <label for="servicio_codigo">Servicio:</label>
-            <select name="servicio_codigo" id="servicio_codigo" required>
+        <div class="turno_mod-tit">
+            <label for="servicio_codigo">Servicio</label>
+            <select class="turno_mod-sel" name="servicio_codigo" id="servicio_codigo" required>
                 <?php foreach ($servicios as $serv): ?>
                     <option value="<?= $serv['servicio_codigo'] ?>" <?= ($serv['servicio_codigo'] == $turno['servicio_codigo']) ? 'selected' : '' ?>>
                         <?= $serv['servicio_nombre'] ?>
@@ -127,17 +128,18 @@ try {
             </select>
         </div>
 
-        <div class="form_group">
-            <label for="turno_comentario">Comentario:</label>
+        <div class="turno_mod-tit">
+            <label for="turno_comentario">Comentario </label>
             <input type="text" name="turno_comentario" id="turno_comentario" value="<?= htmlspecialchars($turno['turno_comentario']) ?>">
         </div>
 
-        <div class="form_group">
+        <div class="turno_mod-bot">
             <button type="submit" name="guardar">Guardar Cambios</button>
-            <a href="turnos.php" class="cancelar_boton">Cancelar</a>
+            <br>
+            <a href="turnos.php" >Cancelar</a>
         </div>
     </form>
-</main>
+</section>
 
 <?php if (isset($modal)): ?>
     <dialog open id="modal_mensaje">
@@ -155,6 +157,6 @@ try {
         <?php endif; ?>
     </dialog>
 <?php endif; ?>
-
+<?php include("piedepagina.php"); ?>
 </body>
 </html>

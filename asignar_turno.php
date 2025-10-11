@@ -173,19 +173,21 @@ $mecanicos = $conexion->query("SELECT empleado_DNI, empleado_nombre FROM emplead
 
 <body>
 <?php include("nav_rec.php"); ?>
-<section class="form_turno">
-    <h2>Asignar nuevo turno</h2>
-    <form method="post" class="form_turno">
+<section class="turno_asig">
+     <img class="turno-asig_img" src="fondos/mecanico_fond2.jpg" alt="">
+
+    <form method="post" class="turnos_form_asig">
+        <h2>Asignar nuevo turno</h2>   
         <input type="hidden" name="fecha" value="<?= htmlspecialchars($fecha) ?>">
         <input type="hidden" name="hora" value="<?= htmlspecialchars($hora) ?>">
 
-        <label for="cliente_dni">DNI Cliente:</label>
+        <label for="cliente_dni">DNI Cliente</label>
         <input type="text" name="cliente_dni" id="cliente_dni" required>
 
-        <label for="vehiculo_patente">Patente Vehículo:</label>
+        <label for="vehiculo_patente">Patente Vehículo</label>
         <input type="text" name="vehiculo_patente" id="vehiculo_patente" required>
 
-        <label for="servicio_codigo">Servicio:</label>
+        <label for="servicio_codigo">Servicio</label>
         <select name="servicio_codigo" id="servicio_codigo" required>
             <option value="">Seleccione</option>
             <?php foreach ($servicios as $s): ?>
@@ -193,7 +195,7 @@ $mecanicos = $conexion->query("SELECT empleado_DNI, empleado_nombre FROM emplead
             <?php endforeach; ?>
         </select>
 
-        <label for="mecanico_dni">Mecánico:</label>
+        <label for="mecanico_dni">Mecánico</label>
         <select name="mecanico_dni" id="mecanico_dni" required>
             <option value="">Seleccione</option>
             <?php foreach ($mecanicos as $m): ?>
@@ -201,15 +203,19 @@ $mecanicos = $conexion->query("SELECT empleado_DNI, empleado_nombre FROM emplead
             <?php endforeach; ?>
         </select>
 
-        <label for="orden_kilometros">Kilometraje:</label>
+        <label for="orden_kilometros">Kilometraje</label>
         <input type="number" name="orden_kilometros" id="orden_kilometros" required>
 
-        <label for="orden_comentario">Comentario:</label>
-        <textarea name="orden_comentario" id="orden_comentario"></textarea>
-
-        <input class="guardar_rec" type="submit" name="asignar" value="Guardar Turno">
-        <a href="turnos.php" class="cancelar_boton">Cancelar</a>
+        <label for="orden_comentario">Comentario</label>
+        <textarea name="orden_comentario" id="orden_comentario" class="turnos_area"></textarea>
+        <div class="boton-turno_asig">
+            <input  type="submit" name="asignar" value="Guardar Turno">
+            <br>
+            <a href="turnos.php" >Cancelar</a>
+        </div>
     </form>
+     <img class="turno-asig_img" src="fondos/mecanico_fond2.jpg" alt="">
+
 </section>
 <?php include("piedepagina.php"); ?>
 <script src="control_inactividad.js"></script>

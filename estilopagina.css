@@ -1725,7 +1725,7 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
 }
 .boton_historial{text-decoration: none;}
 
-/*HISTORICO VEHICULO CLIENTE*/
+                                    /*HISTORICO VEHICULO CLIENTE*/
 .his_vehiculo_cli{
     min-height: 76vh; /* que ocupe toda la pantalla */
 }
@@ -1755,7 +1755,225 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
 }
 .boton_historial{text-decoration: none; border: none;}
 
+                                            /*TURNOS*/                                           
+.turnos_tit{
+    font-family: 'Big_Shoulders_ExtraBold';
+    font-size: 25px;
+    text-align: center;
+}
 
+.turnos h3 {
+    font-family: 'AlumniSans_Light';
+    font-size: 20px;
+    text-align: center;
+}
+.turnos table{
+width: 1200px;
+    height: 500px;
+    text-align: center;
+    margin: auto;
+    border-style: solid;
+    border-color: #FFD054;
+}
+.turnos  th{
+    font-family: 'AlumniSans_Medium';
+    font-size: 25px;
+    text-align: center;
+    border-style: solid;
+    border-color: #FFD054;
+}
+.turnos td{
+    font-family: Arial, 'Big_Shoulders_Medium';
+    font-size: 20px;
+    text-align: center;
+    border-style: dashed;
+    border-color: #FFD054;
+}
+
+.turnos button {
+    border-radius: 18px;
+    background-color: #ed2e577c;
+    border-color: #ed2e577c;
+    width: 60px;
+    height: 25px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 15px;
+}
+
+                                        /*ASIGNAR TURNOS*/
+.turno_asig {
+    /*display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    margin: 0 auto;*/
+}
+
+.turno_asig {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+.turno-asig_img{
+    margin: 10px 0px 10px;
+    opacity: 50%;
+
+  }
+  
+.turno_asig h2 {
+    font-family: 'AlumniSans_Light';
+    font-size: 25px;
+    text-align: center;
+    margin: 5px;
+}
+.turnos_form_asig{
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+    width: 400px;
+}
+
+
+.turnos_form_asig label{
+    font-family: 'AlumniSans_Light';
+    font-size: 25px;
+    text-align: center;
+    margin: 40px;
+}
+
+.turnos_form_asig select{
+    width: 480px;
+    height: 30px;
+    font-family: 'AlumniSans_Light';
+    font-size: 20px;
+    text-align: center;
+}
+
+.turnos_form_asig input{
+    width: 480px;
+    height: 30px;
+}
+
+.turnos_area {
+    width: 450px;
+    height: 150px;
+}
+
+/*.boton-turno_asig{
+    border-radius: 18px;
+    background-color: #ed2e577c;
+    border-color: #ed2e577c;
+    width: 60px;
+    height: 25px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 15px;
+}
+*/
+.boton-turno_asig{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.boton-turno_asig input {
+    border-radius: 18px;
+    background-color: #ed2e577c;
+    width: 150px;
+    height: 35px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 20px;
+}
+.boton-turno_asig a{
+    width: 150px;
+    height: 35px;
+    border-radius: 18px;
+    background-color: #ed2e577c;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    text-decoration: none; 
+    font-family: 'Big_Shoulders_Medium';
+    font-size:20px;
+}
+
+
+
+
+
+                                    /*MODIFICAR TURNOS*/
+.turno_mod{
+    min-height: 80vh;
+    text-align: center;
+}
+.turno_mod h1{
+    font-family: 'AlumniSans_Light';
+    font-size: 25px;
+    text-align: center;
+    margin: 5px;
+}
+.turno_mod h1{
+    font-family: 'AlumniSans_Light';
+    font-size: 25px;
+    text-align: center;
+    margin: 5px;
+}
+
+.turno_mod-tit{
+    font-family: 'AlumniSans_Light';
+    font-size: 20px;
+    margin: 40px;
+
+}
+
+.turno_mod-sel {
+    width: 480px;
+    height: 30px;
+    margin: auto 15px;
+} 
+
+.turno_mod-tit input{
+    width: 480px;
+    height: 30px;
+}
+
+.turno_mod-bot{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.turno_mod-bot button {
+    border-radius: 18px;
+    background-color: #ed2e577c;
+    width: 150px;
+    height: 35px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 20px;
+}
+.turno_mod-bot a{
+    width: 150px;
+    height: 35px;
+    border-radius: 18px;
+    background-color: #ed2e577c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    text-decoration: none; 
+    font-family: 'Big_Shoulders_Medium';
+    font-size:20px;
+}
 
                                             /*MODALES PERSONALIZADOS*/
 dialog {

@@ -53,11 +53,6 @@
                         <img src="Promociones/8.jpg">
                 </div>
 
-
-
-
-
-
                         <label for="slide-4" class="slide-control prev control-1">‹</label>
                         <label for="slide-2" class="slide-control next control-1">›</label>
 

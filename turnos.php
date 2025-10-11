@@ -54,51 +54,10 @@ for ($i = 0; $i < 7; $i++) {
     <meta charset="UTF-8">
     <title>Turnos - WA SPORT</title>
     <link rel="stylesheet" href="estilopagina.css">
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 40px;
-        }
-        th, td {
-            border: 1px solid #444;
-            padding: 8px;
-            text-align: center;
-        }
-        h3 {
-            margin-top: 30px;
-            background-color: #eee;
-            padding: 8px;
-        }
-        .acciones form {
-            display: inline;
-        }
-                dialog {
-            border: none;
-            border-radius: 12px;
-            padding: 20px 30px;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(0,0,0,0.4);
-        }
-        dialog::backdrop {
-            background: rgba(0, 0, 0, 0.5);
-        }
-        button {
-            margin: 10px;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        .btn-ok { background-color: #198754; color: white; }
-        .btn-cancelar { background-color: #dc3545; color: white; }
-    </style>
 </head>
 <body>
 <?php include("nav_rec.php"); ?>
-<header>
-    <h1>Agenda semanal de turnos</h1>
-</header>
+    <h1 class="turnos_tit">Agenda semanal de turnos</h1>
 
 <!-- ✅ MODALES DE MENSAJES DE RESULTADO -->
 <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'ok'): ?>
@@ -119,7 +78,7 @@ for ($i = 0; $i < 7; $i++) {
 
 <main>
     <?php foreach ($dias as $fecha): ?>
-        <section>
+        <section class="turnos">
             <h3>Turnos para el día <?= $fecha ?></h3>
             <table>
                 <tr>
