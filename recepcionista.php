@@ -20,6 +20,8 @@ $mostrarModalOrden = false;
 $datosVehiculo = [];
 $datosOrden = [];
 $modalOrdenNoEncontrada = false;
+$modalMecanicoTurnoConflicto = false;   // mecánico con turno pendiente ese día
+$modalMecanicoOrdenPendiente = false;   // mecánico con alguna orden sin finalizar
 
 try {
     // FORMULARIO NUEVO VEHICULO
@@ -106,12 +108,41 @@ try {
                         JOIN ordenes o ON ot.orden_numero = o.orden_numero 
                         WHERE o.vehiculo_patente = :patente");
                 $stmt->execute(['patente' => $patente]);
-                $maxKm = $stmt->fetch(PDO::FETCH_ASSOC)['max_km'] ?? 0;
-
-                if ($km < $maxKm) {
+                $maxKm = (int) $stmt->fetch(PDO::FETCH_ASSOC)['max_km'] ?? 0;
+                
+                $kmInt = (int)$km;   
+                if ($kmInt < $maxKm) {
                     $modalErrorKilometrajeMenor = true;
                     goto fin;
                 } else {
+                    // VERIFICAR QUE EL MECANICO TIENE TURNO PENDIENTE EL MISMO DIA
+                    $stmt = $conexion->prepare("
+                        SELECT 1
+                        FROM turnos
+                        WHERE mecanico_dni = :mec
+                        AND turno_fecha  = :fecha
+                        AND turno_estado = 'pendiente'
+                        LIMIT 1
+                    ");
+                    $stmt->execute([':mec' => $mecanico, ':fecha' => $fecha]);
+                    if ($stmt->rowCount() > 0) {
+                        $modalMecanicoTurnoConflicto = true;
+                        goto fin;
+                    }
+
+                    // VERIFICAR QUE EL MECANICO TIENE ALGUNA ORDEN SIN FINALIZAR
+                    $stmt = $conexion->prepare("
+                        SELECT 1
+                        FROM orden_trabajo ot
+                        WHERE ot.mecanico_DNI = :mec
+                        AND ot.orden_estado = 0
+                        LIMIT 1
+                    ");
+                    $stmt->execute([':mec' => $mecanico]);
+                    if ($stmt->rowCount() > 0) {
+                        $modalMecanicoOrdenPendiente = true;
+                        goto fin;
+                    }
                     // VERIFICA LA ULTIMA ORDEN
                     $stmt = $conexion->query("SELECT MAX(orden_numero) AS ultimo FROM ordenes");
                     $ultimoNumero = $stmt->fetch(PDO::FETCH_ASSOC)['ultimo'] ?? 0;
@@ -126,7 +157,6 @@ try {
                     ]);
 
                     $ordenNumero = $nuevoNumero;
-
                     // INSERT TABLA ORDEN_TRABAJO
                     $insertTrabajo = $conexion->prepare("INSERT INTO orden_trabajo 
                         (orden_numero, servicio_codigo, complejidad, orden_kilometros, orden_comentario, orden_estado, mecanico_DNI)
@@ -376,6 +406,33 @@ fin:
     </div>
 </dialog>
 <?php endif; ?>
+
+<!-- MODAL TURNO PENDIENTE -->
+<?php if ($modalMecanicoTurnoConflicto): ?>
+<dialog open id="modal_mec_turno">
+  <p style="text-align:center;"><strong>Mecánico ocupado por turno</strong></p>
+  <p style="text-align:center;">El mecánico seleccionado ya tiene un turno pendiente en la fecha elegida.</p>
+  <div style="text-align:center;">
+    <form method="post" action="recepcionista.php">
+      <button type="submit">Volver</button>
+    </form>
+  </div>
+</dialog>
+<?php endif; ?>
+
+<!-- MODAL ORDEN PENDIENTE -->
+<?php if ($modalMecanicoOrdenPendiente): ?>
+<dialog open id="modal_mec_orden_pte">
+  <p style="text-align:center;"><strong>Mecánico con orden pendiente</strong></p>
+  <p style="text-align:center;">El mecánico seleccionado ya tiene una orden sin finalizar.</p>
+  <div style="text-align:center;">
+    <form method="post" action="recepcionista.php">
+      <button type="submit">Volver</button>
+    </form>
+  </div>
+</dialog>
+<?php endif; ?>
+
 <body>
     <?php 
         include("nav_rec.php");

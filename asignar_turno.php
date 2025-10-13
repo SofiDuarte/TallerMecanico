@@ -3,7 +3,7 @@ session_start();
 require_once 'conexion_base.php';
 require_once 'verificar_sesion_empleado.php';
 
-// Incluir PHPMailer
+// PHPMailer
 require 'phpmailer/src/Exception.php';
 require 'phpmailer/src/PHPMailer.php';
 require 'phpmailer/src/SMTP.php';
@@ -15,47 +15,110 @@ use PHPMailer\PHPMailer\Exception;
 $modalTurnoOK = false;
 $modalTurnoError = false;
 $modalFaltanDatos = false;
+$modalVehiculoNoEncontrado = false;
+$modalClienteNoEncontrado = false;
+$modalNoCoincideDuenio = false;
+$modalErrorKilometraje = false;
+$modalErrorKilometrajeMenor = false;
 
 // Datos recibidos desde turnos.php
 $fecha = $_POST['fecha'] ?? '';
-$hora = $_POST['hora'] ?? '';
+$hora  = $_POST['hora']  ?? '';
 
 // Al enviar formulario de asignar turno
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['asignar'])) {
-    $cliente_dni = $_POST['cliente_dni'] ?? '';
-    $patente = $_POST['vehiculo_patente'] ?? '';
-    $servicio = $_POST['servicio_codigo'] ?? '';
-    $mecanico = $_POST['mecanico_dni'] ?? '';
-    $km = $_POST['orden_kilometros'] ?? '';
-    $comentario = $_POST['orden_comentario'] ?? '';
+    $cliente_dni = trim($_POST['cliente_dni'] ?? '');
+    $patente     = strtoupper(trim($_POST['vehiculo_patente'] ?? ''));
+    $servicio    = $_POST['servicio_codigo'] ?? '';
+    $mecanico    = $_POST['mecanico_dni'] ?? '';
+    $km          = trim($_POST['orden_kilometros'] ?? '');
+    $comentario  = trim($_POST['orden_comentario'] ?? '');
 
-    if (empty($cliente_dni) || empty($patente) || empty($servicio) || empty($mecanico) || empty($km)) {
+    // Validación de campos obligatorios
+    if ($cliente_dni === '' || $patente === '' || $servicio === '' || $mecanico === '' || $km === '') {
         $modalFaltanDatos = true;
     } else {
         try {
+            // 0) Cliente debe existir
+            $stmtCli = $conexion->prepare("SELECT 1 FROM clientes WHERE cliente_DNI = :dni");
+            $stmtCli->execute([':dni' => $cliente_dni]);
+            if ($stmtCli->rowCount() === 0) {
+                $modalClienteNoEncontrado = true;
+                goto saltar_insercion;
+            }
+
+            // 1) Verificar que el vehículo exista y recuperar dueño
+            $stmtVeh = $conexion->prepare("SELECT cliente_DNI FROM vehiculos WHERE vehiculo_patente = :patente");
+            $stmtVeh->execute([':patente' => $patente]);
+            $veh = $stmtVeh->fetch(PDO::FETCH_ASSOC);
+            if (!$veh) {
+                $modalVehiculoNoEncontrado = true;
+                goto saltar_insercion;
+            }
+
+            // 2) Match patente–cliente
+            if ($veh['cliente_DNI'] !== $cliente_dni) {
+                $modalNoCoincideDuenio = true;
+                goto saltar_insercion;
+            }
+
+            // 3) Validar km numérico entero no negativo
+            if (!ctype_digit($km)) {
+                $modalErrorKilometraje = true;
+                goto saltar_insercion;
+            }
+            $kmInt = (int)$km;
+
+            // 4) Traer último kilometraje registrado para la patente
+            $stmtMaxKm = $conexion->prepare("
+                SELECT MAX(ot.orden_kilometros) AS max_km
+                FROM orden_trabajo ot
+                JOIN ordenes o ON o.orden_numero = ot.orden_numero
+                WHERE o.vehiculo_patente = :patente
+            ");
+            $stmtMaxKm->execute([':patente' => $patente]);
+            $maxKm = (int)($stmtMaxKm->fetch(PDO::FETCH_ASSOC)['max_km'] ?? 0);
+
+            if ($kmInt < $maxKm) {
+                $modalErrorKilometrajeMenor = true;
+                goto saltar_insercion;
+            }
+
+            // 5) Inserciones en transacción
             $conexion->beginTransaction();
 
             // Obtener nuevo numero de orden
-            $stmtMax = $conexion->query("SELECT MAX(orden_numero) FROM ordenes");
-            $nuevoNumero = $stmtMax->fetchColumn() + 1;
+            $stmtMax = $conexion->query("SELECT COALESCE(MAX(orden_numero),0) FROM ordenes");
+            $nuevoNumero = (int)$stmtMax->fetchColumn() + 1;
 
             // Insertar orden
-            $stmtOrden = $conexion->prepare("INSERT INTO ordenes (orden_numero, orden_fecha, vehiculo_patente) VALUES (?, ?, ?)");
+            $stmtOrden = $conexion->prepare("
+                INSERT INTO ordenes (orden_numero, orden_fecha, vehiculo_patente)
+                VALUES (?, ?, ?)
+            ");
             $stmtOrden->execute([$nuevoNumero, $fecha, $patente]);
 
             // Insertar turno
-            $stmtTurno = $conexion->prepare("INSERT INTO turnos (turno_fecha, turno_hora, turno_estado, turno_comentario, mecanico_DNI, cliente_DNI, vehiculo_patente) VALUES (?, ?, 'pendiente', ?, ?, ?, ?)");
+            $stmtTurno = $conexion->prepare("
+                INSERT INTO turnos (turno_fecha, turno_hora, turno_estado, turno_comentario, mecanico_DNI, cliente_DNI, vehiculo_patente)
+                VALUES (?, ?, 'pendiente', ?, ?, ?, ?)
+            ");
             $stmtTurno->execute([$fecha, $hora, $comentario, $mecanico, $cliente_dni, $patente]);
-            $turno_id = $conexion->lastInsertId();
+            $turno_id = (int)$conexion->lastInsertId();
 
-            // Insertar orden_trabajo
-            $stmtTrabajo = $conexion->prepare("INSERT INTO orden_trabajo (orden_numero, orden_kilometros, orden_comentario, turno_id, servicio_codigo, complejidad, mecanico_DNI) VALUES (?, ?, ?, ?, ?, 1, ?)");
-            $stmtTrabajo->execute([$nuevoNumero, $km, $comentario, $turno_id, $servicio, $mecanico]);
+            // Insertar orden_trabajo (complejidad por defecto = 1, estado 0=pte)
+            $stmtTrabajo = $conexion->prepare("
+                INSERT INTO orden_trabajo
+                    (orden_numero, orden_kilometros, orden_comentario, turno_id, servicio_codigo, complejidad, mecanico_DNI, orden_estado)
+                VALUES
+                    (?, ?, ?, ?, ?, 1, ?, 0)
+            ");
+            $stmtTrabajo->execute([$nuevoNumero, $kmInt, $comentario, $turno_id, $servicio, $mecanico]);
 
-            // ENVIAR MAIL DE CONFIRMACIÓN
+            // ENVIAR MAIL DE CONFIRMACIÓN (best-effort)
             $queryMail = $conexion->prepare("
-                SELECT c.cliente_nombre, c.cliente_email, 
-                       v.vehiculo_marca, v.vehiculo_modelo, 
+                SELECT c.cliente_nombre, c.cliente_email,
+                       v.vehiculo_marca, v.vehiculo_modelo,
                        s.servicio_nombre, s.servicio_descripcion,
                        t.turno_fecha, t.turno_hora
                 FROM turnos t
@@ -67,18 +130,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['asignar'])) {
             ");
             $queryMail->execute([':turno_id' => $turno_id]);
             $datos = $queryMail->fetch(PDO::FETCH_ASSOC);
-            if (!$datos) {
-                echo "<pre>NO SE ENCONTRARON DATOS PARA EL EMAIL</pre>";
-                exit();
-            } else {
-                echo "<pre>DATOS DEL MAIL:</pre>";
-                print_r($datos); // Mostrá que vino bien cliente_email, nombre, etc.
-            }
-            if ($datos) {
+
+            if ($datos && !empty($datos['cliente_email'])) {
                 try {
                     $mail = new PHPMailer(true);
-                    $mail->SMTPDebug = 2;
-                    $mail->Debugoutput = 'html';
                     $mail->isSMTP();
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
@@ -103,27 +158,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['asignar'])) {
                         <br>
                         <p>Gracias por elegirnos.<br>Equipo de <strong>WA SPORT</strong>.</p>
                     ";
-
-                    try {
-                        $mail->send();
-                        echo "<p><strong>MAIL ENVIADO CON ÉXITO</strong></p>";
-                    } catch (Exception $e) {
-                        echo "<p><strong>Error al enviar correo:</strong> {$mail->ErrorInfo}</p>";
-                    }
+                    $mail->send();
                 } catch (Exception $e) {
-                    // El turno se guarda igual aunque falle el envío de mail
                     error_log("Error al enviar email: " . $mail->ErrorInfo);
                 }
             }
 
             $conexion->commit();
             $modalTurnoOK = true;
+
         } catch (PDOException $e) {
-            $conexion->rollBack();
+            if ($conexion->inTransaction()) $conexion->rollBack();
+            error_log("Error BD asignar_turno: " . $e->getMessage());
             $modalTurnoError = true;
         }
     }
 }
+saltar_insercion:
 
 // Traer datos para desplegables
 $servicios = $conexion->query("SELECT servicio_codigo, servicio_nombre FROM servicios")->fetchAll(PDO::FETCH_ASSOC);
@@ -171,13 +222,71 @@ $mecanicos = $conexion->query("SELECT empleado_DNI, empleado_nombre FROM emplead
 </dialog>
 <?php endif; ?>
 
+<?php if ($modalClienteNoEncontrado): ?>
+<dialog open>
+    <p style="text-align:center;"><strong>Cliente inexistente</strong></p>
+    <p style="text-align:center;">No existe un cliente con el DNI ingresado.</p>
+    <div style="text-align:center; display:flex; gap:10px; justify-content:center;">
+        <a href="registro_cliente_recepcionista.php"><button type="button">Registrar cliente</button></a>
+        <a href="turnos.php"><button type="button">Volver</button></a>
+    </div>
+</dialog>
+<?php endif; ?>
+
+<?php if ($modalVehiculoNoEncontrado): ?>
+<dialog open>
+    <p style="text-align:center;"><strong>Vehículo no encontrado</strong></p>
+    <p style="text-align:center;">No se ha encontrado un vehículo con la patente ingresada.</p>
+    <div style="text-align:center; display:flex; gap:10px; justify-content:center;">
+        <a href="recepcionista.php"><button type="button">Registrar vehículo</button></a>
+        <a href="turnos.php"><button type="button">Volver</button></a>
+    </div>
+</dialog>
+<?php endif; ?>
+
+<?php if ($modalNoCoincideDuenio): ?>
+<dialog open>
+    <p style="text-align:center;"><strong>No coincide el dueño del vehículo</strong></p>
+    <p style="text-align:center;">La patente ingresada pertenece a otro cliente distinto del DNI proporcionado.</p>
+    <div style="text-align:center;">
+        <form method="post" action="asignar_turno.php">
+            <button type="submit">Volver</button>
+        </form>
+    </div>
+</dialog>
+<?php endif; ?>
+
+<?php if ($modalErrorKilometraje): ?>
+<dialog open>
+    <p style="text-align:center;"><strong>Error en el campo Kilometraje</strong></p>
+    <p style="text-align:center;">Ingrese un número entero válido (sin puntos, comas ni letras).</p>
+    <div style="text-align:center;">
+        <form method="post" action="asignar_turno.php">
+            <button type="submit">Volver</button>
+        </form>
+    </div>
+</dialog>
+<?php endif; ?>
+
+<?php if ($modalErrorKilometrajeMenor): ?>
+<dialog open>
+    <p style="text-align:center;"><strong>Kilometraje inválido</strong></p>
+    <p style="text-align:center;">El kilometraje ingresado es menor al último registrado para esta patente.</p>
+    <div style="text-align:center;">
+        <form method="post" action="asignar_turno.php">
+            <button type="submit">Volver</button>
+        </form>
+    </div>
+</dialog>
+<?php endif; ?>
+
 <body>
 <?php include("nav_rec.php"); ?>
 <section class="turno_asig">
      <img class="turno-asig_img" src="fondos/mecanico_fond2.jpg" alt="">
 
     <form method="post" class="turnos_form_asig">
-        <h2>Asignar nuevo turno</h2>   
+        <h2>Asignar nuevo turno</h2>
         <input type="hidden" name="fecha" value="<?= htmlspecialchars($fecha) ?>">
         <input type="hidden" name="hora" value="<?= htmlspecialchars($hora) ?>">
 
@@ -191,7 +300,9 @@ $mecanicos = $conexion->query("SELECT empleado_DNI, empleado_nombre FROM emplead
         <select name="servicio_codigo" id="servicio_codigo" required>
             <option value="">Seleccione</option>
             <?php foreach ($servicios as $s): ?>
-                <option value="<?= $s['servicio_codigo'] ?>"><?= $s['servicio_nombre'] ?></option>
+                <option value="<?= htmlspecialchars($s['servicio_codigo']) ?>">
+                    <?= htmlspecialchars($s['servicio_nombre']) ?>
+                </option>
             <?php endforeach; ?>
         </select>
 
@@ -199,23 +310,26 @@ $mecanicos = $conexion->query("SELECT empleado_DNI, empleado_nombre FROM emplead
         <select name="mecanico_dni" id="mecanico_dni" required>
             <option value="">Seleccione</option>
             <?php foreach ($mecanicos as $m): ?>
-                <option value="<?= $m['empleado_DNI'] ?>"><?= $m['empleado_nombre'] ?></option>
+                <option value="<?= htmlspecialchars($m['empleado_DNI']) ?>">
+                    <?= htmlspecialchars($m['empleado_nombre']) ?>
+                </option>
             <?php endforeach; ?>
         </select>
 
         <label for="orden_kilometros">Kilometraje</label>
-        <input type="number" name="orden_kilometros" id="orden_kilometros" required>
+        <input type="number" name="orden_kilometros" id="orden_kilometros" inputmode="numeric" min="0" required>
 
         <label for="orden_comentario">Comentario</label>
         <textarea name="orden_comentario" id="orden_comentario" class="turnos_area"></textarea>
+
         <div class="boton-turno_asig">
-            <input  type="submit" name="asignar" value="Guardar Turno">
+            <input type="submit" name="asignar" value="Guardar Turno">
             <br>
-            <a href="turnos.php" >Cancelar</a>
+            <a href="turnos.php">Cancelar</a>
         </div>
     </form>
-     <img class="turno-asig_img" src="fondos/mecanico_fond2.jpg" alt="">
 
+    <img class="turno-asig_img" src="fondos/mecanico_fond2.jpg" alt="">
 </section>
 <?php include("piedepagina.php"); ?>
 <script src="control_inactividad.js"></script>

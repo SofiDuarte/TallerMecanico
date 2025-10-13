@@ -21,6 +21,9 @@
                 <a href="#" class="nav" onclick="document.getElementById('modal_ordenes_pendientes').showModal(); return false;">
                     Órdenes Pendientes
                 </a>
+                <a href="#" class="nav" onclick="document.getElementById('modal_turnos_pendientes').showModal(); return false;">
+                    Turnos Pendientes
+                </a>        
                 <a class="nav" href="http://localhost/tallermecanico/mecanico.php">Volver </a>
                 <a class="nav" href="http://localhost/tallermecanico/logout.php">Log Out</a>
             </div>
