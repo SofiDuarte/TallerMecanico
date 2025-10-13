@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3307
--- Tiempo de generación: 10-10-2025 a las 01:07:09
+-- Tiempo de generación: 13-10-2025 a las 04:11:57
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -91,6 +91,58 @@ INSERT INTO `empleados` (`empleado_DNI`, `empleado_contrasena`, `empleado_nombre
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `facturas`
+--
+
+CREATE TABLE `facturas` (
+  `factura_id` int(11) NOT NULL,
+  `tipo` enum('A','B','C') NOT NULL,
+  `nro_comprobante` int(11) NOT NULL,
+  `fecha_emision` datetime NOT NULL DEFAULT current_timestamp(),
+  `orden_numero` int(11) NOT NULL,
+  `servicio_codigo` varchar(5) NOT NULL,
+  `cliente_dni` varchar(10) NOT NULL,
+  `vehiculo_patente` varchar(10) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `pdf_nombre` varchar(255) DEFAULT NULL,
+  `email_destino` varchar(255) DEFAULT NULL,
+  `email_enviado` tinyint(1) NOT NULL DEFAULT 0,
+  `empleado_emisor` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `facturas`
+--
+
+INSERT INTO `facturas` (`factura_id`, `tipo`, `nro_comprobante`, `fecha_emision`, `orden_numero`, `servicio_codigo`, `cliente_dni`, `vehiculo_patente`, `total`, `pdf_nombre`, `email_destino`, `email_enviado`, `empleado_emisor`) VALUES
+(1, 'C', 1, '2025-10-09 20:44:58', 13, 'D001', '30700247', 'GCR891', 5500.00, 'Factura_C_00000001_Orden_13.pdf', NULL, 0, '44671150'),
+(2, 'C', 2, '2025-10-09 20:48:43', 11, 'D001', '22870111', 'POD166', 5500.00, 'Factura_C_00000002_Orden_11.pdf', NULL, 0, '44671150'),
+(4, 'C', 3, '2025-10-09 20:53:55', 9, 'SEL00', '32489632', 'GHI410', 11760.00, 'Factura_C_00000003_Orden_9.pdf', NULL, 0, '44671150'),
+(5, 'C', 4, '2025-10-12 17:56:15', 7, 'FR002', '41298533', 'FOM132', 16380.00, 'Factura_C_00000004_Orden_7.pdf', NULL, 0, '44671150');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `factura_numeradores`
+--
+
+CREATE TABLE `factura_numeradores` (
+  `tipo` enum('A','B','C') NOT NULL,
+  `proximo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `factura_numeradores`
+--
+
+INSERT INTO `factura_numeradores` (`tipo`, `proximo`) VALUES
+('A', 1),
+('B', 1),
+('C', 5);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura Stand-in para la vista `historico`
 -- (Véase abajo para la vista actual)
 --
@@ -98,7 +150,7 @@ CREATE TABLE `historico` (
 `orden_fecha` varchar(255)
 ,`vehiculo_patente` varchar(10)
 ,`orden_numero` int(11)
-,`orden_kilometros` varchar(10)
+,`orden_kilometros` int(10) unsigned
 ,`servicio_descripcion` varchar(100)
 );
 
@@ -135,7 +187,10 @@ INSERT INTO `ordenes` (`orden_numero`, `orden_fecha`, `vehiculo_patente`, `orden
 (12, '2020-08-06', 'AB307CI', NULL),
 (13, '2025-05-25', 'GCR891', NULL),
 (14, '2025-05-29', 'A221GAR', NULL),
-(16, '2025-06-15', 'UWL004', NULL);
+(16, '2025-06-15', 'UWL004', NULL),
+(17, '2025-10-13', 'GCR891', NULL),
+(18, '2025-10-14', 'GCR891', NULL),
+(19, '2025-10-13', 'GCR891', NULL);
 
 -- --------------------------------------------------------
 
@@ -148,38 +203,42 @@ CREATE TABLE `orden_trabajo` (
   `servicio_codigo` varchar(5) NOT NULL,
   `complejidad` int(11) NOT NULL,
   `costo_ajustado` decimal(8,2) DEFAULT NULL,
-  `orden_kilometros` varchar(10) NOT NULL,
+  `orden_kilometros` int(10) UNSIGNED NOT NULL,
   `orden_comentario` varchar(255) NOT NULL,
   `orden_estado` tinyint(1) NOT NULL,
   `mecanico_DNI` varchar(15) DEFAULT NULL,
-  `turno_id` int(11) DEFAULT NULL
+  `turno_id` int(11) DEFAULT NULL,
+  `factura_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `orden_trabajo`
 --
 
-INSERT INTO `orden_trabajo` (`orden_numero`, `servicio_codigo`, `complejidad`, `costo_ajustado`, `orden_kilometros`, `orden_comentario`, `orden_estado`, `mecanico_DNI`, `turno_id`) VALUES
-(2, 'CLA00', 1, 7920.00, '120324', '', 1, NULL, NULL),
-(2, 'FR003', 1, 12540.00, '120324', '', 1, NULL, NULL),
-(2, 'SA001', 3, 24310.00, '120324', '', 0, NULL, NULL),
-(3, 'MT002', 2, 146880.00, '250341', '', 0, NULL, NULL),
-(4, 'CV001', 2, 87120.00, '60724', '', 0, NULL, NULL),
-(4, 'EB001', 2, 71760.00, '60724', '', 1, NULL, NULL),
-(5, 'CV001', 1, 79860.00, '71543', '', 0, NULL, NULL),
-(5, 'EB001', 1, 65780.00, '71543', '', 1, NULL, NULL),
-(6, 'SD002', 1, 30140.00, '47980', '', 1, NULL, NULL),
-(6, 'ST002', 2, 45840.00, '47980', '', 1, NULL, NULL),
-(7, 'FR001', 3, 15600.00, '56782', '', 0, NULL, NULL),
-(7, 'FR002', 3, 16380.00, '56782', '', 1, NULL, NULL),
-(8, 'SES00', 2, 47400.00, '25619', '', 0, NULL, NULL),
-(9, 'SEL00', 2, 11760.00, '94723', '', 1, NULL, NULL),
-(10, 'SDI00', 1, 14630.00, '119832', '', 0, NULL, NULL),
-(11, 'D001', 1, 5500.00, '43909', '', 1, NULL, NULL),
-(12, 'S002', 1, 24200.00, '67413', '', 0, NULL, NULL),
-(13, 'D001', 1, 5500.00, '1000', 'NINGUNO', 1, NULL, NULL),
-(14, 'FR002', 1, 13860.00, '1338', 'La clienta dice que no frena un carajo.', 0, NULL, NULL),
-(16, 'SD001', 1, 20020.00, '85021', 'Hace un ruidito', 0, NULL, NULL);
+INSERT INTO `orden_trabajo` (`orden_numero`, `servicio_codigo`, `complejidad`, `costo_ajustado`, `orden_kilometros`, `orden_comentario`, `orden_estado`, `mecanico_DNI`, `turno_id`, `factura_id`) VALUES
+(2, 'CLA00', 1, 7920.00, 120324, '', 1, '30700247', NULL, NULL),
+(2, 'FR003', 1, 12540.00, 120324, '', 1, '47651867', NULL, NULL),
+(2, 'SA001', 3, 24310.00, 120324, '', 0, '32690365', NULL, NULL),
+(3, 'MT002', 2, 146880.00, 250341, '', 0, '47651867', NULL, NULL),
+(4, 'CV001', 2, 87120.00, 60724, '', 0, '30700247', NULL, NULL),
+(4, 'EB001', 2, 71760.00, 60724, '', 1, '32690365', NULL, NULL),
+(5, 'CV001', 1, 79860.00, 71543, '', 0, '30700247', NULL, NULL),
+(5, 'EB001', 1, 65780.00, 71543, '', 1, '47651867', NULL, NULL),
+(6, 'SD002', 1, 30140.00, 47980, '', 1, '32690365', NULL, NULL),
+(6, 'ST002', 2, 45840.00, 47980, '', 1, '30700247', NULL, NULL),
+(7, 'FR001', 3, 15600.00, 56782, '', 0, '47651867', NULL, NULL),
+(7, 'FR002', 3, 16380.00, 56782, '', 1, '32690365', NULL, 5),
+(8, 'SES00', 2, 47400.00, 25619, '', 0, '08326014', NULL, NULL),
+(9, 'SEL00', 2, 11760.00, 94723, '', 1, '08326014', NULL, 4),
+(10, 'SDI00', 1, 14630.00, 119832, '', 0, '30700247', NULL, NULL),
+(11, 'D001', 1, 5500.00, 43909, '', 1, '08326014', NULL, 2),
+(12, 'S002', 1, 24200.00, 67413, '', 0, '30700247', NULL, NULL),
+(13, 'D001', 1, 5500.00, 1000, 'NINGUNO', 1, '08326014', NULL, 1),
+(14, 'FR002', 1, 13860.00, 1338, 'La clienta dice que no frena un carajo.', 0, '30700247', NULL, NULL),
+(16, 'SD001', 1, 20020.00, 85021, 'Hace un ruidito', 0, '30700247', NULL, NULL),
+(17, 'OT001', 1, 61160.00, 1, '1234', 0, '08326014', 47, NULL),
+(18, 'SA001', 1, 20570.00, 61999, '123456789', 0, '30700247', 48, NULL),
+(19, 'RR001', 1, 8580.00, 62000, '123456789', 0, '30700247', 49, NULL);
 
 --
 -- Disparadores `orden_trabajo`
@@ -289,6 +348,15 @@ CREATE TABLE `turnos` (
   `turno_comentario` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `turnos`
+--
+
+INSERT INTO `turnos` (`turno_id`, `turno_fecha`, `turno_hora`, `cliente_DNI`, `vehiculo_patente`, `mecanico_dni`, `turno_estado`, `turno_comentario`) VALUES
+(47, '2025-10-13', '08:00:00', '30700247', 'GCR891', '08326014', 'pendiente', '1234'),
+(48, '0000-00-00', '00:00:00', '30700247', 'GCR891', '30700247', 'pendiente', '123456789'),
+(49, '2025-10-13', '08:00:00', '30700247', 'GCR891', '30700247', 'pendiente', '123456789');
+
 -- --------------------------------------------------------
 
 --
@@ -350,6 +418,20 @@ ALTER TABLE `empleados`
   ADD PRIMARY KEY (`empleado_DNI`);
 
 --
+-- Indices de la tabla `facturas`
+--
+ALTER TABLE `facturas`
+  ADD PRIMARY KEY (`factura_id`),
+  ADD UNIQUE KEY `uk_tipo_nro` (`tipo`,`nro_comprobante`),
+  ADD KEY `idx_orden_serv` (`orden_numero`,`servicio_codigo`);
+
+--
+-- Indices de la tabla `factura_numeradores`
+--
+ALTER TABLE `factura_numeradores`
+  ADD PRIMARY KEY (`tipo`);
+
+--
 -- Indices de la tabla `ordenes`
 --
 ALTER TABLE `ordenes`
@@ -362,7 +444,8 @@ ALTER TABLE `ordenes`
 ALTER TABLE `orden_trabajo`
   ADD PRIMARY KEY (`orden_numero`,`servicio_codigo`),
   ADD KEY `servicio_codigo` (`servicio_codigo`),
-  ADD KEY `fk_turno_orden_trabajo` (`turno_id`);
+  ADD KEY `fk_turno_orden_trabajo` (`turno_id`),
+  ADD KEY `idx_factura_id` (`factura_id`);
 
 --
 -- Indices de la tabla `servicios`
@@ -391,10 +474,16 @@ ALTER TABLE `vehiculos`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `facturas`
+--
+ALTER TABLE `facturas`
+  MODIFY `factura_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT de la tabla `turnos`
 --
 ALTER TABLE `turnos`
-  MODIFY `turno_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `turno_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- Restricciones para tablas volcadas
@@ -410,6 +499,7 @@ ALTER TABLE `ordenes`
 -- Filtros para la tabla `orden_trabajo`
 --
 ALTER TABLE `orden_trabajo`
+  ADD CONSTRAINT `fk_ot_factura` FOREIGN KEY (`factura_id`) REFERENCES `facturas` (`factura_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_turno_orden_trabajo` FOREIGN KEY (`turno_id`) REFERENCES `turnos` (`turno_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `orden_trabajo_ibfk_1` FOREIGN KEY (`servicio_codigo`) REFERENCES `servicios` (`servicio_codigo`),
   ADD CONSTRAINT `orden_trabajo_ibfk_2` FOREIGN KEY (`orden_numero`) REFERENCES `ordenes` (`orden_numero`);
