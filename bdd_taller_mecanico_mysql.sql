@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3307
--- Tiempo de generación: 13-10-2025 a las 04:11:57
+-- Tiempo de generación: 13-10-2025 a las 04:42:56
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -190,7 +190,10 @@ INSERT INTO `ordenes` (`orden_numero`, `orden_fecha`, `vehiculo_patente`, `orden
 (16, '2025-06-15', 'UWL004', NULL),
 (17, '2025-10-13', 'GCR891', NULL),
 (18, '2025-10-14', 'GCR891', NULL),
-(19, '2025-10-13', 'GCR891', NULL);
+(19, '2025-10-13', 'GCR891', NULL),
+(20, '2025-10-13', 'GCR891', NULL),
+(21, '2025-10-13', 'GCR891', NULL),
+(22, '2025-10-15', 'GCR891', NULL);
 
 -- --------------------------------------------------------
 
@@ -238,7 +241,10 @@ INSERT INTO `orden_trabajo` (`orden_numero`, `servicio_codigo`, `complejidad`, `
 (16, 'SD001', 1, 20020.00, 85021, 'Hace un ruidito', 0, '30700247', NULL, NULL),
 (17, 'OT001', 1, 61160.00, 1, '1234', 0, '08326014', 47, NULL),
 (18, 'SA001', 1, 20570.00, 61999, '123456789', 0, '30700247', 48, NULL),
-(19, 'RR001', 1, 8580.00, 62000, '123456789', 0, '30700247', 49, NULL);
+(19, 'RR001', 1, 8580.00, 62000, '123456789', 0, '30700247', 49, NULL),
+(20, 'S001', 1, 9350.00, 62001, '123654125874126541', 0, '32690365', 50, NULL),
+(21, 'MT001', 1, 108240.00, 62005, '12368741236584', 0, '47651867', 51, NULL),
+(22, 'FR001', 1, 13200.00, 62009, '1236987412', 0, '32690365', 52, NULL);
 
 --
 -- Disparadores `orden_trabajo`
@@ -355,7 +361,10 @@ CREATE TABLE `turnos` (
 INSERT INTO `turnos` (`turno_id`, `turno_fecha`, `turno_hora`, `cliente_DNI`, `vehiculo_patente`, `mecanico_dni`, `turno_estado`, `turno_comentario`) VALUES
 (47, '2025-10-13', '08:00:00', '30700247', 'GCR891', '08326014', 'pendiente', '1234'),
 (48, '0000-00-00', '00:00:00', '30700247', 'GCR891', '30700247', 'pendiente', '123456789'),
-(49, '2025-10-13', '08:00:00', '30700247', 'GCR891', '30700247', 'pendiente', '123456789');
+(49, '2025-10-13', '08:00:00', '30700247', 'GCR891', '30700247', 'pendiente', '123456789'),
+(50, '2025-10-13', '08:00:00', '30700247', 'GCR891', '32690365', 'pendiente', '123654125874126541'),
+(51, '2025-10-13', '08:00:00', '30700247', 'GCR891', '47651867', 'pendiente', '12368741236584'),
+(52, '2025-10-15', '08:00:00', '30700247', 'GCR891', '32690365', 'pendiente', '1236987412');
 
 -- --------------------------------------------------------
 
@@ -483,7 +492,7 @@ ALTER TABLE `facturas`
 -- AUTO_INCREMENT de la tabla `turnos`
 --
 ALTER TABLE `turnos`
-  MODIFY `turno_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `turno_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- Restricciones para tablas volcadas
