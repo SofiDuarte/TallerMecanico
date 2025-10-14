@@ -1798,17 +1798,9 @@ width: 1200px;
     height: 25px;
     font-family: 'Big_Shoulders_Medium';
     font-size: 15px;
+    margin: 2px auto 2px
 }
-
                                         /*ASIGNAR TURNOS*/
-.turno_asig {
-    /*display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-width: 400px;
-    margin: 0 auto;*/
-}
-
 .turno_asig {
     min-height: 80vh;
     display: flex;
@@ -1819,15 +1811,15 @@ width: 1200px;
 .turno-asig_img{
     margin: 10px 0px 10px;
     opacity: 50%;
+}
 
-  }
-  
 .turno_asig h2 {
     font-family: 'AlumniSans_Light';
     font-size: 25px;
     text-align: center;
     margin: 5px;
 }
+
 .turnos_form_asig{
     display: grid;
     align-content: center;
@@ -1835,7 +1827,6 @@ width: 1200px;
     justify-items: center;
     width: 400px;
 }
-
 
 .turnos_form_asig label{
     font-family: 'AlumniSans_Light';
@@ -1862,16 +1853,6 @@ width: 1200px;
     height: 150px;
 }
 
-/*.boton-turno_asig{
-    border-radius: 18px;
-    background-color: #ed2e577c;
-    border-color: #ed2e577c;
-    width: 60px;
-    height: 25px;
-    font-family: 'Big_Shoulders_Medium';
-    font-size: 15px;
-}
-*/
 .boton-turno_asig{
     display: flex;
     flex-direction: column;
@@ -1904,10 +1885,6 @@ width: 1200px;
     font-size:20px;
 }
 
-
-
-
-
                                     /*MODIFICAR TURNOS*/
 .turno_mod{
     min-height: 80vh;
@@ -1930,7 +1907,6 @@ width: 1200px;
     font-family: 'AlumniSans_Light';
     font-size: 20px;
     margin: 40px;
-
 }
 
 .turno_mod-sel {
@@ -1961,6 +1937,7 @@ width: 1200px;
     font-family: 'Big_Shoulders_Medium';
     font-size: 20px;
 }
+
 .turno_mod-bot a{
     width: 150px;
     height: 35px;
@@ -1973,6 +1950,94 @@ width: 1200px;
     text-decoration: none; 
     font-family: 'Big_Shoulders_Medium';
     font-size:20px;
+}
+
+/*FACTURACION*/
+
+.facturacion{
+    min-height: 90vh; /* que ocupe toda la pantalla */
+}
+.facturacion h2{
+    font-family: 'AlumniSans_Regular';
+    text-align: center;
+}
+
+.facturacion {
+    border-collapse: collapse;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.facturacion th {
+    border: 1px solid #FF8E31;
+    padding: 10px;
+    font-family: 'Big_Shoulders_Regular';
+    font-size: 25px;
+    text-align: center;
+    background-color: #ff8e31a8;
+}
+.facturacion td {
+    border: 1px solid #FF8E31;
+    padding: 10px;
+    font-family: 'AlumniSans_Regular';
+    font-size: 25px;
+    text-align: center;
+}
+
+.btn-icono{
+    cursor:pointer; 
+    border:none; 
+    background:#3AAFAF; 
+    color:#000; 
+    padding:6px 10px; 
+    border-radius:8px; 
+}
+.btn-icono:hover { filter:brightness(0.95); }
+.mini { 
+    font-size:12px; 
+    opacity:.8 
+}
+.fila-vacia td { 
+    color:#777; 
+    font-style:italic; 
+}
+.modal-row { margin: 8px 0; text-align:left; }
+.modal-row label { margin-right: 10px; cursor: pointer; }
+.modal-actions { margin-top:12px; text-align:center; }
+
+/*GENERAR FACTURAS*/
+.generar_fact{
+    min-height: 90vh; /* que ocupe toda la pantalla */
+}
+.generar_fact h2 , .generar_fact p {
+    border: 1px solid #FF8E31;
+    padding: 10px;
+    font-family: 'AlumniSans_Regular';
+    font-size: 25px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+.generar_fac_bot{
+    display: flex;
+    align-items: center;
+}
+
+.generar_fact_btn{
+    background-color: #FFD054;
+    width: 150px;
+    height: 35px;
+    border-radius: 18px;
+    align-items: center;
+    color: #000;
+    text-decoration: none; 
+    font-family: 'Big_Shoulders_Medium';
+    font-size:20px;
+    margin: 5px ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
                                             /*MODALES PERSONALIZADOS*/

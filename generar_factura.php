@@ -315,23 +315,26 @@ try {
 </head>
 <body>
 <?php include 'nav_rec.php'; ?>
-<main style="max-width:800px;margin:30px auto;text-align:center;">
+<section class="generar_fact">
   <?php if ($ok_envio): ?>
     <h2>Factura enviada correctamente</h2>
     <p>Tipo: <strong><?= htmlspecialchars($tipo) ?></strong> — Nº <strong><?= str_pad($nro_comprobante, 8, '0', STR_PAD_LEFT) ?></strong></p>
     <p>Destino: <strong><?= htmlspecialchars($email_destino ?: $cliente_email) ?></strong></p>
-    <p>
-      <a class="buscar_rec" href="facturacion.php">Volver a Facturación</a>
-      <a class="buscar_rec" href="<?= 'download.php?name='.urlencode($nombreArchivo) ?>">Descargar PDF</a>
+    <p class="generar_fac_bot" >
+      <a class="generar_fact_btn" href="facturacion.php">Volver a Facturación</a>
+      <a class="generar_fact_btn" href="<?= 'download.php?name='.urlencode($nombreArchivo) ?>">Descargar PDF</a>
     </p>
   <?php else: ?>
     <h2>Error al enviar la factura</h2>
     <p><?= htmlspecialchars($err_envio) ?></p>
-    <p>
-      <a class="buscar_rec" href="<?= 'download.php?name='.urlencode($nombreArchivo) ?>">Descargar PDF</a>
-      <a class="cancelar_boton" href="facturacion.php">Volver</a>
+    <p class="generar_fac_bot" >
+      <a class="generar_fact_btn" href="<?= 'download.php?name='.urlencode($nombreArchivo) ?>">Descargar PDF</a>
+      <a class="generar_fact_btn" href="facturacion.php">Volver</a>
     </p>
   <?php endif; ?>
-</main>
+</section>   
+   <?php 
+        include("piedepagina.php");
+    ?>
 </body>
 </html>

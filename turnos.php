@@ -79,7 +79,9 @@ for ($i = 0; $i < 7; $i++) {
 <main>
     <?php foreach ($dias as $fecha): ?>
         <section class="turnos">
+            <br>
             <h3>Turnos para el día <?= $fecha ?></h3>
+            <br>
             <table>
                 <tr>
                     <th>Hora</th>

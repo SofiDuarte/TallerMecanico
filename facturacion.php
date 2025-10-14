@@ -28,26 +28,15 @@ $rows = $conexion->query($sql)->fetchAll(PDO::FETCH_ASSOC);
   <meta charset="UTF-8">
   <title>Facturación</title>
   <link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>">
-  <style>
-    .tabla-fact { width: 90%; margin: 20px auto; border-collapse: collapse; }
-    .tabla-fact th, .tabla-fact td { border:1px solid #FF8E31; padding:8px; text-align:center; font-family:'Big_Shoulders_Regular'; }
-    .tabla-fact th { background: #ff8e31a8; }
-    .btn-icono { cursor:pointer; border:none; background:#3AAFAF; color:#000; padding:6px 10px; border-radius:8px; }
-    .btn-icono:hover { filter:brightness(0.95); }
-    .mini { font-size:12px; opacity:.8 }
-    .fila-vacia td { color:#777; font-style:italic; }
-    .modal-row { margin: 8px 0; text-align:left; }
-    .modal-row label { margin-right: 10px; cursor: pointer; }
-    .modal-actions { margin-top:12px; text-align:center; }
-  </style>
+
 </head>
 <body>
 <?php include 'nav_rec.php'; ?>
 
-<main class="his_vehiculo_cli">
+<main class="facturacion">
   <h2 style="text-align:center;margin:16px 0;">Trabajos finalizados pendientes de facturar</h2>
 
-  <table class="tabla-fact">
+  <table>
     <thead>
       <tr>
         <th>Orden</th>
@@ -226,6 +215,11 @@ function onSubmitFactura(form) {
   return true; // dejamos que el form se envíe
 }
 </script>
+
+  
+    <?php 
+        include("piedepagina.php");
+    ?>
 
 </body>
 </html>
