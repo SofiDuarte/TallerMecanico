@@ -38,13 +38,13 @@ try {
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
-    $mail->Username = 'wasportaller@gmail.com';
-    $mail->Password = 'kyozoppabnumingu'; // App Password Gmail
+    $mail->Username = 'wasporttaller@gmail.com';
+    $mail->Password = 'gdkwryakgynsewdl'; // App Password Gmail
     $mail->SMTPSecure = 'tls';
     $mail->Port = 587;
 
     $mail->setFrom($email, $nombre);
-    $mail->addAddress('wasportaller@gmail.com', 'WA SPORT');
+    $mail->addAddress('wasporttaller@gmail.com', 'WA SPORT');
     $mail->addReplyTo($email, $nombre); // ← para que puedan responder al cliente
 
     $mail->isHTML(true);
@@ -65,12 +65,12 @@ try {
     $cliente->isSMTP();
     $cliente->Host = 'smtp.gmail.com';
     $cliente->SMTPAuth = true;
-    $cliente->Username = 'wasportaller@gmail.com';
-    $cliente->Password = 'kyozoppabnumingu'; //APP password Gmail
+    $mail->Username = 'wasporttaller@gmail.com';
+    $mail->Password = 'gdkwryakgynsewdl'; // App Password Gmail
     $cliente->SMTPSecure = 'tls';
     $cliente->Port = 587;
 
-    $cliente->setFrom('wasportaller@gmail.com', 'WA SPORT');
+    $cliente->setFrom('wasporttaller@gmail.com', 'WA SPORT');
     $cliente->addAddress($email, $nombre);
     $cliente->isHTML(true);
     $cliente->Subject = 'Consulta recibida - WA SPORT';

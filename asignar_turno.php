@@ -140,12 +140,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['asignar'])) {
                     $mail->isSMTP();
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
-                    $mail->Username = 'wasportaller@gmail.com';
-                    $mail->Password = 'kyozoppabnumingu'; // App password
+                    $mail->Username = 'wasporttaller@gmail.com';
+                    $mail->Password = 'gdkwryakgynsewdl'; // App Password Gmail
                     $mail->SMTPSecure = 'tls';
                     $mail->Port = 587;
 
-                    $mail->setFrom('wasportaller@gmail.com', 'WA SPORT');
+                    $mail->setFrom('wasporttaller@gmail.com', 'WA SPORT');
                     $mail->addAddress($datos['cliente_email'], $datos['cliente_nombre']);
                     $mail->isHTML(true);
                     $mail->Subject = 'Confirmación de turno asignado - WA SPORT';

@@ -3,7 +3,7 @@ require_once 'verificar_sesion_empleado.php';
 require_once 'conexion_base.php';
 require_once 'tcpdf/tcpdf.php';
 
-// ---- Inputs desde el modal ----
+//Inputs desde el modal
 $tipo              = $_POST['tipo'] ?? 'B';
 $accion            = $_POST['accion'] ?? 'imprimir';   // imprimir | email
 $email_destino     = trim($_POST['email_destino'] ?? '');
@@ -28,18 +28,18 @@ if ($accion === 'email' && $email_destino === '') {
 
 $empleado_dni = $_SESSION['empleado_dni'] ?? null;
 
-// ---- Datos del taller (ajustá a los reales) ----
+//Datos del taller
 $taller_nombre = "WA SPORT - Taller Mecánico";
-$taller_dir    = "Portela 1136 - CABA";
-$taller_tel    = "Tel: 11-1234-5678";
-$taller_mail   = "taller@wasport.com";
+$taller_dir    = "Paso 1418 - Ciudadela";
+$taller_tel    = "Tel: 11-5717-2522";
+$taller_mail   = "wasporttaller@gmail.com";
 $logo_path     = 'iconos/WA_Sport.jpg';
 
-// ========== 1) TRANSACCIÓN: numerar + insertar factura + marcar trabajo ==========
+//TRANSACCIÓN: numerar + insertar factura + marcar trabajo
 try {
   $conexion->beginTransaction();
 
-  // 1.a) Numerador por tipo (A/B/C)
+  //Numerador por tipo (A/B/C)
   $stmt = $conexion->prepare("SELECT proximo FROM factura_numeradores WHERE tipo = ? FOR UPDATE");
   $stmt->execute([$tipo]);
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -56,7 +56,7 @@ try {
              ->execute([$tipo]);
   }
 
-  // 1.b) Insertar factura
+  //Insertar factura
   $ins = $conexion->prepare("
     INSERT INTO facturas
       (tipo, nro_comprobante, orden_numero, servicio_codigo, cliente_dni, vehiculo_patente,
@@ -77,7 +77,7 @@ try {
   ]);
   $factura_id = (int)$conexion->lastInsertId();
 
-  // 1.c) Marcar trabajo como facturado (enlazar factura)
+  //Marcar trabajo como facturado (enlazar factura)
   $up = $conexion->prepare("
     UPDATE orden_trabajo
        SET factura_id = :fid
@@ -99,7 +99,7 @@ try {
   die("Error al numerar o vincular factura: " . $e->getMessage());
 }
 
-// ========== 2) Generar PDF con TCPDF ==========
+//Generar PDF con TCPDF
 class PDF_FACT extends TCPDF {
     public $tipo;
     public $nro_comprobante;
@@ -113,7 +113,7 @@ class PDF_FACT extends TCPDF {
         if (is_file($this->logo_path)) {
             $this->Image($this->logo_path, 10, 8, 35);
         }
-        // Caja letra (A/B/C)
+        //Caja letra (A/B/C)
         $xBox = 60; $yBox = 10; $wBox = 18; $hBox = 18;
         $this->SetDrawColor(0,0,0);
         $this->Rect($xBox, $yBox, $wBox, $hBox);
@@ -123,7 +123,7 @@ class PDF_FACT extends TCPDF {
         $this->SetFont('dejavusans','',8);
         $this->Cell($wBox, 6, 'Código N° 06', 0, 0, 'C');
 
-        // membrete
+        //Membrete
         $this->SetXY(0, 8);
         $this->SetFont('dejavusans','B',14);
         $this->Cell(0,6,$this->taller_nombre,0,1,'R');
@@ -131,14 +131,14 @@ class PDF_FACT extends TCPDF {
         $this->Cell(0,5,$this->taller_dir,0,1,'R');
         $this->Cell(0,5,$this->taller_tel.' - '.$this->taller_mail,0,1,'R');
 
-        // Título + Número de comprobante
+        //Título + Número de comprobante
         $this->Ln(2);
         $this->SetFont('dejavusans','B',16);
         $this->Cell(0,10,'FACTURA',0,1,'C');
         $this->SetFont('dejavusans','',11);
         $this->Cell(0,8,'Comprobante Nº '.str_pad($this->nro_comprobante, 8, '0', STR_PAD_LEFT), 0, 1, 'C');
 
-        // línea separadora
+        //Línea separadora
         $this->SetDrawColor(255,142,49);
         $this->SetLineWidth(0.6);
         $this->Line(10,42,200,42);
@@ -173,7 +173,7 @@ $pdf->SetAutoPageBreak(TRUE, 20);
 $pdf->AddPage();
 $pdf->SetFont('dejavusans','',10);
 
-// Encabezado Orden/Fecha
+//Encabezado Orden/Fecha
 $tbl = '
 <table cellpadding="6" cellspacing="0" border="1" width="100%">
   <tr style="background-color:#FFC631;">
@@ -183,7 +183,7 @@ $tbl = '
 </table><br/>';
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
-// Datos Cliente
+//Datos Cliente
 $cliente_bloque = '
 <h3>Datos del Cliente</h3>
 <table cellpadding="5" cellspacing="0" border="0" width="100%">
@@ -195,7 +195,7 @@ $cliente_bloque = '
 </table><br/>';
 $pdf->writeHTML($cliente_bloque, true, false, false, false, '');
 
-// Datos Vehículo
+//Datos Vehículo
 $veh_bloque = '
 <h3>Datos del Vehículo</h3>
 <table cellpadding="5" cellspacing="0" border="0" width="100%">
@@ -205,7 +205,7 @@ $veh_bloque = '
 </table><br/>';
 $pdf->writeHTML($veh_bloque, true, false, false, false, '');
 
-// Detalle Servicio
+//Detalle Servicio
 $detalle_tbl = '
 <h3>Detalle del Servicio</h3>
 <table cellpadding="6" cellspacing="0" border="1" width="100%">
@@ -222,7 +222,7 @@ $detalle_tbl = '
 </table>';
 $pdf->writeHTML($detalle_tbl, true, false, false, false, '');
 
-// Comentario
+//Comentario
 if (trim($orden_comentario) !== '') {
   $pdf->Ln(2);
   $coment_html = '
@@ -232,7 +232,7 @@ if (trim($orden_comentario) !== '') {
   $pdf->writeHTML($coment_html, true, false, false, false, '');
 }
 
-// Total
+//Total
 $pdf->Ln(4);
 $total_tbl = '
 <table cellpadding="6" cellspacing="0" border="1" width="100%">
@@ -243,7 +243,7 @@ $total_tbl = '
 </table>';
 $pdf->writeHTML($total_tbl, true, false, false, false, '');
 
-// ========== 3) Guardar SIEMPRE en /facturas y actualizar BD ==========
+//Guardar SIEMPRE en /facturas y actualizar BD
 $nombreArchivo = 'Factura_'.$tipo.'_'.str_pad($nro_comprobante, 8, '0', STR_PAD_LEFT).'_Orden_'.$orden_numero.'.pdf';
 
 $dirFact = __DIR__ . DIRECTORY_SEPARATOR . 'facturas';
@@ -255,7 +255,7 @@ $pdf->Output($savePath, 'F');
 $conexion->prepare("UPDATE facturas SET pdf_nombre = ? WHERE factura_id = ?")
          ->execute([$nombreArchivo, $factura_id]);
 
-// ========== 4) Acción: imprimir inline o enviar por email ==========
+//Acción: imprimir inline o enviar por email
 if ($accion === 'imprimir') {
   // stream inline + (opcional) auto print
   $pdf->IncludeJS('print(true);');
@@ -266,7 +266,7 @@ if ($accion === 'imprimir') {
   exit;
 }
 
-// Enviar por mail
+//Enviar por mail
 require 'phpmailer/src/Exception.php';
 require 'phpmailer/src/PHPMailer.php';
 require 'phpmailer/src/SMTP.php';
@@ -282,12 +282,12 @@ try {
   $mail->isSMTP();
   $mail->Host       = 'smtp.gmail.com';
   $mail->SMTPAuth   = true;
-  $mail->Username   = 'wasportaller@gmail.com';
-  $mail->Password   = 'kyozoppabnumingu';
+  $mail->Username = 'wasporttaller@gmail.com';
+  $mail->Password = 'gdkwryakgynsewdl'; // App Password Gmail
   $mail->SMTPSecure = 'tls';
   $mail->Port       = 587;
 
-  $mail->setFrom('wasportaller@gmail.com', 'WA SPORT');
+  $mail->setFrom('wasporttaller@gmail.com', 'WA SPORT');
   $mail->addAddress($email_destino ?: $cliente_email, $cliente_nombre ?: 'Cliente');
   $mail->Subject = 'Factura '.$tipo.' Nº '.str_pad($nro_comprobante, 8, '0', STR_PAD_LEFT).' - Orden '.$orden_numero;
   $mail->isHTML(true);
@@ -306,7 +306,7 @@ try {
   $err_envio = $mail->ErrorInfo ?? $e->getMessage();
 }
 
-// Respuesta simple
+//Respuesta simple
 ?>
 <!DOCTYPE html>
 <html lang="es"><head>

@@ -2,8 +2,13 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
+<<<<<<< HEAD
 -- Servidor: 127.0.0.1:3307
 -- Tiempo de generación: 15-10-2025 a las 01:10:26
+=======
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 15-10-2025 a las 18:19:54
+>>>>>>> 3f2eb2c0a2e8730c0b7040136185d3212962cec8
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -118,7 +123,23 @@ INSERT INTO `facturas` (`factura_id`, `tipo`, `nro_comprobante`, `fecha_emision`
 (1, 'C', 1, '2025-10-09 20:44:58', 13, 'D001', '30700247', 'GCR891', 5500.00, 'Factura_C_00000001_Orden_13.pdf', NULL, 0, '44671150'),
 (2, 'C', 2, '2025-10-09 20:48:43', 11, 'D001', '22870111', 'POD166', 5500.00, 'Factura_C_00000002_Orden_11.pdf', NULL, 0, '44671150'),
 (4, 'C', 3, '2025-10-09 20:53:55', 9, 'SEL00', '32489632', 'GHI410', 11760.00, 'Factura_C_00000003_Orden_9.pdf', NULL, 0, '44671150'),
-(5, 'C', 4, '2025-10-12 17:56:15', 7, 'FR002', '41298533', 'FOM132', 16380.00, 'Factura_C_00000004_Orden_7.pdf', NULL, 0, '44671150');
+(5, 'C', 4, '2025-10-12 17:56:15', 7, 'FR002', '41298533', 'FOM132', 16380.00, 'Factura_C_00000004_Orden_7.pdf', NULL, 0, '44671150'),
+(6, 'A', 1, '2025-10-13 16:21:10', 2, 'FR003', '30164750', 'NJK038', 12540.00, 'Factura_A_00000001_Orden_2.pdf', NULL, 0, '44671150'),
+(7, 'B', 1, '2025-10-13 16:21:29', 2, 'CLA00', '30164750', 'NJK038', 7920.00, 'Factura_B_00000001_Orden_2.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
+(10, 'C', 5, '2025-10-13 16:25:15', 4, 'EB001', '22870111', 'POD166', 71760.00, 'Factura_C_00000005_Orden_4.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
+(11, 'C', 6, '2025-10-13 16:28:02', 5, 'EB001', '30164750', 'AA459FT', 65780.00, 'Factura_C_00000006_Orden_5.pdf', '', 0, '44671150'),
+(14, 'C', 7, '2025-10-13 16:28:24', 6, 'ST002', '43796532', 'EOZ386', 45840.00, 'Factura_C_00000007_Orden_6.pdf', '', 0, '44671150'),
+(15, 'C', 8, '2025-10-13 16:29:10', 6, 'SD002', '43796532', 'EOZ386', 30140.00, 'Factura_C_00000008_Orden_6.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
+(16, 'C', 9, '2025-10-13 16:32:25', 18, 'SA001', '30700247', 'GCR891', 20570.00, 'Factura_C_00000009_Orden_18.pdf', 'christian.caprarulo@gmail.com', 0, '44671150'),
+(17, 'C', 10, '2025-10-13 16:33:29', 19, 'RR001', '30700247', 'GCR891', 8580.00, 'Factura_C_00000010_Orden_19.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
+(18, 'C', 11, '2025-10-13 16:36:43', 16, 'SD001', '30700247', 'UWL004', 20020.00, 'Factura_C_00000011_Orden_16.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
+(20, 'B', 2, '2025-10-13 16:49:24', 14, 'FR002', '44671150', 'A221GAR', 13860.00, 'Factura_B_00000002_Orden_14.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
+(21, 'C', 12, '2025-10-13 16:49:56', 12, 'S002', '18762965', 'AB307CI', 24200.00, 'Factura_C_00000012_Orden_12.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
+(22, 'C', 13, '2025-10-13 16:51:30', 10, 'SDI00', '30164750', 'AA459FT', 14630.00, 'Factura_C_00000013_Orden_10.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
+(23, 'C', 14, '2025-10-13 16:52:05', 5, 'CV001', '30164750', 'AA459FT', 79860.00, 'Factura_C_00000014_Orden_5.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
+(24, 'C', 15, '2025-10-13 21:04:06', 21, 'MT001', '30700247', 'GCR891', 108240.00, 'Factura_C_00000015_Orden_21.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
+(25, 'C', 16, '2025-10-13 21:05:59', 7, 'FR001', '41298533', 'FOM132', 15600.00, 'Factura_C_00000016_Orden_7.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
+(26, 'C', 17, '2025-10-13 23:44:54', 4, 'CV001', '22870111', 'POD166', 87120.00, 'Factura_C_00000017_Orden_4.pdf', 'sofiduvi@gmail.com', 0, '44671150');
 
 -- --------------------------------------------------------
 
@@ -136,9 +157,9 @@ CREATE TABLE `factura_numeradores` (
 --
 
 INSERT INTO `factura_numeradores` (`tipo`, `proximo`) VALUES
-('A', 1),
-('B', 1),
-('C', 5);
+('A', 2),
+('B', 3),
+('C', 18);
 
 -- --------------------------------------------------------
 
@@ -193,7 +214,8 @@ INSERT INTO `ordenes` (`orden_numero`, `orden_fecha`, `vehiculo_patente`, `orden
 (19, '2025-10-13', 'GCR891', NULL),
 (20, '2025-10-13', 'GCR891', NULL),
 (21, '2025-10-13', 'GCR891', NULL),
-(22, '2025-10-15', 'GCR891', NULL);
+(22, '2025-10-15', 'GCR891', NULL),
+(23, '2025-10-14', 'A221GAR', NULL);
 
 -- --------------------------------------------------------
 
@@ -219,32 +241,33 @@ CREATE TABLE `orden_trabajo` (
 --
 
 INSERT INTO `orden_trabajo` (`orden_numero`, `servicio_codigo`, `complejidad`, `costo_ajustado`, `orden_kilometros`, `orden_comentario`, `orden_estado`, `mecanico_DNI`, `turno_id`, `factura_id`) VALUES
-(2, 'CLA00', 1, 7920.00, 120324, '', 1, '30700247', NULL, NULL),
-(2, 'FR003', 1, 12540.00, 120324, '', 1, '47651867', NULL, NULL),
+(2, 'CLA00', 1, 7920.00, 120324, '', 1, '30700247', NULL, 7),
+(2, 'FR003', 1, 12540.00, 120324, '', 1, '47651867', NULL, 6),
 (2, 'SA001', 3, 24310.00, 120324, '', 0, '32690365', NULL, NULL),
 (3, 'MT002', 2, 146880.00, 250341, '', 0, '47651867', NULL, NULL),
-(4, 'CV001', 2, 87120.00, 60724, '', 0, '30700247', NULL, NULL),
-(4, 'EB001', 2, 71760.00, 60724, '', 1, '32690365', NULL, NULL),
-(5, 'CV001', 1, 79860.00, 71543, '', 0, '30700247', NULL, NULL),
-(5, 'EB001', 1, 65780.00, 71543, '', 1, '47651867', NULL, NULL),
-(6, 'SD002', 1, 30140.00, 47980, '', 1, '32690365', NULL, NULL),
-(6, 'ST002', 2, 45840.00, 47980, '', 1, '30700247', NULL, NULL),
-(7, 'FR001', 3, 15600.00, 56782, '', 0, '47651867', NULL, NULL),
+(4, 'CV001', 2, 87120.00, 60724, 'se armo correctamente', 1, '30700247', NULL, 26),
+(4, 'EB001', 2, 71760.00, 60724, 'se armo correctamente', 1, '32690365', NULL, 10),
+(5, 'CV001', 1, 79860.00, 71543, '', 1, '30700247', NULL, 23),
+(5, 'EB001', 1, 65780.00, 71543, '', 1, '47651867', NULL, 11),
+(6, 'SD002', 1, 30140.00, 47980, '', 1, '32690365', NULL, 15),
+(6, 'ST002', 2, 45840.00, 47980, '', 1, '30700247', NULL, 14),
+(7, 'FR001', 3, 15600.00, 56782, '', 1, '47651867', NULL, 25),
 (7, 'FR002', 3, 16380.00, 56782, '', 1, '32690365', NULL, 5),
 (8, 'SES00', 2, 47400.00, 25619, '', 0, '08326014', NULL, NULL),
 (9, 'SEL00', 2, 11760.00, 94723, '', 1, '08326014', NULL, 4),
-(10, 'SDI00', 1, 14630.00, 119832, '', 0, '30700247', NULL, NULL),
+(10, 'SDI00', 1, 14630.00, 119832, '', 1, '30700247', NULL, 22),
 (11, 'D001', 1, 5500.00, 43909, '', 1, '08326014', NULL, 2),
-(12, 'S002', 1, 24200.00, 67413, '', 0, '30700247', NULL, NULL),
+(12, 'S002', 1, 24200.00, 67413, '', 1, '30700247', NULL, 21),
 (13, 'D001', 1, 5500.00, 1000, 'NINGUNO', 1, '08326014', NULL, 1),
-(14, 'FR002', 1, 13860.00, 1338, 'La clienta dice que no frena un carajo.', 0, '30700247', NULL, NULL),
-(16, 'SD001', 1, 20020.00, 85021, 'Hace un ruidito', 0, '30700247', NULL, NULL),
+(14, 'FR002', 1, 13860.00, 1338, 'La clienta dice que no frena un carajo.', 1, '30700247', NULL, 20),
+(16, 'SD001', 1, 20020.00, 85021, 'Hace un ruidito', 1, '30700247', NULL, 18),
 (17, 'OT001', 1, 61160.00, 1, '1234', 0, '08326014', 47, NULL),
-(18, 'SA001', 1, 20570.00, 61999, '123456789', 0, '30700247', 48, NULL),
-(19, 'RR001', 1, 8580.00, 62000, '123456789', 0, '30700247', 49, NULL),
+(18, 'SA001', 1, 20570.00, 61999, '123456789', 1, '30700247', 48, 16),
+(19, 'RR001', 1, 8580.00, 62000, '123456789', 1, '30700247', 49, 17),
 (20, 'S001', 1, 9350.00, 62001, '123654125874126541', 0, '32690365', 50, NULL),
-(21, 'MT001', 1, 108240.00, 62005, '12368741236584', 0, '47651867', 51, NULL),
-(22, 'FR001', 1, 13200.00, 62009, '1236987412', 0, '32690365', 52, NULL);
+(21, 'MT001', 1, 108240.00, 62005, '12368741236584', 0, '47651867', 51, 24),
+(22, 'FR001', 1, 13200.00, 62009, '1236987412', 0, '32690365', 52, NULL),
+(23, 'S001', 1, 9350.00, 67413, 'testeo', 0, '08326014', 54, NULL);
 
 --
 -- Disparadores `orden_trabajo`
@@ -364,7 +387,8 @@ INSERT INTO `turnos` (`turno_id`, `turno_fecha`, `turno_hora`, `cliente_DNI`, `v
 (49, '2025-10-13', '08:00:00', '30700247', 'GCR891', '30700247', 'pendiente', '123456789'),
 (50, '2025-10-13', '08:00:00', '30700247', 'GCR891', '32690365', 'pendiente', '123654125874126541'),
 (51, '2025-10-13', '08:00:00', '30700247', 'GCR891', '47651867', 'pendiente', '12368741236584'),
-(52, '2025-10-15', '08:00:00', '30700247', 'GCR891', '32690365', 'pendiente', '1236987412');
+(52, '2025-10-15', '08:00:00', '30700247', 'GCR891', '32690365', 'pendiente', '1236987412'),
+(54, '2025-10-14', '08:00:00', '44671150', 'A221GAR', '08326014', 'pendiente', 'testeo');
 
 -- --------------------------------------------------------
 
@@ -486,13 +510,13 @@ ALTER TABLE `vehiculos`
 -- AUTO_INCREMENT de la tabla `facturas`
 --
 ALTER TABLE `facturas`
-  MODIFY `factura_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `factura_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `turnos`
 --
 ALTER TABLE `turnos`
-  MODIFY `turno_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `turno_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- Restricciones para tablas volcadas
@@ -517,7 +541,7 @@ ALTER TABLE `orden_trabajo`
 -- Filtros para la tabla `turnos`
 --
 ALTER TABLE `turnos`
-  ADD CONSTRAINT `turnos_ibfk_1` FOREIGN KEY (`cliente_dni`) REFERENCES `clientes` (`cliente_DNI`),
+  ADD CONSTRAINT `turnos_ibfk_1` FOREIGN KEY (`cliente_DNI`) REFERENCES `clientes` (`cliente_DNI`),
   ADD CONSTRAINT `turnos_ibfk_2` FOREIGN KEY (`vehiculo_patente`) REFERENCES `vehiculos` (`vehiculo_patente`),
   ADD CONSTRAINT `turnos_ibfk_3` FOREIGN KEY (`mecanico_dni`) REFERENCES `empleados` (`empleado_DNI`);
 
