@@ -58,6 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['login_empleado'])) {
                     header("Location: recepcionista.php");
                 } elseif ($empleado['empleado_roll'] === 'mecanico') {
                     header("Location: mecanico.php");
+                } elseif ($empleado['empleado_roll'] === 'gerente') {
+                    header("Location: gerente.php");
                 } else {
                     $mensajeErrorEmpleado = "Rol no reconocido.";
                 }

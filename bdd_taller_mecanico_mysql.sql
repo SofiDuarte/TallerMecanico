@@ -2,13 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
-<<<<<<< HEAD
 -- Servidor: 127.0.0.1:3307
--- Tiempo de generación: 15-10-2025 a las 01:10:26
-=======
--- Servidor: 127.0.0.1
--- Tiempo de generación: 15-10-2025 a las 18:19:54
->>>>>>> 3f2eb2c0a2e8730c0b7040136185d3212962cec8
+-- Tiempo de generación: 11-11-2025 a las 21:54:32
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -78,20 +73,25 @@ CREATE TABLE `empleados` (
   `token_recuperacion` varchar(255) DEFAULT NULL,
   `empleado_direccion` varchar(50) DEFAULT NULL,
   `empleado_localidad` varchar(15) DEFAULT NULL,
-  `empleado_telefono` varchar(15) DEFAULT NULL
+  `empleado_telefono` varchar(15) DEFAULT NULL,
+  `empleado_habilitado` tinyint(1) NOT NULL DEFAULT 1,
+  `empleado_estado` enum('disponible','no_disponible','licencia','baja') NOT NULL DEFAULT 'disponible',
+  `licencia_desde` date DEFAULT NULL,
+  `licencia_hasta` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `empleados`
 --
 
-INSERT INTO `empleados` (`empleado_DNI`, `empleado_contrasena`, `empleado_nombre`, `empleado_roll`, `empleado_email`, `token_recuperacion`, `empleado_direccion`, `empleado_localidad`, `empleado_telefono`) VALUES
-('08326014', '$2y$10$Ub8aB4gEwxLT0BkUhoS2TOS9tmkqrK2uNe6.46B7jS8JvXbf9FBky', 'Norberto Caprarulo', 'mecanico', 'norberto.caprarulo@gmail.com', NULL, 'J. Ingenieros 3964', 'San Justo', '1160102685'),
-('24874723', '$2y$10$D4u9GL/1rhsdVbWBLeyv2urFR9/OdEL89KcO028uFKFxJ3bpuxOt6', 'Stella Brzostowski', 'recepcionista', '0', NULL, 'Pedro M. Obligado 1489', 'Laferrere', NULL),
-('30700247', '$2y$10$TZQtjVmYfrIcqxqU/EkeSe7nPgEkIz25dKNmRRs4idnF86HLx162.', 'Christian Caprarulo', 'mecanico', 'christian.caprarulo@gmail.com', 'c8b9d38cdfcadc04e2b96decdc25b0b25ce5430f5ca4a6ed3fb9ca75965ab649', 'Portela 1136', 'CABA', '1157172522'),
-('32690365', '$2y$10$FcQx59RPzAEcsicewP.00.5jrIUcRBv5cjzjphZOE6X0pxweaWxCG', 'Adrián Caprarulo', 'mecanico', '0', NULL, 'J. Ingenieros 3964', 'San Justo', '1160152685'),
-('44671150', '$2y$10$8I/M3RbRn.FUuovkMkvJO.WGcLxWXaq689Xg5xQ.AU73w7INxmSEK', 'Sofia Duarte', 'recepcionista', 'sofiduvi@gmail.com', '85d6877e5029ba391ce5d2a72d48151ab00a14a36f9d1830f0abd8672f8424eb', 'Homero 919', 'CABA', ''),
-('47651867', '$2y$10$nyqZ/3LasLxH/FfKUhp5MeBSACkABS.mF12eZ5zJoSVhzKqrRWm9u', 'Martin Caprarulo', 'mecanico', 'martin.d.caprarulo@gmail.com', NULL, 'Portela 1136', 'CABA', '1157379981');
+INSERT INTO `empleados` (`empleado_DNI`, `empleado_contrasena`, `empleado_nombre`, `empleado_roll`, `empleado_email`, `token_recuperacion`, `empleado_direccion`, `empleado_localidad`, `empleado_telefono`, `empleado_habilitado`, `empleado_estado`, `licencia_desde`, `licencia_hasta`) VALUES
+('08326014', '$2y$10$Ub8aB4gEwxLT0BkUhoS2TOS9tmkqrK2uNe6.46B7jS8JvXbf9FBky', 'Norberto Caprarulo', 'mecanico', 'norberto.caprarulo@gmail.com', NULL, 'J. Ingenieros 3964', 'San Justo', '1160102685', 1, 'disponible', NULL, NULL),
+('24874723', '$2y$10$D4u9GL/1rhsdVbWBLeyv2urFR9/OdEL89KcO028uFKFxJ3bpuxOt6', 'Stella Brzostowski', 'recepcionista', '0', NULL, 'Pedro M. Obligado 1489', 'Laferrere', NULL, 1, 'disponible', NULL, NULL),
+('30700247', '$2y$10$TZQtjVmYfrIcqxqU/EkeSe7nPgEkIz25dKNmRRs4idnF86HLx162.', 'Christian Caprarulo', 'mecanico', 'christian.caprarulo@gmail.com', 'c8b9d38cdfcadc04e2b96decdc25b0b25ce5430f5ca4a6ed3fb9ca75965ab649', 'Portela 1136', 'CABA', '1157172522', 1, 'disponible', NULL, NULL),
+('32690365', '$2y$10$FcQx59RPzAEcsicewP.00.5jrIUcRBv5cjzjphZOE6X0pxweaWxCG', 'Adrián Caprarulo', 'mecanico', '0', NULL, 'J. Ingenieros 3964', 'San Justo', '1160152685', 1, 'disponible', NULL, NULL),
+('44671150', '$2y$10$8I/M3RbRn.FUuovkMkvJO.WGcLxWXaq689Xg5xQ.AU73w7INxmSEK', 'Sofia Duarte', 'recepcionista', 'sofiduvi@gmail.com', '85d6877e5029ba391ce5d2a72d48151ab00a14a36f9d1830f0abd8672f8424eb', 'Homero 919', 'CABA', '', 1, 'disponible', NULL, NULL),
+('47651867', '$2y$10$nyqZ/3LasLxH/FfKUhp5MeBSACkABS.mF12eZ5zJoSVhzKqrRWm9u', 'Martin Caprarulo', 'mecanico', 'martin.d.caprarulo@gmail.com', NULL, 'Portela 1136', 'CABA', '1157379981', 1, 'disponible', NULL, NULL),
+('57109916', '$2y$10$1oGU9IYaw2YGNsyM1D47jeLiTCzzs0qY1QkIoj3wJt607keSbU3pa', 'Dante Caprarulo', 'gerente', '0', NULL, 'Portela 1136', 'CABA', '1178521609', 1, 'disponible', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -139,7 +139,16 @@ INSERT INTO `facturas` (`factura_id`, `tipo`, `nro_comprobante`, `fecha_emision`
 (23, 'C', 14, '2025-10-13 16:52:05', 5, 'CV001', '30164750', 'AA459FT', 79860.00, 'Factura_C_00000014_Orden_5.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
 (24, 'C', 15, '2025-10-13 21:04:06', 21, 'MT001', '30700247', 'GCR891', 108240.00, 'Factura_C_00000015_Orden_21.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
 (25, 'C', 16, '2025-10-13 21:05:59', 7, 'FR001', '41298533', 'FOM132', 15600.00, 'Factura_C_00000016_Orden_7.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
-(26, 'C', 17, '2025-10-13 23:44:54', 4, 'CV001', '22870111', 'POD166', 87120.00, 'Factura_C_00000017_Orden_4.pdf', 'sofiduvi@gmail.com', 0, '44671150');
+(26, 'C', 17, '2025-10-13 23:44:54', 4, 'CV001', '22870111', 'POD166', 87120.00, 'Factura_C_00000017_Orden_4.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
+(31, 'A', 2, '2025-10-15 16:50:14', 22, 'FR001', '30700247', 'GCR891', 13200.00, 'Factura_A_00000002_Orden_22.pdf', NULL, 0, '44671150'),
+(32, 'B', 3, '2025-10-15 16:50:43', 17, 'OT001', '30700247', 'GCR891', 61160.00, 'Factura_B_00000003_Orden_17.pdf', NULL, 0, '44671150'),
+(33, 'C', 18, '2025-10-15 16:51:57', 6, 'SD002', '43796532', 'EOZ386', 30140.00, 'Factura_C_00000018_Orden_6.pdf', NULL, 0, '44671150'),
+(34, 'B', 4, '2025-10-15 16:54:38', 6, 'ST002', '43796532', 'EOZ386', 45840.00, 'Factura_B_00000004_Orden_6.pdf', 'sofiduvi@gmail.com', 0, '44671150'),
+(35, 'C', 19, '2025-11-11 10:36:46', 18, 'SA001', '30700247', 'GCR891', 20570.00, 'Factura_C_00000019_Orden_18.pdf', NULL, 0, '44671150'),
+(36, 'C', 20, '2025-11-11 10:37:48', 19, 'RR001', '30700247', 'GCR891', 8580.00, 'Factura_C_00000020_Orden_19.pdf', NULL, 0, '44671150'),
+(37, 'B', 5, '2025-11-11 10:48:54', 20, 'S001', '30700247', 'GCR891', 30530.50, 'Factura_B_00000005_Orden_20.pdf', NULL, 0, '32690365'),
+(38, 'C', 21, '2025-11-11 11:03:42', 8, 'SES00', '19786413', 'CDE091', 101005.20, 'Factura_C_00000021_Orden_8.pdf', NULL, 0, '08326014'),
+(39, 'B', 6, '2025-11-11 11:07:47', 21, 'MT001', '30700247', 'GCR891', 182795.80, 'Factura_B_00000006_Orden_21.pdf', NULL, 0, '47651867');
 
 -- --------------------------------------------------------
 
@@ -157,9 +166,9 @@ CREATE TABLE `factura_numeradores` (
 --
 
 INSERT INTO `factura_numeradores` (`tipo`, `proximo`) VALUES
-('A', 2),
-('B', 3),
-('C', 18);
+('A', 3),
+('B', 7),
+('C', 22);
 
 -- --------------------------------------------------------
 
@@ -215,7 +224,45 @@ INSERT INTO `ordenes` (`orden_numero`, `orden_fecha`, `vehiculo_patente`, `orden
 (20, '2025-10-13', 'GCR891', NULL),
 (21, '2025-10-13', 'GCR891', NULL),
 (22, '2025-10-15', 'GCR891', NULL),
-(23, '2025-10-14', 'A221GAR', NULL);
+(23, '2025-11-11', 'GCR891', NULL),
+(24, '2025-11-11', 'UWL004', NULL),
+(25, '2025-11-11', 'UWL004', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `orden_productos`
+--
+
+CREATE TABLE `orden_productos` (
+  `id` int(11) NOT NULL,
+  `orden_numero` int(11) NOT NULL,
+  `prod_id` int(11) NOT NULL,
+  `prod_codigo` varchar(32) NOT NULL,
+  `prod_descripcion` varchar(255) NOT NULL,
+  `cantidad` decimal(10,2) NOT NULL,
+  `precio_unitario` decimal(12,2) NOT NULL,
+  `mecanico_DNI` varchar(20) NOT NULL,
+  `creado_en` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `orden_productos`
+--
+
+INSERT INTO `orden_productos` (`id`, `orden_numero`, `prod_id`, `prod_codigo`, `prod_descripcion`, `cantidad`, `precio_unitario`, `mecanico_DNI`, `creado_en`) VALUES
+(1, 18, 41, 'ACC041', 'Escobilla limpiaparabrisas 16”', 1.00, 5505.50, '30700247', '2025-11-11 10:34:49'),
+(2, 18, 42, 'ACC042', 'Escobilla limpiaparabrisas 20”', 1.00, 8567.90, '30700247', '2025-11-11 10:34:49'),
+(3, 19, 45, 'ACC045', 'Fusibles surtidos', 1.00, 46555.30, '30700247', '2025-11-11 10:37:28'),
+(4, 19, 11, 'COR011', 'Correa de distribución 120 dientes', 1.00, 9713.00, '30700247', '2025-11-11 10:37:28'),
+(5, 20, 30, 'BAT030', 'Batería libre mantenimiento 55Ah', 1.00, 7049.90, '32690365', '2025-11-11 10:48:33'),
+(6, 20, 19, 'BUJ019', 'Bujía doble electrodo', 1.00, 14130.60, '32690365', '2025-11-11 10:48:33'),
+(7, 8, 45, 'ACC045', 'Fusibles surtidos', 1.00, 46555.30, '08326014', '2025-11-11 11:03:27'),
+(8, 8, 30, 'BAT030', 'Batería libre mantenimiento 55Ah', 1.00, 7049.90, '08326014', '2025-11-11 11:03:27'),
+(9, 21, 17, 'BUJ017', 'Bujía de iridio Bosch', 1.00, 22455.40, '47651867', '2025-11-11 11:07:28'),
+(10, 21, 12, 'COR012', 'Correa de distribución 130 dientes', 1.00, 52100.40, '47651867', '2025-11-11 11:07:36'),
+(11, 25, 42, 'ACC042', 'Escobilla limpiaparabrisas 20”', 2.00, 8567.90, '30700247', '2025-11-11 13:16:21'),
+(12, 24, 45, 'ACC045', 'Fusibles surtidos', 1.00, 46555.30, '30700247', '2025-11-11 13:40:09');
 
 -- --------------------------------------------------------
 
@@ -241,33 +288,35 @@ CREATE TABLE `orden_trabajo` (
 --
 
 INSERT INTO `orden_trabajo` (`orden_numero`, `servicio_codigo`, `complejidad`, `costo_ajustado`, `orden_kilometros`, `orden_comentario`, `orden_estado`, `mecanico_DNI`, `turno_id`, `factura_id`) VALUES
-(2, 'CLA00', 1, 7920.00, 120324, '', 1, '30700247', NULL, 7),
-(2, 'FR003', 1, 12540.00, 120324, '', 1, '47651867', NULL, 6),
+(2, 'CLA00', 1, 7920.00, 120324, '', 1, '30700247', NULL, NULL),
+(2, 'FR003', 1, 12540.00, 120324, '', 1, '47651867', NULL, NULL),
 (2, 'SA001', 3, 24310.00, 120324, '', 0, '32690365', NULL, NULL),
 (3, 'MT002', 2, 146880.00, 250341, '', 0, '47651867', NULL, NULL),
-(4, 'CV001', 2, 87120.00, 60724, 'se armo correctamente', 1, '30700247', NULL, 26),
-(4, 'EB001', 2, 71760.00, 60724, 'se armo correctamente', 1, '32690365', NULL, 10),
-(5, 'CV001', 1, 79860.00, 71543, '', 1, '30700247', NULL, 23),
-(5, 'EB001', 1, 65780.00, 71543, '', 1, '47651867', NULL, 11),
-(6, 'SD002', 1, 30140.00, 47980, '', 1, '32690365', NULL, 15),
-(6, 'ST002', 2, 45840.00, 47980, '', 1, '30700247', NULL, 14),
-(7, 'FR001', 3, 15600.00, 56782, '', 1, '47651867', NULL, 25),
+(4, 'CV001', 2, 87120.00, 60724, '', 0, '30700247', NULL, NULL),
+(4, 'EB001', 2, 71760.00, 60724, '', 1, '32690365', NULL, NULL),
+(5, 'CV001', 1, 79860.00, 71543, '', 0, '30700247', NULL, NULL),
+(5, 'EB001', 1, 65780.00, 71543, '', 1, '47651867', NULL, NULL),
+(6, 'SD002', 1, 30140.00, 47980, '', 1, '32690365', NULL, 33),
+(6, 'ST002', 2, 45840.00, 47980, '', 1, '30700247', NULL, 34),
+(7, 'FR001', 3, 15600.00, 56782, '', 0, '47651867', NULL, NULL),
 (7, 'FR002', 3, 16380.00, 56782, '', 1, '32690365', NULL, 5),
-(8, 'SES00', 2, 47400.00, 25619, '', 0, '08326014', NULL, NULL),
+(8, 'SES00', 2, 47400.00, 25619, '', 1, '08326014', NULL, 38),
 (9, 'SEL00', 2, 11760.00, 94723, '', 1, '08326014', NULL, 4),
-(10, 'SDI00', 1, 14630.00, 119832, '', 1, '30700247', NULL, 22),
+(10, 'SDI00', 1, 14630.00, 119832, '', 0, '30700247', NULL, NULL),
 (11, 'D001', 1, 5500.00, 43909, '', 1, '08326014', NULL, 2),
-(12, 'S002', 1, 24200.00, 67413, '', 1, '30700247', NULL, 21),
+(12, 'S002', 1, 24200.00, 67413, '', 0, '30700247', NULL, NULL),
 (13, 'D001', 1, 5500.00, 1000, 'NINGUNO', 1, '08326014', NULL, 1),
-(14, 'FR002', 1, 13860.00, 1338, 'La clienta dice que no frena un carajo.', 1, '30700247', NULL, 20),
-(16, 'SD001', 1, 20020.00, 85021, 'Hace un ruidito', 1, '30700247', NULL, 18),
-(17, 'OT001', 1, 61160.00, 1, '1234', 0, '08326014', 47, NULL),
-(18, 'SA001', 1, 20570.00, 61999, '123456789', 1, '30700247', 48, 16),
-(19, 'RR001', 1, 8580.00, 62000, '123456789', 1, '30700247', 49, 17),
-(20, 'S001', 1, 9350.00, 62001, '123654125874126541', 0, '32690365', 50, NULL),
-(21, 'MT001', 1, 108240.00, 62005, '12368741236584', 0, '47651867', 51, 24),
-(22, 'FR001', 1, 13200.00, 62009, '1236987412', 0, '32690365', 52, NULL),
-(23, 'S001', 1, 9350.00, 67413, 'testeo', 0, '08326014', 54, NULL);
+(14, 'FR002', 1, 13860.00, 1338, 'La clienta dice que no frena un carajo.', 0, '30700247', NULL, NULL),
+(16, 'SD001', 1, 20020.00, 85021, 'Hace un ruidito', 0, '30700247', NULL, NULL),
+(17, 'OT001', 1, 61160.00, 1, '1234', 1, '08326014', 47, 32),
+(18, 'SA001', 1, 20570.00, 61999, '123456789', 1, '30700247', 48, 35),
+(19, 'RR001', 1, 8580.00, 62000, '123456789', 1, '30700247', 49, 36),
+(20, 'S001', 1, 9350.00, 62001, '123654125874126541', 1, '32690365', 50, 37),
+(21, 'MT001', 1, 108240.00, 62005, '12368741236584', 1, '47651867', 51, 39),
+(22, 'FR001', 1, 13200.00, 62009, '1236987412', 1, '32690365', 52, 31),
+(23, 'SD002', 1, 30140.00, 62010, 'vsdfbcbncxb', 0, '08326014', 53, NULL),
+(24, 'RR002', 1, 8910.00, 10000000, 'jghjdnn', 1, '30700247', 54, NULL),
+(25, 'RR002', 1, 8910.00, 10000000, 'jghjdnn', 1, '30700247', 55, NULL);
 
 --
 -- Disparadores `orden_trabajo`
@@ -316,6 +365,81 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `productos`
+--
+
+CREATE TABLE `productos` (
+  `prod_id` int(11) NOT NULL,
+  `prod_codigo` varchar(20) NOT NULL,
+  `prod_categoria` varchar(100) NOT NULL,
+  `prod_descripcion` varchar(255) NOT NULL,
+  `prod_stock` int(11) NOT NULL DEFAULT 0,
+  `prod_precio_proveedor` decimal(10,2) NOT NULL,
+  `prod_precio_venta` decimal(10,2) NOT NULL,
+  `prod_disponible` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`prod_id`, `prod_codigo`, `prod_categoria`, `prod_descripcion`, `prod_stock`, `prod_precio_proveedor`, `prod_precio_venta`, `prod_disponible`) VALUES
+(1, 'LUB001', 'Lubricantes', 'Aceite sintético 5W30 1L', 8, 18702.00, 20572.20, 1),
+(2, 'LUB002', 'Lubricantes', 'Aceite mineral 20W50 1L', 15, 34570.00, 38027.00, 1),
+(3, 'LUB003', 'Lubricantes', 'Aceite semisintético 10W40 1L', 25, 16103.00, 17713.30, 1),
+(4, 'LUB004', 'Lubricantes', 'Aceite sintético 0W20 1L', 96, 33384.00, 36722.40, 1),
+(5, 'LUB005', 'Lubricantes', 'Aceite para caja automática ATF 1L', 14, 22279.00, 24506.90, 1),
+(6, 'FIL006', 'Filtros', 'Filtro de aceite motor', 26, 35276.00, 38803.60, 1),
+(7, 'FIL007', 'Filtros', 'Filtro de aire estándar', 68, 9081.00, 9989.10, 1),
+(8, 'FIL008', 'Filtros', 'Filtro de aire deportivo', 85, 25053.00, 27558.30, 1),
+(9, 'FIL009', 'Filtros', 'Filtro de combustible', 73, 11745.00, 12919.50, 1),
+(10, 'FIL010', 'Filtros', 'Filtro de cabina', 61, 47959.00, 52754.90, 1),
+(11, 'COR011', 'Correas', 'Correa de distribución 120 dientes', 79, 8830.00, 9713.00, 1),
+(12, 'COR012', 'Correas', 'Correa de distribución 130 dientes', 49, 47364.00, 52100.40, 1),
+(13, 'COR013', 'Correas', 'Correa poly-V 6PK', 85, 3621.00, 3983.10, 1),
+(14, 'COR014', 'Correas', 'Correa alternador', 95, 17709.00, 19479.90, 1),
+(15, 'COR015', 'Correas', 'Correa bomba de agua', 36, 10099.00, 11108.90, 1),
+(16, 'BUJ016', 'Bujías', 'Bujía estándar NGK', 77, 1712.00, 1883.20, 1),
+(17, 'BUJ017', 'Bujías', 'Bujía de iridio Bosch', 97, 20414.00, 22455.40, 1),
+(18, 'BUJ018', 'Bujías', 'Bujía de platino Denso', 65, 47066.00, 51772.60, 1),
+(19, 'BUJ019', 'Bujías', 'Bujía doble electrodo', 92, 12846.00, 14130.60, 1),
+(20, 'BUJ020', 'Bujías', 'Bujía larga resistencia', 18, 10688.00, 11756.80, 1),
+(21, 'FRE021', 'Frenos', 'Pastillas de freno delanteras', 41, 16070.00, 17677.00, 1),
+(22, 'FRE022', 'Frenos', 'Pastillas de freno traseras', 49, 49565.00, 54521.50, 1),
+(23, 'FRE023', 'Frenos', 'Disco de freno ventilado', 69, 8871.00, 9758.10, 1),
+(24, 'FRE024', 'Frenos', 'Disco de freno sólido', 24, 28210.00, 31031.00, 1),
+(25, 'FRE025', 'Frenos', 'Líquido de frenos DOT 4', 33, 5764.00, 6340.40, 1),
+(26, 'BAT026', 'Baterías', 'Batería 45Ah', 65, 21885.00, 24073.50, 1),
+(27, 'BAT027', 'Baterías', 'Batería 60Ah', 89, 44261.00, 48687.10, 1),
+(28, 'BAT028', 'Baterías', 'Batería 75Ah', 87, 39854.00, 43839.40, 1),
+(29, 'BAT029', 'Baterías', 'Batería AGM 70Ah', 59, 37594.00, 41353.40, 1),
+(30, 'BAT030', 'Baterías', 'Batería libre mantenimiento 55Ah', 60, 6409.00, 7049.90, 1),
+(31, 'NEU031', 'Neumáticos', 'Neumático 175/70 R13', 12, 44887.00, 49375.70, 1),
+(32, 'NEU032', 'Neumáticos', 'Neumático 185/65 R14', 49, 9439.00, 10382.90, 1),
+(33, 'NEU033', 'Neumáticos', 'Neumático 195/60 R15', 97, 31104.00, 34214.40, 1),
+(34, 'NEU034', 'Neumáticos', 'Neumático 205/55 R16', 26, 48649.00, 53513.90, 1),
+(35, 'NEU035', 'Neumáticos', 'Neumático 215/45 R17', 92, 45814.00, 50395.40, 1),
+(36, 'LÍQ036', 'Líquidos', 'Refrigerante 1L', 62, 40835.00, 44918.50, 1),
+(37, 'LÍQ037', 'Líquidos', 'Refrigerante 5L', 87, 9981.00, 10979.10, 1),
+(38, 'LÍQ038', 'Líquidos', 'Líquido de dirección hidráulica 1L', 26, 5207.00, 5727.70, 1),
+(39, 'LÍQ039', 'Líquidos', 'Agua destilada 5L', 31, 5903.00, 6493.30, 1),
+(40, 'LÍQ040', 'Líquidos', 'Aditivo limpia inyectores', 67, 25587.00, 28145.70, 1),
+(41, 'ACC041', 'Accesorios', 'Escobilla limpiaparabrisas 16”', 60, 5005.00, 6056.05, 1),
+(42, 'ACC042', 'Accesorios', 'Escobilla limpiaparabrisas 20”', 22, 7789.00, 9424.69, 1),
+(43, 'ACC043', 'Accesorios', 'Kit de lámparas H4', 85, 35191.00, 38710.10, 1),
+(44, 'ACC044', 'Accesorios', 'Kit de lámparas H7', 89, 5977.00, 6574.70, 1),
+(45, 'ACC045', 'Accesorios', 'Fusibles surtidos', 5, 42323.00, 46555.30, 1),
+(46, 'SUS046', 'Suspensión', 'Amortiguador delantero', 41, 49546.00, 54500.60, 1),
+(47, 'SUS047', 'Suspensión', 'Amortiguador trasero', 80, 32891.00, 36180.10, 1),
+(48, 'SUS048', 'Suspensión', 'Parrilla de suspensión', 34, 44292.00, 48721.20, 1),
+(49, 'SUS049', 'Suspensión', 'Rótula de dirección', 50, 17168.00, 18884.80, 1),
+(50, 'SUS050', 'Suspensión', 'Barra estabilizadora', 88, 14567.00, 16023.70, 1),
+(51, 'BAT031', 'Baterías', 'Bateria 80Ah', 50, 40914.00, 45005.40, 1),
+(52, 'ACC046', 'Accesorios', 'Kit de lámparas H1', 15, 7985.00, 8783.50, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `servicios`
 --
 
@@ -323,42 +447,46 @@ CREATE TABLE `servicios` (
   `servicio_codigo` varchar(5) NOT NULL,
   `servicio_nombre` varchar(35) NOT NULL,
   `servicio_descripcion` varchar(100) NOT NULL,
-  `servicio_costo` decimal(8,2) NOT NULL
+  `servicio_costo` decimal(8,2) NOT NULL,
+  `servicio_disponible` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `servicios`
 --
 
-INSERT INTO `servicios` (`servicio_codigo`, `servicio_nombre`, `servicio_descripcion`, `servicio_costo`) VALUES
-('CLA00', 'CAMBIO DE LAMPARAS', 'REVICION Y CAMBIO DE LAMPARAS', 7200.00),
-('CV001', 'CAJA DE VELOCIDADES', 'REPARACION DE COMPETA DE CAJA DE VELOCIDADES CAMBIO DE RETENES', 72600.00),
-('D001', 'DIAGNOSTICO COMPUTARIZADO', 'TOMA DE DIAGNOSTICO', 5000.00),
-('EB001', 'EMBRAGUE', 'CAMBIO O REPARACION DE EMBRAGUE, BOMBA, BOMBIN, RULEMAN DE EMPUJE', 59800.00),
-('FR001', 'FRENOS DELANTEROS', 'REPARACION O CAMBIO DE DISCO, CAMBIO DE PASTILLAS.', 12000.00),
-('FR002', 'FRENOS TRASERO', 'REPARACION O CAMBIO DE ZAPATAS, REPARACION O CAMBIO DE CAMPANAS.', 12600.00),
-('FR003', 'SISTEMA DE FRENOS', 'BOMBA, ABS, CALIBRQACION DE FRENOS', 11400.00),
-('LIM00', 'LIMPIEZA DE INYECTORES', 'LIMPIEZA Y PUESTA A PUNTO DE INYECTORES', 19700.00),
-('MT001', '½ MOTOR', 'CAMBIO DE AROS, METALES Y RETENES', 98400.00),
-('MT002', 'MOTOR COMPLETO', 'DESARME Y REPARACION COMPLETA DE MOTOR', 122400.00),
-('OT001', 'OTROS', 'TRABAJOS NO CONTEMPLADOS.', 55600.00),
-('RE001', 'REVISION ECU', 'REVISION, AJUSTE PROGRAMACION DE ECU', 19600.00),
-('RR001', 'RULEMANES DE RUEDA DELANTEROS', 'CAMBIO DE RULEMANES DE RUEDA', 7800.00),
-('RR002', 'RULEMANES DE RUEDA TRASEROS', 'CAMBIO DE RULEMANES DE RUEDA', 8100.00),
-('S001', 'SERVICE', 'CAMBIO DE FILTROS –ACEITE, AIREMOTOR, AIRE HABITACULO, COMBUSTIBLE- CAMBIO DE FLUIDOS', 8500.00),
-('S002', 'SERVICE DISTRIBUCION', 'CORREA O CADENA DE DISTRIBUCION, TENSORES, CORREA DE ACCESORIOS', 22000.00),
-('SA001', 'SISTEMA DE ADMSION', 'LIMPIEZA, REGULACION Y PUESTA A PUNTO DE CARBURADOR O CUERPO MARIPOSA', 18700.00),
-('SD001', 'SUSPENSIÓN DELANTERA BÁSICA', 'CAMBIO DE ROTULAS, BIELETA,BUJES DE PARRILLA, BUJES BARRA ESTABILIZADORA', 18200.00),
-('SD002', 'SUSPENSIÓN DELANTERA COMPLETA', 'SUPENCION DELANTERA BASICA + AMORTIGUADORES, CASOLETAS, ESPIRALES, PARRILLAS', 27400.00),
-('SDI00', 'SISTEMA DE DIRECCION', 'CREMALLERA, EXTREMOS, PRECAP, COLUMNA DE DIRECCION', 13300.00),
-('SE001', 'SISTEMA DE ENCENDIDO', 'BOBINA, CABLES, BUJIAS, PRECALENTADORES, DISTRIBUIDOR', 10400.00),
-('SEL00', 'SISTEMA ELECTRICO', 'BATERIA, ALTERNADOR, ARRANQUE', 9800.00),
-('SES00', 'SISTEMA DE ESCAPE ', 'REPARACION DE MULTIPLE DE ESCAPE, CAÑO DE ESCAPE, SILENCIADOR, CAMBIO DE JUNTAS.', 39500.00),
-('SRF00', 'SISTEMA DE REFRIGERACION', 'CAMBIO DE MANGUERAS, RADIADOR, TERMOSTATO, BULBO DE TEMPERATURA,  BIDON DE REFRIGERANTE, BOMBE DE AG', 14600.00),
-('ST001', 'SUSPENSIÓN TRASERA BÁSICA', 'BUJES DE PARRILLA SUPERIOR E INFERIOR, BUJES PUENTE TRASERO O BRAZO OSCILANTE', 22100.00),
-('ST002', 'SUSPENSIÓN TRASERA COMPLETA', 'SUSPENSIÓN TRASERA BASICA + AMORTIGUADORES, ESPIRALES, PUENTE TRASERO, PARRILLAS INFERIOR Y SUPERIOR', 38200.00),
-('STR00', 'SISTEMA TRACCION', 'PALIERES, TRICETAS,  HOMOCINETICAS, CARDAN, DIFERENCIAL', 17600.00),
-('TP001', 'TAPA DE CILINDRO', 'REPARACION DE TAPA DE CILINDROS, CAMBIO DE JUNTAS, RETENES Y BULONES', 48500.00);
+INSERT INTO `servicios` (`servicio_codigo`, `servicio_nombre`, `servicio_descripcion`, `servicio_costo`, `servicio_disponible`) VALUES
+('CLA00', 'CAMBIO DE LAMPARAS', 'REVICION Y CAMBIO DE LAMPARAS', 7200.00, 1),
+('CV001', 'CAJA DE VELOCIDADES', 'REPARACION DE COMPETA DE CAJA DE VELOCIDADES CAMBIO DE RETENES', 72600.00, 1),
+('D001', 'DIAGNOSTICO COMPUTARIZADO', 'TOMA DE DIAGNOSTICO', 5000.00, 1),
+('EB001', 'EMBRAGUE', 'CAMBIO O REPARACION DE EMBRAGUE, BOMBA, BOMBIN, RULEMAN DE EMPUJE', 59800.00, 1),
+('FR001', 'FRENOS DELANTEROS', 'REPARACION O CAMBIO DE DISCO, CAMBIO DE PASTILLAS.', 12000.00, 1),
+('FR002', 'FRENOS TRASERO', 'REPARACION O CAMBIO DE ZAPATAS, REPARACION O CAMBIO DE CAMPANAS.', 12600.00, 1),
+('FR003', 'SISTEMA DE FRENOS', 'BOMBA, ABS, CALIBRQACION DE FRENOS', 11400.00, 1),
+('LIM00', 'LIMPIEZA DE INYECTORES', 'LIMPIEZA Y PUESTA A PUNTO DE INYECTORES', 19700.00, 1),
+('MT001', '½ MOTOR', 'CAMBIO DE AROS, METALES Y RETENES', 98400.00, 1),
+('MT002', 'MOTOR COMPLETO', 'DESARME Y REPARACION COMPLETA DE MOTOR', 122400.00, 1),
+('NEU00', 'Neumatico Delanteros', 'Cambio de neumáticos delanteros', 60000.00, 1),
+('NEU01', 'NEUMATICOS TRASEROS', 'CAMBIO DE NEUMÁTICOS TRASEROS', 60000.00, 1),
+('OT001', 'OTROS', 'TRABAJOS NO CONTEMPLADOS.', 55600.00, 1),
+('RE001', 'REVISION ECU', 'REVISION, AJUSTE PROGRAMACION DE ECU', 19600.00, 1),
+('RR001', 'RULEMANES DE RUEDA DELANTEROS', 'CAMBIO DE RULEMANES DE RUEDA', 7800.00, 1),
+('RR002', 'RULEMANES DE RUEDA TRASEROS', 'CAMBIO DE RULEMANES DE RUEDA', 8100.00, 1),
+('S001', 'SERVICE', 'CAMBIO DE FILTROS –ACEITE, AIREMOTOR, AIRE HABITACULO, COMBUSTIBLE- CAMBIO DE FLUIDOS', 8500.00, 1),
+('S002', 'SERVICE DISTRIBUCION', 'CORREA O CADENA DE DISTRIBUCION, TENSORES, CORREA DE ACCESORIOS', 22000.00, 1),
+('SA001', 'SISTEMA DE ADMSION', 'LIMPIEZA, REGULACION Y PUESTA A PUNTO DE CARBURADOR O CUERPO MARIPOSA', 18700.00, 1),
+('SD001', 'SUSPENSIÓN DELANTERA BÁSICA', 'CAMBIO DE ROTULAS, BIELETA,BUJES DE PARRILLA, BUJES BARRA ESTABILIZADORA', 18200.00, 1),
+('SD002', 'SUSPENSIÓN DELANTERA COMPLETA', 'SUPENCION DELANTERA BASICA + AMORTIGUADORES, CASOLETAS, ESPIRALES, PARRILLAS', 27400.00, 1),
+('SDI00', 'SISTEMA DE DIRECCION', 'CREMALLERA, EXTREMOS, PRECAP, COLUMNA DE DIRECCION', 13300.00, 1),
+('SE001', 'SISTEMA DE ENCENDIDO', 'BOBINA, CABLES, BUJIAS, PRECALENTADORES, DISTRIBUIDOR', 10400.00, 1),
+('SEL00', 'SISTEMA ELECTRICO', 'BATERIA, ALTERNADOR, ARRANQUE', 9800.00, 1),
+('SES00', 'SISTEMA DE ESCAPE ', 'REPARACION DE MULTIPLE DE ESCAPE, CAÑO DE ESCAPE, SILENCIADOR, CAMBIO DE JUNTAS.', 39500.00, 1),
+('SIS00', 'SISTEMA DE ESCAPE', 'REPARACIÓN DE SISTEMA DE ESCAPE', 50000.00, 1),
+('SRF00', 'SISTEMA DE REFRIGERACION', 'CAMBIO DE MANGUERAS, RADIADOR, TERMOSTATO, BULBO DE TEMPERATURA,  BIDON DE REFRIGERANTE, BOMBE DE AG', 14600.00, 1),
+('ST001', 'SUSPENSIÓN TRASERA BÁSICA', 'BUJES DE PARRILLA SUPERIOR E INFERIOR, BUJES PUENTE TRASERO O BRAZO OSCILANTE', 22100.00, 1),
+('ST002', 'SUSPENSIÓN TRASERA COMPLETA', 'SUSPENSIÓN TRASERA BASICA + AMORTIGUADORES, ESPIRALES, PUENTE TRASERO, PARRILLAS INFERIOR Y SUPERIOR', 38200.00, 1),
+('STR00', 'SISTEMA TRACCION', 'PALIERES, TRICETAS,  HOMOCINETICAS, CARDAN, DIFERENCIAL', 17600.00, 1),
+('TP001', 'TAPA DE CILINDRO', 'REPARACION DE TAPA DE CILINDROS, CAMBIO DE JUNTAS, RETENES Y BULONES', 48500.00, 1);
 
 -- --------------------------------------------------------
 
@@ -388,7 +516,9 @@ INSERT INTO `turnos` (`turno_id`, `turno_fecha`, `turno_hora`, `cliente_DNI`, `v
 (50, '2025-10-13', '08:00:00', '30700247', 'GCR891', '32690365', 'pendiente', '123654125874126541'),
 (51, '2025-10-13', '08:00:00', '30700247', 'GCR891', '47651867', 'pendiente', '12368741236584'),
 (52, '2025-10-15', '08:00:00', '30700247', 'GCR891', '32690365', 'pendiente', '1236987412'),
-(54, '2025-10-14', '08:00:00', '44671150', 'A221GAR', '08326014', 'pendiente', 'testeo');
+(53, '2025-11-11', '08:00:00', '30700247', 'GCR891', '08326014', 'pendiente', 'vsdfbcbncxb'),
+(54, '2025-11-11', '08:00:00', '30700247', 'UWL004', '30700247', 'pendiente', 'jghjdnn'),
+(55, '2025-11-11', '08:00:00', '30700247', 'UWL004', '30700247', 'pendiente', 'jghjdnn');
 
 -- --------------------------------------------------------
 
@@ -472,6 +602,13 @@ ALTER TABLE `ordenes`
   ADD KEY `vehiculo_patente` (`vehiculo_patente`);
 
 --
+-- Indices de la tabla `orden_productos`
+--
+ALTER TABLE `orden_productos`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_orden_producto` (`orden_numero`,`prod_id`);
+
+--
 -- Indices de la tabla `orden_trabajo`
 --
 ALTER TABLE `orden_trabajo`
@@ -479,6 +616,13 @@ ALTER TABLE `orden_trabajo`
   ADD KEY `servicio_codigo` (`servicio_codigo`),
   ADD KEY `fk_turno_orden_trabajo` (`turno_id`),
   ADD KEY `idx_factura_id` (`factura_id`);
+
+--
+-- Indices de la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD PRIMARY KEY (`prod_id`),
+  ADD UNIQUE KEY `prod_codigo` (`prod_codigo`);
 
 --
 -- Indices de la tabla `servicios`
@@ -510,13 +654,25 @@ ALTER TABLE `vehiculos`
 -- AUTO_INCREMENT de la tabla `facturas`
 --
 ALTER TABLE `facturas`
-  MODIFY `factura_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `factura_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+
+--
+-- AUTO_INCREMENT de la tabla `orden_productos`
+--
+ALTER TABLE `orden_productos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT de la tabla `productos`
+--
+ALTER TABLE `productos`
+  MODIFY `prod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT de la tabla `turnos`
 --
 ALTER TABLE `turnos`
-  MODIFY `turno_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `turno_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- Restricciones para tablas volcadas
@@ -541,7 +697,7 @@ ALTER TABLE `orden_trabajo`
 -- Filtros para la tabla `turnos`
 --
 ALTER TABLE `turnos`
-  ADD CONSTRAINT `turnos_ibfk_1` FOREIGN KEY (`cliente_DNI`) REFERENCES `clientes` (`cliente_DNI`),
+  ADD CONSTRAINT `turnos_ibfk_1` FOREIGN KEY (`cliente_dni`) REFERENCES `clientes` (`cliente_DNI`),
   ADD CONSTRAINT `turnos_ibfk_2` FOREIGN KEY (`vehiculo_patente`) REFERENCES `vehiculos` (`vehiculo_patente`),
   ADD CONSTRAINT `turnos_ibfk_3` FOREIGN KEY (`mecanico_dni`) REFERENCES `empleados` (`empleado_DNI`);
 

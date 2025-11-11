@@ -9,6 +9,19 @@ $mensajeModal = "";
 
 $datosOrden = [];
 
+function e($s){ return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
+function nfmt($n){ return number_format((float)$n, 2, ',', '.'); }
+
+$abrirModalProductos = (isset($_GET['agregar']) && $_GET['agregar'] == '1');
+
+$f_cod = trim($_GET['p_cod'] ?? '');
+$f_cat = trim($_GET['p_cat'] ?? '');
+$f_des = trim($_GET['p_des'] ?? '');
+
+$listaProductos = [];
+$itemsOrden = [];
+$subtotalOrden = 0.0;
+
 try {
     $ordenNum = trim($_GET['orden'] ?? '');
 
@@ -39,6 +52,8 @@ try {
             }
         }
     }
+
+    if (!$modalError && !$modalFinalizado && $_SERVER["REQUEST_METHOD"] === "POST") {
 
         // FINALIZAR ORDEN SI ENVIO FORMULARIO
         if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['finalizar'])) {
@@ -85,6 +100,144 @@ try {
             }
         }
 
+        // AGREGAR PRODUCTOS (con control de stock, cantidades enteras y transacción)
+        if (isset($_POST['accion']) && $_POST['accion'] === 'agregar_productos') {
+            $ordenNum = (int)($_POST['orden_numero'] ?? 0);
+            $mecanico = $_SESSION['empleado_DNI'] ?? $_SESSION['empleado_dni'] ?? '';
+
+            $ids   = isset($_POST['prod_id']) && is_array($_POST['prod_id']) ? $_POST['prod_id'] : [];
+            $cants = $_POST['cant'] ?? []; // cant[prod_id] => cantidad
+
+            // Validaciones mínimas
+            if ($ordenNum <= 0) {
+                $modalError = true;
+                $mensajeModal = "Orden inválida.";
+                $abrirModalProductos = true;
+            } elseif (empty($ids)) {
+                $modalError = true;
+                $mensajeModal = "No seleccionaste productos.";
+                $abrirModalProductos = true;
+            } else {
+                try {
+                    $conexion->beginTransaction();
+
+                    $errores = [];
+                    foreach ($ids as $idStr) {
+                        $pid = (int)$idStr;
+
+                        // Fuerza ENTEROS >= 1
+                        $cantSolic = isset($cants[$pid]) ? (int)$cants[$pid] : 1;
+                        if ($cantSolic < 1) { $cantSolic = 1; }
+
+                        // Lock de fila producto
+                        $st = $conexion->prepare("
+                            SELECT prod_id, prod_codigo, prod_descripcion, prod_stock, prod_precio_venta
+                            FROM productos
+                            WHERE prod_id = ? AND prod_disponible = 1
+                            FOR UPDATE
+                        ");
+                        $st->execute([$pid]);
+                        $p = $st->fetch(PDO::FETCH_ASSOC);
+
+                        if (!$p) {
+                            $errores[] = "Producto ID $pid no disponible.";
+                            continue;
+                        }
+
+                        $stockActual = (int)$p['prod_stock'];
+                        if ($stockActual < $cantSolic) {
+                            $errores[] = "Stock insuficiente para {$p['prod_codigo']} ({$p['prod_descripcion']}). Disponible: $stockActual, solicitado: $cantSolic.";
+                            continue;
+                        }
+
+                        // Upsert a orden_productos (suma cantidades)
+                        $upd = $conexion->prepare("
+                            UPDATE orden_productos
+                            SET cantidad = cantidad + :cant,
+                                precio_unitario = :precio,
+                                mecanico_DNI = :dni
+                            WHERE orden_numero = :o AND prod_id = :pid
+                        ");
+                        $upd->execute([
+                            ':cant'   => $cantSolic,
+                            ':precio' => $p['prod_precio_venta'],
+                            ':dni'    => $mecanico,
+                            ':o'      => $ordenNum,
+                            ':pid'    => $p['prod_id']
+                        ]);
+
+                        if ($upd->rowCount() === 0) {
+                            $ins = $conexion->prepare("
+                                INSERT INTO orden_productos
+                                    (orden_numero, prod_id, prod_codigo, prod_descripcion, cantidad, precio_unitario, mecanico_DNI)
+                                VALUES (:o,:pid,:cod,:des,:cant,:precio,:dni)
+                            ");
+                            $ins->execute([
+                                ':o'      => $ordenNum,
+                                ':pid'    => $p['prod_id'],
+                                ':cod'    => $p['prod_codigo'],
+                                ':des'    => $p['prod_descripcion'],
+                                ':cant'   => $cantSolic,
+                                ':precio' => $p['prod_precio_venta'],
+                                ':dni'    => $mecanico
+                            ]);
+                        }
+
+                        // Descuento de stock
+                        $updStock = $conexion->prepare("
+                            UPDATE productos
+                            SET prod_stock = prod_stock - :cant
+                            WHERE prod_id = :pid
+                        ");
+                        $updStock->execute([
+                            ':cant' => $cantSolic,
+                            ':pid'  => $p['prod_id']
+                        ]);
+                    }
+
+                    if (!empty($errores)) {
+                        // Si hubo al menos un error, NO aplicamos nada
+                        $conexion->rollBack();
+                        $modalError = true;
+                        $mensajeModal = "No se pudieron agregar productos:\n- " . implode("\n- ", $errores);
+                        $abrirModalProductos = true;
+                    } else {
+                        $conexion->commit();
+                        header("Location: ordenes_pendientes.php?orden=" . urlencode((string)$ordenNum));
+                        exit;
+                    }
+                } catch (Throwable $tx) {
+                    if ($conexion->inTransaction()) $conexion->rollBack();
+                    $modalError = true;
+                    $mensajeModal = "Error al agregar productos: " . $tx->getMessage();
+                    $abrirModalProductos = true;
+                }
+            }
+        }
+    }
+
+    if (!$modalError && !$modalFinalizado && $datosOrden) {
+        $st = $conexion->prepare("SELECT * FROM orden_productos WHERE orden_numero=? ORDER BY id ASC");
+        $st->execute([$datosOrden['orden_numero']]);
+        $itemsOrden = $st->fetchAll(PDO::FETCH_ASSOC);
+        foreach($itemsOrden as $it){ $subtotalOrden += (float)$it['cantidad']*(float)$it['precio_unitario']; }
+
+        if ($abrirModalProductos) {
+            $where = ["prod_disponible=1"];
+            $params=[];
+            if ($f_cod !== '') { $where[]="prod_codigo LIKE :c";     $params[':c']="%{$f_cod}%"; }
+            if ($f_cat !== '') { $where[]="prod_categoria LIKE :g";  $params[':g']="%{$f_cat}%"; }
+            if ($f_des !== '') { $where[]="prod_descripcion LIKE :d";$params[':d']="%{$f_des}%"; }
+            $sql = "SELECT prod_id, prod_codigo, prod_categoria, prod_descripcion, prod_stock, prod_precio_venta
+                    FROM productos";
+            if ($where) $sql .= " WHERE ".implode(" AND ",$where);
+            $sql .= " ORDER BY prod_categoria ASC, prod_codigo ASC";
+            $st = $conexion->prepare($sql);
+            $st->execute($params);
+            $listaProductos = $st->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
 } catch (PDOException $e) {
     $modalError = true;
     $mensajeModal = "Error en la base de datos: " . $e->getMessage();
@@ -96,6 +249,52 @@ try {
     <meta charset="UTF-8">
     <title>Orden Pendiente</title>
     <link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>">
+    <style>
+        /* Centrado perfecto, por encima de todo */
+        dialog.modal-prods{
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95%; max-width: 980px;
+            max-height: 90vh;
+            margin: 0; padding: 0;
+            border: 1px solid #ccc; border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.35);
+            z-index: 999999;
+            display: flex;              /* header + body + footer */
+            flex-direction: column;
+            background: #fff;
+            overflow: hidden;           /* el scroll va en .modal-body */
+        }
+        dialog.modal-prods::backdrop{ background: rgba(0,0,0,.45); }
+        .modal-header{ padding: 12px 16px; border-bottom: 1px solid #e5e5e5; }
+        .modal-body{ padding: 12px 16px; overflow: auto; flex: 1; }
+        .modal-footer{
+            padding: 10px 16px; border-top: 1px solid #e5e5e5; background: #fafafa;
+            display: flex; gap: 8px; justify-content: flex-end;
+        }
+        .row-flex{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+        .btn{ display:inline-block; padding:6px 12px; border:1px solid #bbb; border-radius:4px; text-decoration:none; cursor:pointer; }
+        .btn-prim{ background:#2d6cdf; color:#fff; border-color:#2d6cdf; }
+        .btn-neu{ background:#f2f2f2; color:#333; }
+        table.table{ width:100%; border-collapse:collapse; background:#fff; }
+        .table th,.table td{ border:1px solid #ddd; padding:6px; text-align:left; }
+        .right{ text-align:right; }
+        .subtle{ color:#666; font-size:13px; }
+
+        /* (1) Estados de stock visuales */
+        .row-low  { background: #fff8e6; }  /* stock bajo */
+        .row-zero { background: #fdecea; }  /* sin stock  */
+        .tag { display:inline-block; padding:2px 8px; border-radius:12px; font-size:12px; }
+        .tag-low  { background:#ffe8b3; color:#8a5a00; }
+        .tag-zero { background:#f8c7c3; color:#8a1f12; }
+
+        /* (2) Inputs/checkbox deshabilitados visibles */
+        .table input[disabled], .table input:disabled {
+            background:#f5f5f5; color:#777; cursor:not-allowed;
+        }
+    </style>
+
 </head>
 <body>
     <?php include("nav_mecanico.php"); ?>
@@ -135,6 +334,22 @@ try {
             <?= htmlspecialchars($datosOrden['vehiculo_anio']) ?>
         </h2>
 
+        <div class="subtle" style="margin-left:5%;">
+            Orden N° <b><?= e($datosOrden['orden_numero']) ?></b> —
+            Subtotal productos: <b>$ <?= nfmt($subtotalOrden) ?></b>
+            <?php if ($itemsOrden): ?>
+                <span class="tag">Items: <?= count($itemsOrden) ?></span>
+            <?php endif; ?>
+        </div>
+
+        <!-- BOTONES DE ACCIÓN DE ORDEN -->
+        <div style="margin:10px 0 0 5%;" class="row-flex">
+            <!-- ABRIR MODAL: Agregar productos -->
+            <a class="btn btn-neu" href="ordenes_pendientes.php?orden=<?= e($datosOrden['orden_numero']) ?>&agregar=1">
+                🧰 Agregar productos
+            </a>
+        </div>
+
         <form method="post" class="form_ordenpen">
             <input type="hidden" name="orden_numero" value="<?= htmlspecialchars($datosOrden['orden_numero']) ?>">
             <h2>Servicio</h2> 
@@ -160,12 +375,9 @@ try {
             <br><br>
             
             <div class="bot_ordpen">
-
                 <input class="ordpen_fin" type="submit" value="Finalizar" name="finalizar">
                 <a href="exportar_pdf_orden.php?orden=<?= htmlspecialchars($datosOrden['orden_numero']) ?>" 
-                target="_blank" class="imprimir_ordpen" >
-                    🖨️ Imprimir
-                </a>            
+                   target="_blank" class="imprimir_ordpen">🖨️ Imprimir</a>
             </div>
         </form>
     </section>
@@ -173,5 +385,114 @@ try {
     <br>
     <?php include("piedepagina.php"); ?>
     <script src="control_inactividad.js"></script>
+
+    <?php if ($abrirModalProductos && !$modalError && !$modalFinalizado && $datosOrden): ?>
+    <dialog open class="modal-prods">
+      <div class="modal-header">
+        <h3 style="margin:0; text-align:center;">
+          Agregar productos — Orden <?= e($datosOrden['orden_numero']) ?>
+        </h3>
+      </div>
+
+      <div class="modal-body">
+        <!-- FILTROS -->
+        <form method="get" class="row-flex" action="ordenes_pendientes.php" style="margin:6px 0 10px;">
+          <input type="hidden" name="orden" value="<?= e($datosOrden['orden_numero']) ?>">
+          <input type="hidden" name="agregar" value="1">
+          <input type="text" name="p_cod" placeholder="Código" value="<?= e($f_cod) ?>">
+          <input type="text" name="p_cat" placeholder="Categoría" value="<?= e($f_cat) ?>">
+          <input type="text" name="p_des" placeholder="Descripción" value="<?= e($f_des) ?>">
+          <button class="btn btn-prim" type="submit">Buscar</button>
+          <a class="btn btn-neu" href="ordenes_pendientes.php?orden=<?= e($datosOrden['orden_numero']) ?>">Limpiar</a>
+        </form>
+
+        <!-- LISTA MULTISELECCIÓN -->
+        <form id="formProds" method="post" action="ordenes_pendientes.php?orden=<?= e($datosOrden['orden_numero']) ?>">
+          <input type="hidden" name="accion" value="agregar_productos">
+          <input type="hidden" name="orden_numero" value="<?= e($datosOrden['orden_numero']) ?>">
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width:28px;">
+                  <!-- (3) Select-all solo habilitados -->
+                  <input type="checkbox" id="ck_all_modal"
+                    onclick="document.querySelectorAll('.ckp:not(:disabled)').forEach(x=>x.checked=this.checked)">
+                </th>
+                <th>Código</th>
+                <th>Categoría</th>
+                <th>Descripción</th>
+                <th class="right">Stock</th>
+                <th class="right">P. Venta</th>
+                <th class="right" style="width:120px;">Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php if (!$listaProductos): ?>
+                <tr><td colspan="7" class="subtle">No hay resultados con el filtro actual.</td></tr>
+              <?php else: foreach ($listaProductos as $p):
+                    $stock = (int)$p['prod_stock'];
+                    $rowCls = ($stock <= 0) ? 'row-zero' : (($stock < 3) ? 'row-low' : '');
+                    $disabled = ($stock <= 0) ? 'disabled' : '';
+                    $titleCk  = ($stock <= 0) ? 'title="Sin stock"' : 'title="Seleccionar"';
+                ?>
+                <tr class="<?= $rowCls ?>">
+                  <td>
+                    <input class="ckp" type="checkbox" name="prod_id[]" value="<?= (int)$p['prod_id'] ?>" <?= $disabled ?> <?= $titleCk ?>>
+                  </td>
+                  <td><?= e($p['prod_codigo']) ?></td>
+                  <td><?= e($p['prod_categoria']) ?></td>
+                  <td>
+                    <?= e($p['prod_descripcion']) ?>
+                    <?php if ($stock <= 0): ?>
+                      &nbsp;<span class="tag tag-zero">Sin stock</span>
+                    <?php elseif ($stock < 6): ?>
+                      &nbsp;<span class="tag tag-low">Stock bajo</span>
+                    <?php endif; ?>
+                  </td>
+                  <td class="right"><?= $stock ?></td>
+                  <td class="right">$ <?= nfmt($p['prod_precio_venta']) ?></td>
+                  <td class="right">
+                    <input
+                      type="number"
+                      name="cant[<?= (int)$p['prod_id'] ?>]"
+                      step="1"
+                      min="1"
+                      value="1"
+                      style="width:90px;"
+                      inputmode="numeric"
+                      pattern="\d+"
+                      oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                      <?= $disabled ?>
+                      title="<?= ($stock <= 0) ? 'Sin stock' : 'Cantidad' ?>"
+                    />
+                  </td>
+                </tr>
+              <?php endforeach; endif; ?>
+            </tbody>
+          </table>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <a class="btn btn-neu" href="ordenes_pendientes.php?orden=<?= e($datosOrden['orden_numero']) ?>">Volver</a>
+        <button class="btn btn-prim" type="submit" form="formProds">Agregar</button>
+      </div>
+    </dialog>
+    <?php endif; ?>
+
+    <!-- (4) Script opcional para el select-all (no rompe el inline) -->
+    <script>
+      (function(){
+        const ckAll = document.getElementById('ck_all_modal');
+        if (ckAll) {
+          ckAll.addEventListener('click', () => {
+            document.querySelectorAll('.ckp').forEach(x => {
+              if (!x.disabled) x.checked = ckAll.checked;
+            });
+          });
+        }
+      })();
+    </script>
 </body>
 </html>

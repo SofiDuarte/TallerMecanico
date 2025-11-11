@@ -3,21 +3,33 @@ session_start();
 require_once 'verificar_sesion_empleado.php';
 require_once 'conexion_base.php';
 
-// Trae SOLO finalizados y SIN facturar
+/*
+ Trae órdenes finalizadas (ot.orden_estado=1) y sin facturar (ot.factura_id IS NULL)
+ e incluye el subtotal de productos por orden (sum(cantidad*precio_unitario)).
+*/
 $sql = "
 SELECT 
   o.orden_numero, o.orden_fecha,
   c.cliente_nombre, c.cliente_DNI, c.cliente_direccion, c.cliente_telefono, c.cliente_email,
   v.vehiculo_patente, v.vehiculo_marca, v.vehiculo_modelo,
   s.servicio_codigo, s.servicio_nombre,
-  ot.orden_comentario, ot.costo_ajustado
+  ot.orden_comentario, ot.costo_ajustado,
+  IFNULL(op.productos_total, 0)   AS productos_total,
+  IFNULL(op.productos_count, 0)   AS productos_count
 FROM orden_trabajo ot
 JOIN ordenes   o ON o.orden_numero = ot.orden_numero
 JOIN servicios s ON s.servicio_codigo = ot.servicio_codigo
 JOIN vehiculos v ON v.vehiculo_patente = o.vehiculo_patente
 JOIN clientes  c ON c.cliente_DNI = v.cliente_DNI
-WHERE ot.orden_estado = 1       -- finalizado
-  AND ot.factura_id IS NULL     -- sin facturar
+LEFT JOIN (
+  SELECT orden_numero,
+         SUM(cantidad * precio_unitario) AS productos_total,
+         COUNT(*) AS productos_count
+  FROM orden_productos
+  GROUP BY orden_numero
+) op ON op.orden_numero = ot.orden_numero
+WHERE ot.orden_estado = 1         -- finalizado
+  AND ot.factura_id IS NULL       -- sin facturar
 ORDER BY o.orden_fecha DESC, o.orden_numero DESC
 ";
 $rows = $conexion->query($sql)->fetchAll(PDO::FETCH_ASSOC);
@@ -28,7 +40,22 @@ $rows = $conexion->query($sql)->fetchAll(PDO::FETCH_ASSOC);
   <meta charset="UTF-8">
   <title>Facturación</title>
   <link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>">
-
+  <style>
+    table { width:100%; border-collapse:collapse; background:#fff; }
+    th, td { border:1px solid #ddd; padding:8px; text-align:left; vertical-align:top; }
+    th { background:#f2f2f2; }
+    .mini { color:#666; font-size:12px; }
+    .right { text-align:right; }
+    .btn-icono { padding:6px 10px; cursor:pointer; }
+    /* Modal cómodo */
+    #modal_factura { position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:95%; max-width:720px; border:1px solid #ccc; border-radius:10px; }
+    #modal_factura::backdrop { background:rgba(0,0,0,.45); }
+    .modal-row { margin:8px 0; display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    .modal-actions { margin-top:12px; display:flex; gap:10px; justify-content:flex-end; }
+    .resumen-box { background:#fafafa; border:1px solid #eee; border-radius:8px; padding:10px 12px; }
+    .resumen-box .row { display:flex; justify-content:space-between; margin:4px 0; }
+    .resumen-box .row strong { font-weight:600; }
+  </style>
 </head>
 <body>
 <?php include 'nav_rec.php'; ?>
@@ -43,33 +70,45 @@ $rows = $conexion->query($sql)->fetchAll(PDO::FETCH_ASSOC);
         <th>Fecha</th>
         <th>Cliente</th>
         <th>DNI</th>
-        <th>Patente</th>
-        <th>Marca</th>
-        <th>Modelo</th>
+        <th>Vehículo</th>
         <th>Servicio</th>
-        <th>Costo ajustado</th>
+        <th class="right">Serv. ($)</th>
+        <th class="right">Prod. ($)</th>
+        <th class="right">Total ($)</th>
         <th>Acción</th>
       </tr>
     </thead>
     <tbody>
       <?php if (!$rows): ?>
         <tr class="fila-vacia"><td colspan="10">No hay trabajos pendientes de facturar.</td></tr>
-      <?php else: foreach ($rows as $r): ?>
+      <?php else: foreach ($rows as $r): 
+        $servicio  = (float)$r['costo_ajustado'];
+        $prods     = (float)$r['productos_total'];
+        $totalFact = $servicio + $prods;
+      ?>
         <tr>
           <td><?= htmlspecialchars($r['orden_numero']) ?></td>
           <td><?= htmlspecialchars($r['orden_fecha']) ?></td>
           <td><?= htmlspecialchars($r['cliente_nombre']) ?></td>
           <td><?= htmlspecialchars($r['cliente_DNI']) ?></td>
-          <td><?= htmlspecialchars($r['vehiculo_patente']) ?></td>
-          <td><?= htmlspecialchars($r['vehiculo_marca']) ?></td>
-          <td><?= htmlspecialchars($r['vehiculo_modelo']) ?></td>
+          <td>
+            <div><?= htmlspecialchars($r['vehiculo_patente']) ?></div>
+            <div class="mini"><?= htmlspecialchars($r['vehiculo_marca'].' '.$r['vehiculo_modelo']) ?></div>
+          </td>
           <td>
             <div><strong><?= htmlspecialchars($r['servicio_codigo']) ?></strong> - <?= htmlspecialchars($r['servicio_nombre']) ?></div>
             <?php if (trim((string)$r['orden_comentario'])!==''): ?>
               <div class="mini"><?= htmlspecialchars($r['orden_comentario']) ?></div>
             <?php endif; ?>
+            <?php if ((int)$r['productos_count'] > 0): ?>
+              <div class="mini">Productos asociados: <?= (int)$r['productos_count'] ?> (subtot: $ <?= number_format($prods,2,',','.') ?>)</div>
+            <?php else: ?>
+              <div class="mini" style="color:#a00;">Sin productos cargados</div>
+            <?php endif; ?>
           </td>
-          <td>$ <?= number_format((float)$r['costo_ajustado'], 2, ',', '.') ?></td>
+          <td class="right">$ <?= number_format($servicio, 2, ',', '.') ?></td>
+          <td class="right">$ <?= number_format($prods,    2, ',', '.') ?></td>
+          <td class="right"><strong>$ <?= number_format($totalFact, 2, ',', '.') ?></strong></td>
           <td>
             <button type="button" class="btn-icono"
               onclick="abrirModalFactura(this)"
@@ -87,6 +126,8 @@ $rows = $conexion->query($sql)->fetchAll(PDO::FETCH_ASSOC);
               data-servicio_nombre="<?= htmlspecialchars($r['servicio_nombre']) ?>"
               data-orden_comentario="<?= htmlspecialchars($r['orden_comentario']) ?>"
               data-costo_ajustado="<?= htmlspecialchars($r['costo_ajustado']) ?>"
+              data-productos_total="<?= number_format($prods, 2, '.', '') ?>"
+              data-total_factura="<?= number_format($totalFact, 2, '.', '') ?>"
             >🧾 Facturar</button>
           </td>
         </tr>
@@ -120,6 +161,13 @@ $rows = $conexion->query($sql)->fetchAll(PDO::FETCH_ASSOC);
       <div class="mini">Si lo dejás vacío usa el email del cliente.</div>
     </div>
 
+    <!-- Resumen montos -->
+    <div class="resumen-box" id="resumen_montos" aria-live="polite">
+      <div class="row"><span>Servicio</span><strong id="r_servicio">$ 0,00</strong></div>
+      <div class="row"><span>Productos</span><strong id="r_productos">$ 0,00</strong></div>
+      <div class="row"><span>Total</span><strong id="r_total">$ 0,00</strong></div>
+    </div>
+
     <!-- Hidden inputs con todos los datos -->
     <input type="hidden" name="orden_numero">
     <input type="hidden" name="orden_fecha">
@@ -136,6 +184,10 @@ $rows = $conexion->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     <input type="hidden" name="orden_comentario">
     <input type="hidden" name="costo_ajustado">
 
+    <!-- También mandamos estos dos como hint/preview (el total REAL se recalcula en generar_factura.php) -->
+    <input type="hidden" name="productos_total">
+    <input type="hidden" name="total_factura">
+
     <div class="modal-actions">
       <button class="guardar_rec" type="submit">Generar</button>
       <button class="cancelar_boton" type="button" onclick="cerrarModalFactura()">Cancelar</button>
@@ -144,45 +196,44 @@ $rows = $conexion->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 </dialog>
 
 <script>
-// Abre y precarga el modal
 function abrirModalFactura(btn){
-  try {
-    const d = document.getElementById('modal_factura');
-    if (!d) { alert('No se encontró el modal de factura.'); return; }
+  const d = document.getElementById('modal_factura');
+  const f = document.getElementById('form_facturar');
+  if (!d || !f) return;
 
-    const f = document.getElementById('form_facturar');
+  // carga de campos
+  const names = [
+    'orden_numero','orden_fecha','cliente_nombre','cliente_dni','cliente_direccion',
+    'cliente_telefono','cliente_email','vehiculo_patente','vehiculo_marca','vehiculo_modelo',
+    'servicio_codigo','servicio_nombre','orden_comentario','costo_ajustado',
+    'productos_total','total_factura'
+  ];
+  names.forEach(n => { if (f.elements[n]) f.elements[n].value = btn.dataset[n] ?? ''; });
 
-    const names = [
-      'orden_numero','orden_fecha','cliente_nombre','cliente_dni','cliente_direccion',
-      'cliente_telefono','cliente_email','vehiculo_patente','vehiculo_marca','vehiculo_modelo',
-      'servicio_codigo','servicio_nombre','orden_comentario','costo_ajustado'
-    ];
+  // resumen visible
+  const servicio  = parseFloat(btn.dataset.costo_ajustado || '0') || 0;
+  const productos = parseFloat(btn.dataset.productos_total || '0') || 0;
+  const total     = parseFloat(btn.dataset.total_factura || (servicio + productos)) || 0;
+  document.getElementById('r_servicio').textContent  = formatear(servicio);
+  document.getElementById('r_productos').textContent = formatear(productos);
+  document.getElementById('r_total').textContent     = formatear(total);
 
-    names.forEach(n => {
-      if (f.elements[n]) f.elements[n].value = btn.dataset[n] ?? '';
-    });
+  // defaults: tipo B + imprimir
+  f.querySelectorAll('input[name="tipo"]').forEach(r => r.checked = (r.value === 'B'));
+  f.querySelectorAll('input[name="accion"]').forEach(r => r.checked = (r.value === 'imprimir'));
+  document.getElementById('email_box').style.display = 'none';
+  document.getElementById('email_destino').value = '';
 
-    // Defaults (B + imprimir)
-    f.querySelectorAll('input[name="tipo"]').forEach(r => r.checked = (r.value === 'C'));
-    f.querySelectorAll('input[name="accion"]').forEach(r => r.checked = (r.value === 'imprimir'));
-    document.getElementById('email_box').style.display = 'none';
-    document.getElementById('email_destino').value = '';
-
-    if (typeof d.showModal === 'function') d.showModal();
-    else d.setAttribute('open','open'); // fallback simple
-
-  } catch (e) {
-    console.error(e);
-    alert('Error al abrir el modal de factura: ' + e.message);
-  }
+  if (typeof d.showModal === 'function') d.showModal();
+  else d.setAttribute('open','open');
 }
 
 function cerrarModalFactura() {
   const d = document.getElementById('modal_factura');
+  if (!d) return;
   if (typeof d.close === 'function') d.close(); else d.removeAttribute('open');
 }
 
-// Mostrar/ocultar email si se elige esa acción
 document.getElementById('form_facturar').addEventListener('change', (e)=>{
   if (e.target.name === 'accion') {
     document.getElementById('email_box').style.display =
@@ -190,36 +241,26 @@ document.getElementById('form_facturar').addEventListener('change', (e)=>{
   }
 });
 
-// Envío seguro: abre ventana, cierra modal y refresca
 let _enviandoFactura = false;
 function onSubmitFactura(form) {
-  if (_enviandoFactura) return false; // anti doble click
+  if (_enviandoFactura) return false;
   _enviandoFactura = true;
 
-  // Abrimos/obtenemos la ventana destino ANTES de enviar (evita bloqueos)
   const win = window.open('', 'facturaWin');
-  if (!win) {
-    // Si el popup fue bloqueado, mandamos en la misma pestaña
-    form.removeAttribute('target');
-  }
+  if (!win) form.removeAttribute('target');
 
-  // Cerramos el modal YA
   cerrarModalFactura();
+  setTimeout(() => { window.location.reload(); }, 600);
+  return true;
+}
 
-  // Damos tiempo a que se abra el PDF / procese email y refrescamos la tabla
-  setTimeout(() => {
-    window.location.reload();
-    // o explícito: window.location.href = 'facturacion.php';
-  }, 500);
-
-  return true; // dejamos que el form se envíe
+function formatear(num){
+  // Formato $ 1.234,56 (AR)
+  const n = Number(num || 0);
+  return '$ ' + n.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 </script>
 
-  
-    <?php 
-        include("piedepagina.php");
-    ?>
-
+<?php include("piedepagina.php"); ?>
 </body>
 </html>

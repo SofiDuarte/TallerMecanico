@@ -220,7 +220,6 @@ try {
         </tbody>
     </table>
     <div style="text-align:center; margin-top:20px;">
-        <!-- acá cerraba el modal equivocado -->
         <button onclick="document.getElementById('modal_turnos_pendientes').close()">Cerrar</button>
     </div>
 </dialog>
