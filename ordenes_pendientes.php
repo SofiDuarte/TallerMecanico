@@ -249,6 +249,90 @@ try {
     <meta charset="UTF-8">
     <title>Orden Pendiente</title>
     <link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>">
+<style>
+ /* Centrado perfecto, por encima de todo */
+       /* Centrado perfecto, por encima de todo */
+        dialog.modal-prods{
+            position: center !important;
+            top: 50% !important; 
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            max-width: 980px !important;
+            max-height: 90vh !important;
+            margin: 0 !important; 
+            padding: 0 !important;
+            border: 1px solid #ccc !important; 
+            border-radius: 10px !important;
+            box-shadow: 0 20px 60px rgba(0,0,0,.35) !important;
+            /*z-index: 999999;*/
+            display: flex  !important;              /* header + body + footer*/ 
+            flex-direction: column !important;
+            color: #000 !important;
+            overflow: hidden !important;           /* el scroll va en .modal-body */
+        }
+        dialog.modal-prods::backdrop{ background: rgba(255, 0, 0, 0.45); }
+        .modal-header{ padding: 12px 16px; border-bottom: 1px solid #3a3f3a71; }
+        .modal-body{ 
+            padding: 12px 16px !important; 
+            overflow: auto !important; 
+            flex: 1 !important; 
+            text-align: center !important;
+        }
+        .modal-footer{
+            padding: 10px 16px;
+            border-top: 1px solid #e5e5e5;
+            background: #fafafa;
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        /*.modal-footer{
+            padding: 10px 16px; border-top: 1px solid #e5e5e5; background: #fafafa;
+            display: flex; gap: 8px; justify-content: flex-end;
+        }*/
+        /*.row-flex{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }*/
+        .btn{ 
+            display: inline-block !important; 
+            padding:6px 12px !important; 
+            border:1px solid #3AAFAF !important; 
+            background-color: #3AAFAF !important;
+            border-radius:4px !important; 
+            cursor: pointer !important; 
+            font-family: 'Big_Shoulders_Medium' !important;
+            font-size: 16px !important;
+        }
+       .btn-prim{ 
+            color: #000 !important; 
+            width: 90px !important;
+            height: 35px !important;
+        }
+        .btn-neu{ 
+            color: #000 !important; 
+            text-decoration:none !important; 
+            text-align: center !important;
+            width: 90px !important;
+            height: 35px !important;
+        
+        
+        }
+        table.table{ width:100% !important; border-collapse:collapse !important;}
+        .table th,.table td{ padding:6px !important; text-align:left !important; border-style: solid !important;  border-color:#00000036 !important;}
+        /*.right{ text-align:right; }
+        .subtle{ color:#666; font-size:13px; }*/
+
+        /* (1) Estados de stock visuales */
+        .row-low  { background: #ffd66dff !important;}  /* stock bajo */
+        .row-zero { background: #ffd66dff !important ; }  /* sin stock  */
+        .tag { display:inline-block !important ; padding:2px 8px !important; border-radius:12px !important; font-size:12px !important; }
+        .tag-low  { background:#ffe8b3 !important; color:#8a5a00 !important; }
+        .tag-zero { background:#f8c7c3 !important; color:#8a1f12 !important; }
+
+        /* (2) Inputs/checkbox deshabilitados visibles */
+        .table input[disabled], .table input:disabled {
+            background:#f5f5f5; color:#777; cursor:not-allowed;
+        }    
+</style>
 
 </head>
 <body>
@@ -362,11 +446,11 @@ try {
         </form>
 
         <!-- LISTA MULTISELECCIÓN -->
-        <form class="form_agregar_prod"id="formProds" method="post" action="ordenes_pendientes.php?orden=<?= e($datosOrden['orden_numero']) ?>">
+        <form id="formProds" method="post" action="ordenes_pendientes.php?orden=<?= e($datosOrden['orden_numero']) ?>">
           <input type="hidden" name="accion" value="agregar_productos">
           <input type="hidden" name="orden_numero" value="<?= e($datosOrden['orden_numero']) ?>">
 
-          <table >
+          <table class="table">
             <thead>
               <tr>
                 <th style="width:28px;">
