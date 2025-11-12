@@ -91,7 +91,6 @@ html, body {
     display: grid;
     grid-template-rows:repeat(2 , 1fr); 
     grid-template-columns: 300px  1fr;
- 
 }
 
 .redes{
@@ -99,22 +98,16 @@ html, body {
     font-size: 16px;
     color: rgb(153, 0 , 33); /* 990021 */
     margin-left: 10%;/*separacion de la derecha, revisar si le ponemos margenes*/
-
 }
-
 
 .iconos-redes{
     grid-row: 2/3;
-    margin-left: 20%;/*separacion de la derecha, revisar si le ponemos margenes*/
-
-    
+    margin-left: 20%;/*separacion de la derecha, revisar si le ponemos margenes*/ 
 }
 .iconos{
     width:32px;
-    height: 32px;
-    
+    height: 32px; 
 }
-
 
 .iconoswpp{
     width: 24px;
@@ -122,20 +115,16 @@ html, body {
     margin: 2.7px;
 }
 
-
 .direc{
     font-family: 'AlumniSans_Medium';
     font-size: 20px;/*tamaño de fuente*/
     color:  rgb(153, 0 , 33);/*990021*/
     text-decoration: none;
-
     grid-column: 2 / 3;  /* está en la segunda columna */
     grid-row: 1 / 3;     /* ocupa ambas filas */
     justify-self: end;  /*alinea a la derecha horizontalmente*/
     align-self: center;   /* centra verticalmente*/
-    
     margin-right: 10%;/*separacion de la izquierda, revisar si le ponemos margenes*/
-
 }
 
 
@@ -362,10 +351,9 @@ html, body {
     grid-template-columns: repeat(3, 1fr); 
     gap: 30px;
     margin: 40px;
-    min-height: 100vh; /* que ocupe toda la pantalla */
+    min-height: 80vh; /* que ocupe toda la pantalla */
     justify-items: center;
     align-items: center;
-    
 }
 
 .item_serv{
@@ -406,10 +394,7 @@ html, body {
     background-color: #FFD054 ;
 }
 
-
 /* ARMAR EL FORMULARIO*/
-
-
 .formulario1{
     background-image: linear-gradient(#FFD054 , #FFC631 , #FFB800) ;
     display: grid;
@@ -551,7 +536,6 @@ html, body {
 
 .formu_empleados{
     /*formulario empleados*/
-    
     justify-content: center;
     align-content: center;
     grid-column: 1/2;
@@ -669,7 +653,6 @@ html, body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-   
     width: 125px;
     height: 45px;
     text-decoration: none;
@@ -677,7 +660,6 @@ html, body {
     font-size: 20px;
     color: #000;
     justify-self: center;
-
 }
 
  /*titulos de los formularios*/
@@ -727,13 +709,12 @@ html, body {
     align-content: center;
     margin-top: 5px;
     margin-left: 20px;
-    
+    text-align: center;
 }
 .form_orden input{
     border-radius: 10px;
     margin-top: 4px;
-
-    
+    text-align: center;
 } 
 
 .form_turno {
@@ -758,6 +739,7 @@ html, body {
     border-radius: 20px;
     align-content: center;
     margin-left: 15px;
+    text-align: center;
     
 }
 .servicio_desc {
@@ -951,7 +933,7 @@ html, body {
 .modif_rec{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    margin: auto 40px auto;
+    margin: auto 20px auto;
 }
 
 .modif_rec img{
@@ -1068,11 +1050,6 @@ html, body {
 }
 
 .form_consulta{
-    
-/*background-color: #1fa0a046 ;
-background-image: linear-gradient(#ffa15467 , #ff8e318e , #ff730086);
-background-color: #ffa15467;
-background-image: url(fondos/mecanico_fond2.jpg);*/
     border:#1fa0a065;
     border-style: solid;
     min-height: 76vh;
@@ -1081,7 +1058,6 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
     justify-items: center;
     gap: 20px;
     margin: 20px auto 20px;
- 
 }
 
 .form_consulta img{
@@ -1146,6 +1122,7 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
     border-radius: 20px;
     align-content: center;
     margin-top: 5px;
+    text-align: center;
 }
 .cons_trabajo input{
     width: 412px;
@@ -1153,8 +1130,9 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
     border-radius: 20px;
     align-content: center;
     margin-top: 5px;
+    text-align: center;
 }
-/*Botones */
+/*Botones*/
 .buscar_mec{
     background-color: #FFD054;
     border-color:#FFD054; 
@@ -1220,7 +1198,7 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
 
                             /*ORDENES PENDIENTES */
 .orden_prendiente{
-    min-height: 76vh;
+    min-height: 80vh;
     border-radius: 10px;
     border-color: rgb(255, 198, 49); /*FFC631*/
     border-style: solid;
@@ -1232,34 +1210,40 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
     text-align: center;
 }
 
-.form_ordenpen h2{
+.orden_pediente_prod h4{
+    font-size: 20px;
     font-family: 'AlumniSans_Medium';
+    margin-left:5%;
+}
+.form_ordenpen h2{
+    font-family: 'AlumniSans_Light';
     font-size: 25px;
     margin-left: 25px;
     text-align: start;
 }
-.form_ordenpen p{
+.form_ordenen p{
     font-family: 'AlumniSans_Light';
-    font-size: 20px;
+    font-size: 25px;
     margin-left: 35px;
     text-align: start;
 }
 
-.form_ordenpen label{
-    font-family: 'AlumniSans_Medium';
+.form_ordenen label{
+    font-family: 'AlumniSans_Light';
     font-size: 25px;
     margin-left: 25px;
     text-align: start;
 }
-.form_ordenpen input{
+.form_ordenen input{
     width: 412px;
     height: 30px;
     border-radius: 20px;
     align-content: center;
     margin-left: 10px;
+    text-align: center;
 }
 
-.ordpen_compl{
+.orden_compl{
     width: 300px;
     height: 25px;
     text-align: center;
@@ -1267,13 +1251,13 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
     margin-left: 10px;
 }
 
-.bot_ordpen{
+.bot_orden{
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
-.ordpen_fin{
+.orden_fin{
     border-radius: 40px;
     background-color: #3AAFAF;
     border-color:#3AAFAF; 
@@ -1298,12 +1282,13 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
 }
 
 
+
                                         /*MODIFICAR MECANICO*/
 
 .modif_mec{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    margin: auto 40px auto;
+    margin: auto 20px auto;
 }
 
 .modif_mec img{
@@ -1414,18 +1399,20 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
     display: grid;
     grid-template-columns: repeat(3 , 1fr);
     align-content: center;
+    margin: auto 20px auto
 }
 
 .img_registro1{
     height: 810px;
     opacity: 30%;
     grid-column: 1/2;
-    margin-left: 15%;
+    margin-left: 12%;
 }
 .img_registro2{
     height: 810px;
     opacity: 30%;
     grid-column: 3/4;
+    margin-left: 12%;
 }
 
 .logo_registro{
@@ -1496,7 +1483,7 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
 .modif_cli{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    margin: auto 40px auto;
+    margin: auto 20px auto;
 }
 
 .modif_cli img{
@@ -1598,7 +1585,7 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
 .reg_veh_cli{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    margin: auto 40px auto;
+    margin: auto 20px auto;
 }
 
 .reg_veh_cli img{
@@ -1765,11 +1752,11 @@ background-image: url(fondos/mecanico_fond2.jpg);*/
 
 .turnos h3 {
     font-family: 'AlumniSans_Light';
-    font-size: 20px;
+    font-size: 22px;
     text-align: center;
 }
 .turnos table{
-width: 1200px;
+    width: 1200px;
     height: 500px;
     text-align: center;
     margin: auto;
@@ -1832,8 +1819,8 @@ width: 1200px;
 .turnos_form_asig label{
     font-family: 'AlumniSans_Light';
     font-size: 25px;
-    text-align: center;
     margin: 40px;
+    text-align: center;
 }
 
 .turnos_form_asig select{
@@ -1847,6 +1834,7 @@ width: 1200px;
 .turnos_form_asig input{
     width: 480px;
     height: 30px;
+    text-align: center;
 }
 
 .turnos_area {
@@ -1906,7 +1894,7 @@ width: 1200px;
 
 .turno_mod-tit{
     font-family: 'AlumniSans_Light';
-    font-size: 20px;
+    font-size: 22px;
     margin: 40px;
 }
 
@@ -1956,7 +1944,8 @@ width: 1200px;
 /*FACTURACION*/
 
 .facturacion{
-    min-height: 90vh; /* que ocupe toda la pantalla */
+    min-height: 80vh; /* que ocupe toda la pantalla */
+    margin: 10px
 }
 .facturacion h2{
     font-family: 'AlumniSans_Regular';
@@ -1974,7 +1963,7 @@ width: 1200px;
     border: 1px solid #FF8E31;
     padding: 10px;
     font-family: 'Big_Shoulders_Regular';
-    font-size: 25px;
+    font-size: 24px;
     text-align: center;
     background-color: #ff8e31a8;
 }
@@ -1982,7 +1971,7 @@ width: 1200px;
     border: 1px solid #FF8E31;
     padding: 10px;
     font-family: 'AlumniSans_Regular';
-    font-size: 25px;
+    font-size: 22px;
     text-align: center;
 }
 
@@ -2041,59 +2030,7 @@ width: 1200px;
     justify-content: center;
 }
 
-                                            /*MODALES PERSONALIZADOS*/
-dialog {
-    width: 40%;
-    max-width: 500px;
-    border: none;
-    border-radius: 15px;
-    background-color: #fff5e6;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-    padding: 25px;
-    font-family: 'Big_Shoulders_Medium';
-    font-size: 18px;
-    color: rgb(153, 0, 33); 
-    text-align: center;
-    margin: auto;
-    top: 20%;
-    position: fixed;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-}
-
-dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-dialog button {
-    background-color: #FF7400;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin: 10px;
-    border-radius: 10px;
-    font-family: 'Big_Shoulders_Medium';
-    font-size: 16px;
-    cursor: pointer;
-}
-
-dialog button:hover {
-    background-color: #cc5d00;
-}
-
-dialog[open] {
-    animation: fadeIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-
-
-                                    /*GERENTE*/
+                                 /*GERENTE*/
 
 .nav_gerente {
     width: 100%;
@@ -2110,8 +2047,7 @@ dialog[open] {
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    
+    width: 100%; 
 }
 
 .botonera_gerente {
@@ -2120,13 +2056,80 @@ dialog[open] {
     margin-left: auto; /* Empuja el grupo hacia la derecha */
     align-items: center;
 }
+.gerente_inicio{
+    min-height: 81vh; /* que ocupe toda la pantalla */
+}
+.gerente_inicio h2{
+    font-family: 'Big_Shoulders_ExtraBold';
+    font-size: 30px;
+    text-align: center;
+}
+
+.gerente_inicio h3{
+    font-family: 'Big_Shoulders_Regular';
+    font-size: 24px;
+    text-align: center;
+}
+.form-busqueda_ger{
+    display: flex;
+    flex-direction: column;
+}
+.form-busqueda_ger label{
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 20px;
+    align-content: center;
+    margin-left: 5%;
+}
+.form-busqueda_ger_input{
+    height: 30px;
+    width: 300px;
+    border-radius: 20px;
+    align-content: center;
+    margin-left: 10%;
+    text-align: center;
+}
+.form-busqueda_ger select{
+    width: 300px;
+    height: 32px;
+    border-radius: 20px;
+    align-content: center;
+    margin-left: 10%;
+    padding: 5px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 18px;
+}
+
+.botones_ger{
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+    align-content: center;
+    align-items: center;
+    padding: 20px;
+    font-family: 'Big_Shoulders_Regular';
+}
+.botones_ger button{
+    display: flex;
+    border-radius: 40px;
+    background-color: #3aafafb0;
+    border-color: #3AAFAF;
+    margin: 5px;
+    width: 188px;
+    height: 34.67px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 20px;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
 
                                         /*MODIFICAR GERENTE*/
 
 .modif_ger{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    margin: auto 40px auto;
+    margin: auto 20px auto;
 }
 
 .modif_ger img{
@@ -2207,3 +2210,371 @@ dialog[open] {
     font-family: 'Big_Shoulders_Medium';
     font-size: 18px;
 }
+
+                                /*TURNO GERENTE*/
+.muted{
+    font-size: 10px;
+    font-style: italic;
+    color:#888;
+}
+
+/*SERVICIOS GERENTE*/
+
+.servicios_ger{
+    min-height: 80vh; /* que ocupe toda la pantalla */
+}
+
+.servicios_ger h2{
+    font-family: 'Big_Shoulders_ExtraBold';
+    font-size: 30px;
+    text-align: center;
+}
+
+.servicios_ger label{
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 18px;
+    align-content: center;
+    margin: 25px;
+}
+
+.servicios_ger_input{
+    height: 32px;
+    border-radius: 10px;
+    align-content: center;
+    margin-top: 5px;
+    margin-left: 20px;
+    text-align: center;
+    width: 350px;
+}
+
+.servicios_ger_check {
+    border-radius: 40px;
+    width: 90px;
+    height: 25px;
+}
+
+.acciones_ger {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.acciones_ger button{
+    border-radius: 40px;
+    background-color: #ffd054;
+    border-color:#ffd054; 
+    margin: 5px;
+    width: 188px;
+    height: 34.67px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 15px;
+    justify-self: end;
+}
+
+.acciones_ger a{
+    border-radius: 40px;
+    background-color: #ffd054;
+    border-color: #ffd054;
+    margin: 5px;
+    width: 188px;
+    height: 34.67px;
+    font-family: 'Big_Shoulders_Medium';
+    text-decoration: none;
+    color: #000;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.servicios_ger table{
+    width: 1595px;
+    height: 1457px;
+    margin-left: 6%;
+}
+.servicios_ger tr{
+    background-color: #ffd1544a;
+    border-radius: 5px;
+    font-family: 'AlumniSans_Light';
+    font-size: 20px;
+    text-align: center;  
+    width: 487.99px;
+    height: 36.99px;
+}
+.servicios_ger th{
+    font-family: 'AlumniSans_Medium';
+    font-size: 24px;
+    text-align: center;
+}
+.servicios_ger td{text-align: center;}
+.btn_serv_ger{text-decoration: none;}
+
+.btn_agregarprod{margin:10px 0 0 5%;}
+.btn_agregarprod a{
+    text-decoration: none;
+    border-radius: 40px;
+    background-color: #ffd0548a;
+    border-color:#ffd0548a; 
+    padding: 5px 20px;
+    color: #000;
+    font-family: 'AlumniSans_Medium';
+    font-size: 20px;
+}
+        dialog.modal-prods{
+            position: center;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95%; max-width: 980px;
+            max-height: 90vh;
+            margin: 0; padding: 0;
+            border: 1px solid #ccc; border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.35);
+            z-index: 999999;
+            display: flex;              /* header + body + footer */
+            flex-direction: column;
+            background: #fff;
+            overflow: hidden;           /* el scroll va en .modal-body */
+        }
+        dialog.modal-prods::backdrop{ background: rgba(0,0,0,.45); }
+        .modal-header{ padding: 12px 16px; border-bottom: 1px solid #e5e5e5; }
+        /*general de la tabla */.modal-body{ padding: 12px 16px; overflow: auto; flex: 1; }
+        /*generico de los botones*/
+        .modal-footer{
+            padding: 10px 16px; border-top: 1px solid #e5e5e5; background: #fafafa;
+            display: flex; gap: 8px; justify-content: flex-end;
+        }
+        /*inputs y botones*/.row-flex{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+        .btn{ display:inline-block; padding:6px 12px; border:1px solid #bbb; border-radius:4px; text-decoration:none; cursor:pointer; }
+        /*buscal y volver */.btn-prim{ background:#2d6cdf; color:#fff; border-color:#2d6cdf; }
+        /*limpiar y agregar*/.btn-neu{ background:#f2f2f2; color:#333; }
+
+.form_agregar_prod{
+
+}
+
+.form_agregar_prod table{
+
+}
+.form_agregar_prod tr{
+
+}
+.form_agregar_prod {
+
+}
+
+
+
+/*EMPLEADOS GERENTE */
+.ger_empleados{
+       min-height: 80vh; /* que ocupe toda la pantalla */
+}
+.ger_empleados form{
+    display: block;
+    align-content: center;
+}
+
+.ger_empleados h2{
+    font-family: 'Big_Shoulders_ExtraBold';
+    font-size: 30px;
+    text-align: center;
+}
+
+.ger_empleados label{
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 18px;
+    align-content: center;
+    margin: 15px;
+}
+.ger_empleados_input{
+    height: 32px;
+    border-radius: 10px;
+    align-content: center;
+    margin-top: 5px;
+    text-align: center;
+    width: 350px;
+}
+.ger_empleado_sel{
+    width: 200px;
+    height: 32px;
+    border-radius: 10px;
+    align-content: center;
+    padding: 5px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 18px;
+}
+
+.ger_empleados_check {
+    border-radius: 40px;
+    width: 20px;
+    height: 25px;
+    margin-left:10px;
+}
+.ger_empleados_btn{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.ger_empleados_btn button{
+    border-radius: 40px;
+    background-color: #ffd054;
+    border-color:#ffd054; 
+    margin: 5px;
+    width: 188px;
+    height: 34.67px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 15px;
+
+}
+.ger_empleados_btn a{
+    border-radius: 40px;
+    background-color: #ffd054;
+    border-color: #ffd054;
+    margin: 5px;
+    width: 188px;
+    height: 34.67px;
+    font-family: 'Big_Shoulders_Medium';
+    text-decoration: none;
+    color: #000;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ger_empleados_baja button{
+    border-radius: 40px;
+    background-color:#ed2e57d1; 
+    border-color:#ED2E57;
+    width: 188px;
+    height: 34.67px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 15px;
+}
+.ger_empleados_baja{
+    display: flex;
+    justify-content: end;
+}
+
+.ger_empleados_table table{
+    width: 1600px;
+    height: 500px;
+    margin-left: 9%;
+}
+.ger_empleados_table tr{
+    background-color: #ffa154c2;
+    border-radius: 5px;
+    font-family: 'AlumniSans_Light';
+    font-size: 20px;
+    text-align: center;  
+    width: 487.99px;
+    height: 36.99px;
+}
+.ger_empleados_table th{
+    font-family: 'AlumniSans_Medium';
+    font-size: 24px; 
+    text-align: center;
+}
+.ger_empleados_table td{text-align: center;}
+.btn_serv_ger{text-decoration: none;}
+
+
+
+                                            /*MODALES PERSONALIZADOS*/
+dialog {
+    width: 40%;
+    max-width: 500px;
+    border: none;
+    border-radius: 15px;
+    background-color: #fff5e6;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    padding: 25px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 18px;
+    color: rgb(153, 0, 33); 
+    text-align: center;
+    margin: auto;
+    top: 20%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+dialog button {
+    background-color: #FF7400;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 10px;
+    font-family: 'Big_Shoulders_Medium';
+    font-size: 16px;
+    cursor: pointer;
+}
+
+dialog button:hover {
+    background-color: #cc5d00;
+}
+
+dialog[open] {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/*modales de facturacion*/
+ #modal_factura { 
+    width: 95%;
+    max-width: 720px;
+    border: 1px solid #ccc;
+    border-radius: 10px; 
+}
+#modal_factura::backdrop { background:rgba(0,0,0,.45); }
+
+.resumen-box { 
+    background:#fafafa;
+    border:1px solid #eee; 
+    border-radius:8px;
+    padding:10px 12px; }
+.resumen-box .row { 
+    display:flex; 
+    justify-content:space-between; 
+    margin:4px 0; }
+.resumen-box .row strong { font-weight:600; }
+
+/*ordenes pendientes mecanico*/
+.modal_orden_finalizada{text-align:center;}
+
+.modal_ordenes_pendientes h3,
+.modal_turnos_pendientes h3 {
+    text-align: center;
+}
+
+.modal_ordenes_pendientes table,
+.modal_turnos_pendientes table {
+    width: 100%;
+    border-collapse: collapse; /* une los bordes */
+    border: 2px solid #ffd054; /* borde amarillo general */
+}
+
+.modal_ordenes_pendientes tr,
+.modal_turnos_pendientes tr {
+    border: 1px solid #ffd054;
+}
+
+.modal_ordenes_pendientes td,
+.modal_turnos_pendientes td,
+.modal_ordenes_pendientes th,
+.modal_turnos_pendientes th {
+    border: 1px solid #ffd054;
+    text-align: center;
+}
+

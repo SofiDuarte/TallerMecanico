@@ -40,22 +40,6 @@ $rows = $conexion->query($sql)->fetchAll(PDO::FETCH_ASSOC);
   <meta charset="UTF-8">
   <title>Facturación</title>
   <link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>">
-  <style>
-    table { width:100%; border-collapse:collapse; background:#fff; }
-    th, td { border:1px solid #ddd; padding:8px; text-align:left; vertical-align:top; }
-    th { background:#f2f2f2; }
-    .mini { color:#666; font-size:12px; }
-    .right { text-align:right; }
-    .btn-icono { padding:6px 10px; cursor:pointer; }
-    /* Modal cómodo */
-    #modal_factura { position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:95%; max-width:720px; border:1px solid #ccc; border-radius:10px; }
-    #modal_factura::backdrop { background:rgba(0,0,0,.45); }
-    .modal-row { margin:8px 0; display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
-    .modal-actions { margin-top:12px; display:flex; gap:10px; justify-content:flex-end; }
-    .resumen-box { background:#fafafa; border:1px solid #eee; border-radius:8px; padding:10px 12px; }
-    .resumen-box .row { display:flex; justify-content:space-between; margin:4px 0; }
-    .resumen-box .row strong { font-weight:600; }
-  </style>
 </head>
 <body>
 <?php include 'nav_rec.php'; ?>

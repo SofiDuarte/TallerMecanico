@@ -249,51 +249,6 @@ try {
     <meta charset="UTF-8">
     <title>Orden Pendiente</title>
     <link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>">
-    <style>
-        /* Centrado perfecto, por encima de todo */
-        dialog.modal-prods{
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 95%; max-width: 980px;
-            max-height: 90vh;
-            margin: 0; padding: 0;
-            border: 1px solid #ccc; border-radius: 10px;
-            box-shadow: 0 20px 60px rgba(0,0,0,.35);
-            z-index: 999999;
-            display: flex;              /* header + body + footer */
-            flex-direction: column;
-            background: #fff;
-            overflow: hidden;           /* el scroll va en .modal-body */
-        }
-        dialog.modal-prods::backdrop{ background: rgba(0,0,0,.45); }
-        .modal-header{ padding: 12px 16px; border-bottom: 1px solid #e5e5e5; }
-        .modal-body{ padding: 12px 16px; overflow: auto; flex: 1; }
-        .modal-footer{
-            padding: 10px 16px; border-top: 1px solid #e5e5e5; background: #fafafa;
-            display: flex; gap: 8px; justify-content: flex-end;
-        }
-        .row-flex{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-        .btn{ display:inline-block; padding:6px 12px; border:1px solid #bbb; border-radius:4px; text-decoration:none; cursor:pointer; }
-        .btn-prim{ background:#2d6cdf; color:#fff; border-color:#2d6cdf; }
-        .btn-neu{ background:#f2f2f2; color:#333; }
-        table.table{ width:100%; border-collapse:collapse; background:#fff; }
-        .table th,.table td{ border:1px solid #ddd; padding:6px; text-align:left; }
-        .right{ text-align:right; }
-        .subtle{ color:#666; font-size:13px; }
-
-        /* (1) Estados de stock visuales */
-        .row-low  { background: #fff8e6; }  /* stock bajo */
-        .row-zero { background: #fdecea; }  /* sin stock  */
-        .tag { display:inline-block; padding:2px 8px; border-radius:12px; font-size:12px; }
-        .tag-low  { background:#ffe8b3; color:#8a5a00; }
-        .tag-zero { background:#f8c7c3; color:#8a1f12; }
-
-        /* (2) Inputs/checkbox deshabilitados visibles */
-        .table input[disabled], .table input:disabled {
-            background:#f5f5f5; color:#777; cursor:not-allowed;
-        }
-    </style>
 
 </head>
 <body>
@@ -334,30 +289,30 @@ try {
             <?= htmlspecialchars($datosOrden['vehiculo_anio']) ?>
         </h2>
 
-        <div class="subtle" style="margin-left:5%;">
-            Orden N° <b><?= e($datosOrden['orden_numero']) ?></b> —
-            Subtotal productos: <b>$ <?= nfmt($subtotalOrden) ?></b>
+        <form method="post" class="form_ordenen">
+            <input type="hidden" name="orden_numero" value="<?= htmlspecialchars($datosOrden['orden_numero']) ?>">
+            <h2>Servicio</h2> 
+            <p> <?= htmlspecialchars($datosOrden['servicio_nombre']) ?></p>
+            <br>
+            <div class="orden_pediente_prod">
+                <h4>Orden N° <?= e($datosOrden['orden_numero']) ?> —
+                Subtotal productos: $ <?= nfmt($subtotalOrden) ?></h4>
             <?php if ($itemsOrden): ?>
-                <span class="tag">Items: <?= count($itemsOrden) ?></span>
+                <h4>Items: <?= count($itemsOrden) ?></h4>
             <?php endif; ?>
         </div>
 
         <!-- BOTONES DE ACCIÓN DE ORDEN -->
-        <div style="margin:10px 0 0 5%;" class="row-flex">
+        <div class="btn_agregarprod">
             <!-- ABRIR MODAL: Agregar productos -->
-            <a class="btn btn-neu" href="ordenes_pendientes.php?orden=<?= e($datosOrden['orden_numero']) ?>&agregar=1">
-                🧰 Agregar productos
+            <a href="ordenes_pendientes.php?orden=<?= e($datosOrden['orden_numero']) ?>&agregar=1">
+                🧰 Agregar productos 
             </a>
         </div>
 
-        <form method="post" class="form_ordenpen">
-            <input type="hidden" name="orden_numero" value="<?= htmlspecialchars($datosOrden['orden_numero']) ?>">
-            <h2>Servicio</h2> 
-            <p> <?= htmlspecialchars($datosOrden['servicio_nombre']) ?></p>
-
             <br><br>
             <label for="complejidad">Complejidad</label>
-            <select name="complejidad" id="complejidad" class="ordpen_compl">
+            <select name="complejidad" id="complejidad" class="orden_compl">
                 <option value="1" <?= $datosOrden['complejidad'] == 1 ? 'selected' : '' ?>>Baja (1)</option>
                 <option value="2" <?= $datosOrden['complejidad'] == 2 ? 'selected' : '' ?>>Media (2)</option>
                 <option value="3" <?= $datosOrden['complejidad'] == 3 ? 'selected' : '' ?>>Alta (3)</option>
@@ -374,8 +329,8 @@ try {
 
             <br><br>
             
-            <div class="bot_ordpen">
-                <input class="ordpen_fin" type="submit" value="Finalizar" name="finalizar">
+            <div class="bot_orden">
+                <input class="orden_fin" type="submit" value="Finalizar" name="finalizar">
                 <a href="exportar_pdf_orden.php?orden=<?= htmlspecialchars($datosOrden['orden_numero']) ?>" 
                    target="_blank" class="imprimir_ordpen">🖨️ Imprimir</a>
             </div>
@@ -407,11 +362,11 @@ try {
         </form>
 
         <!-- LISTA MULTISELECCIÓN -->
-        <form id="formProds" method="post" action="ordenes_pendientes.php?orden=<?= e($datosOrden['orden_numero']) ?>">
+        <form class="form_agregar_prod"id="formProds" method="post" action="ordenes_pendientes.php?orden=<?= e($datosOrden['orden_numero']) ?>">
           <input type="hidden" name="accion" value="agregar_productos">
           <input type="hidden" name="orden_numero" value="<?= e($datosOrden['orden_numero']) ?>">
 
-          <table class="table">
+          <table >
             <thead>
               <tr>
                 <th style="width:28px;">

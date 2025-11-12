@@ -12,10 +12,7 @@
 
     <header class="nav_recepcionista">
         <div class="recepcionista_navegador">
-            <a  href="http://localhost/tallermecanico/inicio.php">
-                <img class="login" src="iconos/WA_Sport.jpg" alt="Logotipo de WA Sport" >
-            </a>
-            
+            <a  href="http://localhost/tallermecanico/inicio.php"><img class="login" src="iconos/WA_Sport_pdf.jpg" alt="Logotipo de WA Sport" ></a>           
             <div class="botonera_recepcionista">
                 <a class="nav" href="http://localhost/tallermecanico/modificacion_recepcionista.php" >Datos Personales</a>
                 <a class="nav" href="http://localhost/tallermecanico/registro_cliente_recepcionista.php" >Nuevo Cliente</a>

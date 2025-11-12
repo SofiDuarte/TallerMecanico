@@ -132,18 +132,18 @@ try {
 
 <!-- MODAL ORDEN FINALIZADA -->
 <?php if ($modalOrdenFinalizada): ?>
-<dialog open id="modal_orden_finalizada">
-    <p style="text-align:center;"><strong>La orden ya fue finalizada</strong></p>
-    <div style="text-align:center;">
+<dialog open id="modal_orden_finalizada" class= "modal_orden_finalizada">
+    <p><strong>La orden ya fue finalizada</strong></p>
+    <div>
         <button onclick="document.getElementById('modal_orden_finalizada').close()">Cerrar</button>
     </div>
 </dialog>
 <?php endif; ?>
 
 <!-- MODAL ÓRDENES PENDIENTES -->
-<dialog id="modal_ordenes_pendientes">
-    <h3 style="text-align:center;">Órdenes Pendientes</h3>
-    <table border="1" style="width:100%; border-collapse:collapse;">
+<dialog id="modal_ordenes_pendientes" class="modal_ordenes_pendientes">
+    <h3>Órdenes Pendientes</h3>
+    <table>
         <thead>
             <tr>
                 <th>Fecha</th>
@@ -182,9 +182,9 @@ try {
 </dialog>
 
 <!-- MODAL TURNOS PENDIENTES -->
-<dialog id="modal_turnos_pendientes">
-    <h3 style="text-align:center;">Turnos Pendientes</h3>
-    <table border="1" style="width:100%; border-collapse:collapse;">
+<dialog id="modal_turnos_pendientes" class="modal_turnos_pendientes">
+    <h3>Turnos Pendientes</h3>
+    <table>
         <thead>
             <tr>
                 <th>Fecha</th>

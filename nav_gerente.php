@@ -12,10 +12,7 @@
 
     <header class="nav_gerente">
         <div class="gerente_navegador">
-            <a  href="http://localhost/tallermecanico/inicio.php">
-                <img class="login" src="iconos/WA_Sport.jpg" alt="Logotipo de WA Sport" >
-            </a>
-
+           <a  href="http://localhost/tallermecanico/inicio.php"><img class="login" src="iconos/WA_Sport_pdf.jpg" alt="Logotipo de WA Sport" ></a>
             <div class="botonera_gerente">
                 <a class="nav" href="http://localhost/tallermecanico/modificacion_gerente.php" >Datos Personales</a>
                 <a class="nav" href="http://localhost/tallermecanico/turnos_gerente.php" >Turnos</a>

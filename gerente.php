@@ -7,61 +7,65 @@ $mecDni = $_SESSION['empleado_DNI'] ?? $_SESSION['empleado_dni'] ?? null;
 
 include 'nav_gerente.php';
 ?>
-<div class="container">
+<div class="gerente_inicio">
+    <br><br>
     <h2>Panel del Gerente</h2>
+    <br>
     <hr>
-
     <!-- SECCIÓN PRODUCTOS -->
     <section>
+        <br>
         <h3>Productos</h3>
-
+        <br>
         <!-- GET para que se vean los filtros en la URL y se mantengan -->
-        <form action="productos.php" method="GET" class="form-busqueda">
-            <label>Código:</label>
-            <input type="text" name="codigo" placeholder="Ej: LUB001">
+        <form action="productos.php" method="GET" class="form-busqueda_ger">
+            <label>Código</label>
+            <input class="form-busqueda_ger_input" type="text" name="codigo" placeholder="Ej: LUB001">
 
-            <label>Categoría:</label>
-            <input type="text" name="categoria" placeholder="Ej: Lubricantes">
+            <label>Categoría</label>
+            <input class="form-busqueda_ger_input"  type="text" name="categoria" placeholder="Ej: Lubricantes">
 
-            <label>Descripción:</label>
-            <input type="text" name="descripcion" placeholder="Buscar descripción">
-
-            <label style="margin-left:10px;">
-                <input type="checkbox" name="incluir_no_disponibles" value="1">
-                Incluir no disponibles
-            </label>
-
-            <button type="submit" name="buscar">Buscar</button>
-            <!-- Botón que abre el modal "Nuevo" en productos.php -->
-            <button type="submit" name="nuevo" value="1">Nuevo</button>
+            <label>Descripción</label>
+            <input class="form-busqueda_ger_input" type="text" name="descripcion" placeholder="Buscar descripción">
+            <div class="botones_ger">
+                <br>
+                <input type="checkbox" name="incluir_no_disponibles" value="1">Incluir no disponibles
+                <br>
+                <button type="submit" name="buscar">Buscar</button>
+                <!-- Botón que abre el modal "Nuevo" en productos.php -->
+                <button type="submit" name="nuevo" value="1">Nuevo</button>
+            </div>
         </form>
     </section>
 
     <hr>
-
+    <br>
     <!-- SECCIÓN ESTADÍSTICAS -->
     <section>
+        <br>
         <h3>Estadísticas</h3>
-        <form action="estadisticas.php" method="GET" class="form-busqueda">
-            <label>Tipo:</label>
+        <br>
+        <form action="estadisticas.php" method="GET" class="form-busqueda_ger">
+            <label>Tipo</label>
             <select name="tipo">
                 <option value="servicios">Servicios</option>
                 <option value="ventas">Ventas</option>
             </select>
 
-            <label>Desde:</label>
-            <input type="date" name="desde">
+            <label>Desde</label>
+            <input class="form-busqueda_ger_input" type="date" name="desde">
 
-            <label>Hasta:</label>
-            <input type="date" name="hasta">
-
+            <label>Hasta</label>
+            <input class="form-busqueda_ger_input" type="date" name="hasta">
+        <div class="botones_ger">
             <button type="submit" name="buscar_estadisticas">Buscar</button>
+        </div>    
         </form>
     </section>
 </div>
 
-<style>
-.container { width: 90%; margin: auto; padding: 20px; }
-.form-busqueda input, .form-busqueda select { margin-right: 10px; padding: 5px; }
-button { padding: 6px 12px; cursor: pointer; }
-</style>
+    <?php 
+        include("piedepagina.php");
+    ?>
+</body>
+</html>

@@ -13,7 +13,7 @@
     <header class="encabezado">
         <div class="navegacion">
             
-            <a  href="http://localhost/tallermecanico/inicio.php"><img class="login" src="iconos/WA_Sport.jpg" alt="Logotipo de WA Sport" ></a>
+            <a  href="http://localhost/tallermecanico/inicio.php"><img class="login" src="iconos/WA_Sport_pdf.jpg" alt="Logotipo de WA Sport" ></a>
             <a class="nav" href="http://localhost/tallermecanico/nosotros.php">Nosotros</a>
             <a class="nav" href="http://localhost/tallermecanico/servicios.php">Servicios</a>
             <a class="nav" href="http://localhost/tallermecanico/contacto.php">Contacto</a>

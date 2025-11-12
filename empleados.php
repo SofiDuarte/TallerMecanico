@@ -329,41 +329,16 @@ try {
 <meta charset="UTF-8">
 <title>Empleados – Panel Gerente</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-.container { width:95%; margin:20px auto; }
-h2 { margin: 10px 0 15px; }
-.buscador label { margin-right:6px; font-weight:600; }
-.buscador input[type="text"], .buscador select { padding:6px 8px; margin-right:10px; min-width:160px; }
-.btn { display:inline-block; padding:8px 14px; margin-right:8px; border:none; border-radius:4px; cursor:pointer; text-decoration:none; }
-.btn-primario { background:#2d6cdf; color:#fff; }
-.btn-peligro { background:#c0392b; color:#fff; }
-.btn-neutro  { background:#7f8c8d; color:#fff; }
-.topbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
-.tabla { width:100%; border-collapse:collapse; margin-top:10px; background:#fff; }
-.tabla th, .tabla td { border:1px solid #ddd; padding:8px; text-align:left; vertical-align:middle; }
-.tabla th { background:#f2f2f2; }
-.fila-baja { opacity:0.6; }
-.estado-tag { display:inline-block; padding:2px 8px; border-radius:12px; font-size:12px; font-weight:600; }
-.est-disponible { background:#e5f7ea; color:#1e824c; }
-.est-no_disp    { background:#fff6df; color:#b56a00; }
-.est-lic        { background:#e8f1ff; color:#2d6cdf; }
-.est-baja       { background:#fdecea; color:#c0392b; }
 
-/* Modal genérico */
-.modal-backdrop { position: fixed; inset:0; background:rgba(0,0,0,.45); display:flex; align-items:center; justify-content:center; z-index:9999; }
-.modal { background:#fff; padding:18px; border-radius:8px; max-width:820px; width:95%; box-shadow:0 10px 40px rgba(0,0,0,.25); }
-.modal h3 { margin-top:0; }
-.modal .acciones { margin-top:14px; }
-.modal table { width:100%; border-collapse:collapse; }
-.modal table td, .modal table th { border:1px solid #ddd; padding:8px; }
-.small { font-size:12px; color:#666; }
-</style>
 </head>
 <body>
     <?php include("nav_gerente.php"); ?>
-<div class="container">
+<div class="ger_empleados">
+  <br>
+    <h2>Empleados</h2>
+    <br>
     <div class="topbar">
-        <h2>Empleados</h2>
+        
         <?php if ($msg==='edit_ok'): ?><div style="color:#1e824c;">Empleado actualizado.</div><?php endif; ?>
         <?php if ($msg==='edit_fail'): ?><div style="color:#c0392b;">No se pudo actualizar.</div><?php endif; ?>
         <?php if ($msg==='pass_bad'): ?><div style="color:#c0392b;">La nueva contraseña no cumple requisitos.</div><?php endif; ?>
@@ -377,55 +352,60 @@ h2 { margin: 10px 0 15px; }
     </div>
 
     <!-- Buscador -->
-    <form method="get" class="buscador" action="empleados.php">
-        <label>DNI:</label><input type="text" name="dni" value="<?= e($dni) ?>" placeholder="Ej: 12345678">
-        <label>Nombre:</label><input type="text" name="nombre" value="<?= e($nombre) ?>" placeholder="Ej: Juan Perez">
-        <label>Email:</label><input type="text" name="email" value="<?= e($email) ?>" placeholder="mail@...">
+    <form method="get" action="empleados.php">
+        <label>DNI:</label>
+        <input class="ger_empleados_input" type="text" name="dni" value="<?= e($dni) ?>" placeholder="Ej: 12345678">
+        <label>Nombre:</label>
+        <input class="ger_empleados_input" type="text" name="nombre" value="<?= e($nombre) ?>" placeholder="Ej: Juan Perez">
+        <label>Email:</label>
+        <input class="ger_empleados_input" type="text" name="email" value="<?= e($email) ?>" placeholder="mail@...">
         <label>Rol:</label>
-        <select name="roll">
+        <select class="ger_empleado_sel" name="roll">
             <option value="" <?= $roll===''?'selected':'' ?>>—</option>
             <?php foreach ($roles as $r): ?>
               <option value="<?= e($r) ?>" <?= ($r===$roll?'selected':'') ?>><?= e($r) ?></option>
             <?php endforeach; ?>
         </select>
         <label>Estado:</label>
-        <select name="estado">
+        <select  class="ger_empleado_sel" name="estado">
             <option value="" <?= $estado===''?'selected':'' ?>>—</option>
             <option value="disponible"     <?= $estado==='disponible'?'selected':'' ?>>Disponible</option>
             <option value="no_disponible"  <?= $estado==='no_disponible'?'selected':'' ?>>No disponible</option>
             <option value="licencia"       <?= $estado==='licencia'?'selected':'' ?>>Licencia</option>
             <option value="baja"           <?= $estado==='baja'?'selected':'' ?>>Baja</option>
         </select>
-
-        <label style="margin-left:10px;">
-            <input type="checkbox" name="incluir_bajas" value="1" <?= $incluir_bajas?'checked':'' ?>>
-            Incluir bajas
-        </label>
-
-        <button class="btn btn-primario" type="submit">Buscar</button>
-        <a class="btn btn-neutro" href="empleados.php">Limpiar</a>
-        <a class="btn btn-primario" href="empleados.php?<?= e($current_qs) ?>&nuevo=1">Nuevo</a>
-        <a class="btn btn-neutro" href="gerente.php">Volver</a>
+        <br>
+        <div class="ger_empleados_btn">
+          <label>
+              <input class="ger_empleados_check " type="checkbox" name="incluir_bajas" value="1" <?= $incluir_bajas?'checked':'' ?>>
+              Incluir bajas
+          </label>
+        
+          <button type="submit">Buscar</button>
+          <a href="empleados.php">Limpiar</a>
+          <a href="empleados.php?<?= e($current_qs) ?>&nuevo=1">Nuevo</a>
+          <a href="gerente.php">Volver</a>
+        </div>
     </form>
 
     <!-- Botones Exportar -->
     <?php $export_qs = $current_qs !== '' ? $current_qs.'&' : ''; ?>
-    <div style="margin:10px 0 18px;">
-      <a class="btn btn-primario" href="empleados_export.php?<?= e($export_qs) ?>format=csv">Exportar CSV</a>
-      <a class="btn btn-neutro"  href="empleados_export.php?<?= e($export_qs) ?>format=pdf" target="_blank">Exportar PDF / Imprimir</a>
+    <div class="ger_empleados_btn" >
+      <a href="empleados_export.php?<?= e($export_qs) ?>format=csv">Exportar CSV</a>
+      <a href="empleados_export.php?<?= e($export_qs) ?>format=pdf" target="_blank">Exportar PDF / Imprimir</a>
     </div>
 
     <!-- Form principal: acciones en lote -->
-    <form id="formEmpleados" method="post" action="empleados.php?<?= e($current_qs) ?>">
-        <div class="acciones" style="margin:10px 0 15px;">
-            <button class="btn btn-peligro" name="accion" value="baja">Dar de Baja (inhabilitar)</button>
+    <form class="ger_empleados_table" id="formEmpleados" method="post" action="empleados.php?<?= e($current_qs) ?>">
+        <div class="ger_empleados_baja">
+            <button name="accion" value="baja">Dar de Baja (inhabilitar)</button>
         </div>
-
-        <table class="tabla">
+        <br>
+        <table >
             <thead>
             <tr>
-                <th style="width:32px;">
-                    <input type="checkbox" onclick="document.querySelectorAll('.check_row').forEach(c=>c.checked=this.checked);">
+                <th>
+                    <input class="ger_empleados_check " type="checkbox" onclick="document.querySelectorAll('.check_row').forEach(c=>c.checked=this.checked);">
                 </th>
                 <th>DNI</th>
                 <th>Nombre</th>
@@ -452,7 +432,7 @@ h2 { margin: 10px 0 15px; }
                 $verUrl = "empleados.php?ver=".urlencode($r['empleado_DNI'])."&".$current_qs;
             ?>
                 <tr class="<?= $cls ?>">
-                    <td><input class="check_row" type="checkbox" name="ids[]" value="<?= e($r['empleado_DNI']) ?>"></td>
+                    <td><input class="ger_empleados_check "  type="checkbox" name="ids[]" value="<?= e($r['empleado_DNI']) ?>"></td>
                     <td><?= e($r['empleado_DNI']) ?></td>
                     <td><?= e($r['empleado_nombre']) ?></td>
                     <td><?= e($r['empleado_roll']) ?></td>
@@ -460,7 +440,7 @@ h2 { margin: 10px 0 15px; }
                     <td><span class="estado-tag <?= $tagCls ?>"><?= e($r['empleado_estado']) ?></span></td>
                     <td><?= $licTxt ?></td>
                     <td><?= e($r['empleado_telefono']) ?></td>
-                    <td><a class="btn btn-neutro" href="<?= e($verUrl) ?>" title="Ver / Editar">🔍</a></td>
+                    <td><a class="btn_serv_ger" href="<?= e($verUrl) ?>" title="Ver / Editar">🔍</a></td>
                 </tr>
             <?php endforeach; endif; ?>
             </tbody>

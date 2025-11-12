@@ -49,27 +49,12 @@ foreach ($turnos as $turno) {
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Turnos – WA SPORT</title>
   <link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>">
-  <style>
-    .turnos { width:95%; margin: 0 auto 18px; }
-    .turnos table { width:100%; border-collapse: collapse; background:#fff; }
-    .turnos th, .turnos td { border:1px solid #ddd; padding:8px; text-align:left; vertical-align:middle; }
-    .turnos th { background:#f2f2f2; }
-    .muted { color:#888; font-style: italic; }
-    .top-actions { width:95%; margin:14px auto; display:flex; gap:8px; }
-    .btn { display:inline-block; padding:8px 12px; border:none; border-radius:6px; cursor:pointer; text-decoration:none; }
-    .btn-neutro { background:#7f8c8d; color:#fff; }
-  </style>
 </head>
 <body>
 <?php include 'nav_gerente.php'; ?>
-
+  <br>
   <h1 class="turnos_tit">Agenda semanal de turnos</h1>
-  <div class="top-actions">
-    <a class="btn btn-neutro" href="gerente.php">Volver</a>
-  </div>
-
   <main>
     <?php foreach ($dias as $fecha): ?>
       <section class="turnos">
@@ -120,7 +105,7 @@ foreach ($turnos as $turno) {
       </section>
     <?php endforeach; ?>
   </main>
-
+  <br><br>
   <?php include 'piedepagina.php'; ?>
   <script src="control_inactividad.js"></script>
 </body>

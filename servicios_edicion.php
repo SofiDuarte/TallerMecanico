@@ -217,40 +217,8 @@ if ($verCodigo !== '') {
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Servicios – Panel Gerente</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-.container { width:95%; margin:20px auto; }
-h2 { margin: 10px 0 15px; }
-.buscador label { margin-right:6px; font-weight:600; }
-.buscador input[type="text"] { padding:6px 8px; margin-right:10px; min-width:180px; }
-.btn { display:inline-block; padding:8px 14px; margin-right:8px; border:none; border-radius:4px; cursor:pointer; text-decoration:none; }
-.btn-primario { background:#2d6cdf; color:#fff; }
-.btn-peligro { background:#c0392b; color:#fff; }
-.btn-neutro { background:#7f8c8d; color:#fff; }
-.topbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
-.tabla { width:100%; border-collapse:collapse; margin-top:10px; background:#fff; }
-.tabla th, .tabla td { border:1px solid #ddd; padding:8px; text-align:left; vertical-align:middle; }
-.tabla th { background:#f2f2f2; }
-.estado-tag { display:inline-block; padding:2px 8px; border-radius:12px; font-size:12px; font-weight:600; }
-.disp { background:#e5f7ea; color:#1e824c; }
-.nodisp { background:#fdecea; color:#c0392b; }
-.fila-nd { opacity:0.65; }
 
-/* Modal genérico */
-.modal-backdrop {
-  position: fixed; inset: 0; background: rgba(0,0,0,.45);
-  display: flex; align-items: center; justify-content: center; z-index: 9999;
-}
-.modal {
-  background:#fff; padding:18px; border-radius:8px; max-width:720px; width:95%;
-  box-shadow: 0 10px 40px rgba(0,0,0,.25);
-}
-.modal h3 { margin-top:0; }
-.modal .acciones { margin-top: 14px; }
-.modal table { width:100%; border-collapse:collapse; }
-.modal table td, .modal table th { border:1px solid #ddd; padding:8px; }
-</style>
 </head>
 <body>
     <?php include("nav_gerente.php"); ?>
@@ -269,9 +237,10 @@ h2 { margin: 10px 0 15px; }
             </form>
         </dialog>
 <?php endif; ?>
-<div class="container">
-    <div class="topbar">
-        <h2>Listado de Servicios</h2>
+<div class="servicios_ger">
+    <h2>Listado de Servicios</h2>
+
+    <div class="servicios_ger_tit">
         <?php if ($msg === 'incremento_ok'): ?><div style="color:#1e824c;">Incremento aplicado correctamente.</div><?php endif; ?>
         <?php if ($msg === 'eliminar_ok'): ?><div style="color:#1e824c;">Servicios marcados como no disponibles.</div><?php endif; ?>
         <?php if ($msg === 'edit_ok'): ?><div style="color:#1e824c;">Servicio modificado correctamente.</div><?php endif; ?>
@@ -287,47 +256,48 @@ h2 { margin: 10px 0 15px; }
     </div>
 
     <!-- Buscador -->
-    <form method="get" class="buscador" action="servicios_edicion.php">
-        <label for="svc_codigo">Código:</label>
-        <input type="text" id="svc_codigo" name="svc_codigo" value="<?= e($svc_codigo) ?>" placeholder="Ej: FRE001">
+    <form method="get" action="servicios_edicion.php">
+        <label for="svc_codigo">Código</label>
+        <input class="servicios_ger_input" type="text" id="svc_codigo" name="svc_codigo" value="<?= e($svc_codigo) ?>" placeholder="Ej: FRE001">
 
-        <label for="svc_nombre">Nombre:</label>
-        <input type="text" id="svc_nombre" name="svc_nombre" value="<?= e($svc_nombre) ?>" placeholder="Alineación, Frenado…">
+        <label for="svc_nombre">Nombre</label>
+        <input class="servicios_ger_input" type="text" id="svc_nombre" name="svc_nombre" value="<?= e($svc_nombre) ?>" placeholder="Alineación, Frenado…">
 
-        <label for="svc_desc">Descripción:</label>
-        <input type="text" id="svc_desc" name="svc_desc" value="<?= e($svc_desc) ?>" placeholder="Buscar en descripción">
+        <label for="svc_desc">Descripción</label>
+        <input class="servicios_ger_input" type="text" id="svc_desc" name="svc_desc" value="<?= e($svc_desc) ?>" placeholder="Buscar en descripción">
 
-        <label style="margin-left:10px;">
-            <input type="checkbox" name="incluir_no_disponibles" value="1" <?= $incl_nd ? 'checked' : '' ?>>
+        <label>
+            <input class="servicios_ger_check" type="checkbox" name="incluir_no_disponibles" value="1" <?= $incl_nd ? 'checked' : '' ?>>
             Incluir no disponibles
         </label>
-
-        <button class="btn btn-primario" type="submit" name="buscar">Buscar</button>
-        <a class="btn btn-neutro" href="servicios_edicion.php">Limpiar</a>
-        <a class="btn btn-primario" href="servicios_edicion.php?<?= e($current_qs) ?>&nuevo=1">Nuevo</a>
-        <a class="btn btn-neutro" href="gerente.php">Volver</a>
+      <div class="acciones_ger">
+        <button type="submit" name="buscar">Buscar</button>
+        <a href="servicios_edicion.php">Limpiar</a>
+        <a href="servicios_edicion.php?<?= e($current_qs) ?>&nuevo=1">Nuevo</a>
+        <a href="gerente.php">Volver</a>
+      </div>
     </form>
 
     <!-- FORM PRINCIPAL: acciones + tabla + ids[] -->
     <form id="formServicios" method="post" action="servicios_edicion.php?<?= e($current_qs) ?>">
-        <div class="acciones" style="margin:10px 0 15px;">
-            <button class="btn btn-primario" name="accion" value="incrementar">Incrementar precio</button>
-            <button class="btn btn-peligro"  name="accion" value="eliminar">Eliminar</button>
+        <div class="acciones_ger">
+            <button name="accion" value="incrementar">Incrementar precio</button>
+            <button  name="accion" value="eliminar">Eliminar</button>
         </div>
 
-        <table class="tabla">
+        <table>
             <thead>
             <tr>
-                <th style="width:32px;">
-                    <input type="checkbox" id="check_all"
+                <th>
+                    <input  class="servicios_ger_check" type="checkbox" id="check_all"
                         onclick="document.querySelectorAll('.check_row').forEach(c=>c.checked=this.checked);">
                 </th>
                 <th>Código</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
-                <th style="text-align:right;">Costo</th>
+                <th >Costo</th>
                 <th>Estado</th>
-                <th style="width:90px;">Acciones</th>
+                <th >Acciones</th>
             </tr>
             </thead>
             <tbody>
@@ -343,13 +313,13 @@ h2 { margin: 10px 0 15px; }
                         $verUrl = "servicios_edicion.php?ver=".urlencode($s['servicio_codigo'])."&".$current_qs;
                     ?>
                     <tr class="<?= $rowClass ?>">
-                        <td><input class="check_row" type="checkbox" name="ids[]" value="<?= e($s['servicio_codigo']) ?>"></td>
+                        <td><input class="servicios_ger_check" type="checkbox" name="ids[]" value="<?= e($s['servicio_codigo']) ?>"></td>
                         <td><?= e($s['servicio_codigo']) ?></td>
                         <td><?= e($s['servicio_nombre']) ?></td>
                         <td><?= e($s['servicio_descripcion']) ?></td>
-                        <td style="text-align:right;">$ <?= nfmt($s['servicio_costo']) ?></td>
+                        <td >$ <?= nfmt($s['servicio_costo']) ?></td>
                         <td><span class="estado-tag <?= $estadoCls ?>"><?= $estadoTxt ?></span></td>
-                        <td><a class="btn btn-neutro" href="<?= e($verUrl) ?>" title="Ver / Modificar">🔍</a></td>
+                        <td><a class="btn_serv_ger" href="<?= e($verUrl) ?>" title="Ver / Modificar">🔍</a></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
