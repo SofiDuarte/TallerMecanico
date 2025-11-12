@@ -18,9 +18,8 @@ $codigo      = isset($_GET['codigo']) ? trim($_GET['codigo']) : '';
 $descripcion = isset($_GET['descripcion']) ? trim($_GET['descripcion']) : '';
 $categoria   = isset($_GET['categoria']) ? trim($_GET['categoria']) : '';
 $incluir_no_disponibles = isset($_GET['incluir_no_disponibles']) ? 1 : 0;
-$nuevo = isset($_GET['nuevo']) ? 1 : 0; // <-- bandera para abrir modal Nuevo
+$nuevo = isset($_GET['nuevo']) ? 1 : 0;
 
-// Para mantener filtros en redirects (query string)
 function filtros_qs($codigo, $categoria, $descripcion, $incluir_no_disponibles) {
     $arr = ['codigo'=>$codigo, 'categoria'=>$categoria, 'descripcion'=>$descripcion];
     if ($incluir_no_disponibles) $arr['incluir_no_disponibles']=1;
@@ -35,14 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $accion = $_POST['accion'] ?? '';
     $ids    = isset($_POST['ids']) ? array_filter((array)$_POST['ids'], 'is_numeric') : [];
 
-    // Filtros que vienen en POST para conservarlos luego del aplicar
     $f_codigo      = $_POST['f_codigo']      ?? $codigo;
     $f_categoria   = $_POST['f_categoria']   ?? $categoria;
     $f_descripcion = $_POST['f_descripcion'] ?? $descripcion;
     $f_incluir_nd  = isset($_POST['f_incluir_no_disponibles']) ? 1 : $incluir_no_disponibles;
     $qs = filtros_qs($f_codigo, $f_categoria, $f_descripcion, $f_incluir_nd);
 
-    // Guardar cambios desde modal "ver"
     if ($accion === 'ver_guardar') {
         $id     = (int)($_POST['id'] ?? 0);
         $estado = (int)($_POST['prod_disponible'] ?? 1);
@@ -62,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Confirmación: aplicar incremento
     if ($accion === 'incrementar_aplicar') {
         if (empty($ids)) { header("Location: productos.php?{$qs}&msg=sin_ids"); exit; }
         $porcentaje = (float)($_POST['porcentaje'] ?? 0);
@@ -80,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Confirmación: eliminar lógico
     if ($accion === 'eliminar_aplicar') {
         if (empty($ids)) { header("Location: productos.php?{$qs}&msg=sin_ids"); exit; }
 
@@ -93,7 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // ===== Nuevo producto: guardar =====
     if ($accion === 'nuevo_guardar') {
         $cat_sel  = trim((string)($_POST['prod_categoria'] ?? ''));
         $cat_new  = trim((string)($_POST['prod_categoria_nueva'] ?? ''));
@@ -107,7 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Buscar últimos códigos de la categoría para generar el siguiente
         $st = $conexion->prepare("SELECT prod_codigo FROM productos WHERE prod_categoria = ? ORDER BY prod_codigo ASC");
         $st->execute([$cat]);
         $codigos = $st->fetchAll(PDO::FETCH_COLUMN);
@@ -182,7 +175,6 @@ $stmt = $conexion->prepare($sql);
 $stmt->execute($params);
 $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Categorías para desplegable del modal Nuevo
 $stc = $conexion->query("SELECT DISTINCT prod_categoria FROM productos ORDER BY prod_categoria ASC");
 $categorias = $stc->fetchAll(PDO::FETCH_COLUMN);
 
@@ -220,14 +212,8 @@ h2 { margin: 10px 0 15px; }
 .fila-nd { opacity:0.6; }
 
 /* Modal */
-.modal-backdrop {
-  position: fixed; inset: 0; background: rgba(0,0,0,.45);
-  display: flex; align-items: center; justify-content: center; z-index: 9999;
-}
-.modal {
-  background:#fff; padding:18px; border-radius:8px; max-width:720px; width:95%;
-  box-shadow: 0 10px 40px rgba(0,0,0,.25);
-}
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+.modal { background:#fff; padding:18px; border-radius:8px; max-width:720px; width:95%; box-shadow: 0 10px 40px rgba(0,0,0,.25); }
 .modal h3 { margin-top:0; }
 .modal .acciones { margin-top: 14px; }
 .modal table { width:100%; border-collapse:collapse; }
@@ -284,11 +270,10 @@ h2 { margin: 10px 0 15px; }
 
         <button class="btn btn-primario" type="submit" name="buscar">Buscar</button>
         <a class="btn btn-neutro" href="productos.php">Limpiar</a>
-        <!-- Botón para abrir modal Nuevo directamente desde aquí (opcional) -->
         <a class="btn btn-primario" href="productos.php?<?= e($current_qs) ?>&nuevo=1">Nuevo</a>
     </form>
 
-    <!-- FORM PRINCIPAL: acciones + tabla + ids[] -->
+    <!-- FORM PRINCIPAL -->
     <form id="formProductos" method="post" action="productos.php?<?= e($current_qs) ?>">
         <div class="acciones" style="margin:10px 0 15px;">
             <button class="btn btn-primario" name="accion" value="incrementar">Incrementar precio</button>
@@ -300,8 +285,8 @@ h2 { margin: 10px 0 15px; }
             <thead>
             <tr>
                 <th style="width:32px;">
-                    <input type="checkbox" id="check_all"
-                        onclick="document.querySelectorAll('.check_row').forEach(c=>c.checked=this.checked);">
+                    <input type="checkbox"
+                        onclick="document.querySelectorAll('input[name=&quot;ids[]&quot;]').forEach(c=>c.checked=this.checked);">
                 </th>
                 <th>Código</th>
                 <th>Categoría</th>
@@ -326,7 +311,7 @@ h2 { margin: 10px 0 15px; }
                         $verUrl = "productos.php?ver=".(int)$p['prod_id']."&".$current_qs;
                     ?>
                     <tr class="<?= $rowClass ?>">
-                        <td><input class="check_row" type="checkbox" name="ids[]" value="<?= (int)$p['prod_id'] ?>"></td>
+                        <td><input type="checkbox" name="ids[]" value="<?= (int)$p['prod_id'] ?>"></td>
                         <td><?= e($p['prod_codigo']) ?></td>
                         <td><?= e($p['prod_categoria']) ?></td>
                         <td><?= e($p['prod_descripcion']) ?></td>
@@ -344,9 +329,8 @@ h2 { margin: 10px 0 15px; }
 </div>
 
 <?php
-// ===================== MODALES (render del lado servidor) =====================
+// ===================== MODALES =====================
 
-// Modal: Nuevo producto
 if ($nuevo) {
     ?>
     <div class="modal-backdrop">
@@ -354,7 +338,6 @@ if ($nuevo) {
         <h3>Nuevo producto</h3>
         <form method="post" action="productos.php?<?= e($current_qs) ?>">
             <input type="hidden" name="accion" value="nuevo_guardar">
-            <!-- Persistir filtros -->
             <input type="hidden" name="f_codigo" value="<?= e($codigo) ?>">
             <input type="hidden" name="f_categoria" value="<?= e($categoria) ?>">
             <input type="hidden" name="f_descripcion" value="<?= e($descripcion) ?>">
@@ -394,7 +377,6 @@ if ($nuevo) {
     <?php
 }
 
-// Modal: Ingresar porcentaje (Incrementar)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'incrementar') {
     $ids = isset($_POST['ids']) ? array_filter((array)$_POST['ids'], 'is_numeric') : [];
     ?>
@@ -427,7 +409,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'incre
     <?php
 }
 
-// Modal: Confirmar eliminación lógica
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'eliminar') {
     $ids = isset($_POST['ids']) ? array_filter((array)$_POST['ids'], 'is_numeric') : [];
     ?>
@@ -458,7 +439,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'elimi
     <?php
 }
 
-// Modal: Ver/Editar producto
 if ($productoVer) {
     ?>
     <div class="modal-backdrop">

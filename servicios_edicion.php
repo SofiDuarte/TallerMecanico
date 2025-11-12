@@ -4,7 +4,6 @@ session_start();
 require_once 'conexion_base.php';
 require_once 'verificar_sesion_empleado.php';
 
-
 /* ================= Helpers ================= */
 function e($s){ return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 function nfmt($n){ return number_format((float)$n, 2, ',', '.'); }
@@ -18,10 +17,9 @@ $svc_codigo  = isset($_GET['svc_codigo'])  ? trim($_GET['svc_codigo'])  : '';
 $svc_nombre  = isset($_GET['svc_nombre'])  ? trim($_GET['svc_nombre'])  : '';
 $svc_desc    = isset($_GET['svc_desc'])    ? trim($_GET['svc_desc'])    : '';
 $incl_nd     = isset($_GET['incluir_no_disponibles']) ? 1 : 0;
-$nuevo       = isset($_GET['nuevo']) ? 1 : 0; // bandera para abrir modal Nuevo
+$nuevo       = isset($_GET['nuevo']) ? 1 : 0;
 $msg         = $_GET['msg'] ?? '';
 
-/* Para mantener filtros en redirects */
 function filtros_qs($svc_codigo,$svc_nombre,$svc_desc,$incl_nd){
     $arr = ['svc_codigo'=>$svc_codigo,'svc_nombre'=>$svc_nombre,'svc_desc'=>$svc_desc];
     if ($incl_nd) $arr['incluir_no_disponibles']=1;
@@ -33,17 +31,14 @@ $current_qs = filtros_qs($svc_codigo,$svc_nombre,$svc_desc,$incl_nd);
 if ($_SERVER['REQUEST_METHOD']==='POST') {
     $accion = $_POST['accion'] ?? '';
 
-    // Persistir filtros al volver
     $f_codigo = $_POST['f_codigo'] ?? $svc_codigo;
     $f_nombre = $_POST['f_nombre'] ?? $svc_nombre;
     $f_desc   = $_POST['f_desc']   ?? $svc_desc;
     $f_nd     = isset($_POST['f_incluir_nd']) ? 1 : $incl_nd;
     $qs = filtros_qs($f_codigo,$f_nombre,$f_desc,$f_nd);
 
-    // IDs seleccionados (usaremos servicio_codigo como identificador único)
     $ids = isset($_POST['ids']) ? array_filter(array_map('trim',(array)$_POST['ids'])) : [];
 
-    // Guardar cambios desde modal Ver (editar costo/estado)
     if ($accion === 'ver_guardar') {
         $codigo = trim((string)($_POST['servicio_codigo'] ?? ''));
         $costo  = max(0, (float)($_POST['servicio_costo'] ?? 0));
@@ -63,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         exit;
     }
 
-    // Incremento masivo de costo
     if ($accion === 'incrementar_aplicar') {
         if (empty($ids)) { header("Location: servicios_edicion.php?{$qs}&msg=sin_ids"); exit; }
         $porc = (float)($_POST['porcentaje'] ?? 0);
@@ -81,7 +75,6 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         exit;
     }
 
-    // Eliminación lógica por lote (marcar como no disponibles)
     if ($accion === 'eliminar_aplicar') {
         if (empty($ids)) { header("Location: servicios_edicion.php?{$qs}&msg=sin_ids"); exit; }
         $placeholders = implode(',', array_fill(0,count($ids),'?'));
@@ -93,9 +86,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         exit;
     }
 
-        // ===== Nuevo servicio: guardar =====
     if ($accion === 'nuevo_guardar') {
-        // Normalizamos a MAYÚSCULAS para guardar
         $nombre_raw = (string)($_POST['servicio_nombre'] ?? '');
         $desc_raw   = (string)($_POST['servicio_descripcion'] ?? '');
         if (function_exists('mb_strtoupper')) {
@@ -114,26 +105,21 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
             exit;
         }
 
-        // Prefijo de 3 letras para el código (sin acentos ni caracteres no alfabéticos)
         $base    = quitar_acentos(preg_replace('/[^a-zA-Z]/', '', $nombre));
         $prefijo = strtoupper(substr($base, 0, 3));
-        if ($prefijo === '') { $prefijo = 'SRV'; } // fallback
+        if ($prefijo === '') { $prefijo = 'SRV'; }
 
-        // Buscamos códigos existentes con ese prefijo (3 letras + 2 dígitos exactos)
         $st = $conexion->prepare("
             SELECT servicio_codigo
             FROM servicios
             WHERE servicio_codigo LIKE :pf
             ORDER BY servicio_codigo ASC
         ");
-        // '%': puede haber basura histórica, pero por longitud de columna (5) nos limitamos a NN
         $st->execute([':pf' => $prefijo.'%']);
         $existentes = $st->fetchAll(PDO::FETCH_COLUMN);
 
-        // Calculamos el próximo sufijo de 2 dígitos (00..99)
         $usados = [];
         foreach ($existentes as $cod) {
-            // Solo tomamos exactamente 3 letras + 2 dígitos
             if (preg_match('/^[A-Z]{3}\d{2}$/', $cod)) {
                 $usados[(int)substr($cod, -2)] = true;
             }
@@ -144,19 +130,16 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
             if (!isset($usados[$n])) { $siguiente = $n; break; }
         }
         if ($siguiente === null) {
-            // No hay más espacio con 2 dígitos para este prefijo
             header("Location: servicios_edicion.php?{$qs}&msg=sin_codigos_disponibles&nuevo=1");
             exit;
         }
 
         $codigo = $prefijo . str_pad((string)$siguiente, 2, '0', STR_PAD_LEFT);
 
-        // Blindaje por si justo hay colisión de concurrencia
         for ($i=0; $i<5; $i++) {
             $chk = $conexion->prepare("SELECT COUNT(*) FROM servicios WHERE servicio_codigo = ?");
             $chk->execute([$codigo]);
             if ((int)$chk->fetchColumn() === 0) break;
-            // Buscar el próximo libre
             $encontro = false;
             for ($n = 0; $n <= 99; $n++) {
                 $cand = $prefijo . str_pad((string)$n, 2, '0', STR_PAD_LEFT);
@@ -169,7 +152,6 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
             }
         }
 
-        // Insertamos guardando NOMBRE y DESCRIPCIÓN en MAYÚSCULAS
         $ins = $conexion->prepare("
             INSERT INTO servicios
                 (servicio_codigo, servicio_nombre, servicio_descripcion, servicio_costo, servicio_disponible)
@@ -186,7 +168,6 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         header("Location: servicios_edicion.php?{$qs}&msg=nuevo_ok&nuevo_codigo=".urlencode($codigo));
         exit;
     }
-    
 }
 
 /* =============== LISTADO (GET) =============== */
@@ -218,7 +199,6 @@ if ($verCodigo !== '') {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 </head>
 <body>
     <?php include("nav_gerente.php"); ?>
@@ -228,7 +208,6 @@ if ($verCodigo !== '') {
             Código: <strong><?= e($_GET['nuevo_codigo'] ?? '') ?></strong>
             </p>
             <form method="get" action="servicios_edicion.php">
-            <!-- preservo filtros si querés; si no, dejalo simple -->
             <?php if (!empty($svc_codigo)): ?><input type="hidden" name="svc_codigo" value="<?= e($svc_codigo) ?>"><?php endif; ?>
             <?php if (!empty($svc_nombre)): ?><input type="hidden" name="svc_nombre" value="<?= e($svc_nombre) ?>"><?php endif; ?>
             <?php if (!empty($svc_desc)):   ?><input type="hidden" name="svc_desc"   value="<?= e($svc_desc)   ?>"><?php endif; ?>
@@ -267,7 +246,7 @@ if ($verCodigo !== '') {
         <input class="servicios_ger_input" type="text" id="svc_desc" name="svc_desc" value="<?= e($svc_desc) ?>" placeholder="Buscar en descripción">
 
         <label>
-            <input class="servicios_ger_check" type="checkbox" name="incluir_no_disponibles" value="1" <?= $incl_nd ? 'checked' : '' ?>>
+            <input type="checkbox" name="incluir_no_disponibles" value="1" <?= $incl_nd ? 'checked' : '' ?>>
             Incluir no disponibles
         </label>
       <div class="acciones_ger">
@@ -278,26 +257,26 @@ if ($verCodigo !== '') {
       </div>
     </form>
 
-    <!-- FORM PRINCIPAL: acciones + tabla + ids[] -->
+    <!-- FORM PRINCIPAL -->
     <form id="formServicios" method="post" action="servicios_edicion.php?<?= e($current_qs) ?>">
         <div class="acciones_ger">
             <button name="accion" value="incrementar">Incrementar precio</button>
-            <button  name="accion" value="eliminar">Eliminar</button>
+            <button name="accion" value="eliminar">Eliminar</button>
         </div>
 
         <table>
             <thead>
             <tr>
                 <th>
-                    <input  class="servicios_ger_check" type="checkbox" id="check_all"
-                        onclick="document.querySelectorAll('.check_row').forEach(c=>c.checked=this.checked);">
+                    <input type="checkbox"
+                        onclick="document.querySelectorAll('input[name=&quot;ids[]&quot;]').forEach(c=>c.checked=this.checked);">
                 </th>
                 <th>Código</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
-                <th >Costo</th>
+                <th>Costo</th>
                 <th>Estado</th>
-                <th >Acciones</th>
+                <th>Acciones</th>
             </tr>
             </thead>
             <tbody>
@@ -313,11 +292,11 @@ if ($verCodigo !== '') {
                         $verUrl = "servicios_edicion.php?ver=".urlencode($s['servicio_codigo'])."&".$current_qs;
                     ?>
                     <tr class="<?= $rowClass ?>">
-                        <td><input class="servicios_ger_check" type="checkbox" name="ids[]" value="<?= e($s['servicio_codigo']) ?>"></td>
+                        <td><input type="checkbox" name="ids[]" value="<?= e($s['servicio_codigo']) ?>"></td>
                         <td><?= e($s['servicio_codigo']) ?></td>
                         <td><?= e($s['servicio_nombre']) ?></td>
                         <td><?= e($s['servicio_descripcion']) ?></td>
-                        <td >$ <?= nfmt($s['servicio_costo']) ?></td>
+                        <td>$ <?= nfmt($s['servicio_costo']) ?></td>
                         <td><span class="estado-tag <?= $estadoCls ?>"><?= $estadoTxt ?></span></td>
                         <td><a class="btn_serv_ger" href="<?= e($verUrl) ?>" title="Ver / Modificar">🔍</a></td>
                     </tr>
@@ -329,7 +308,7 @@ if ($verCodigo !== '') {
 </div>
 
 <?php
-/* ================ MODALES (render server-side) ================= */
+/* ================ MODALES ================= */
 
 /* Modal: Nuevo servicio */
 if ($nuevo) { ?>
@@ -338,7 +317,6 @@ if ($nuevo) { ?>
       <h3>Nuevo servicio</h3>
       <form method="post" action="servicios_edicion.php?<?= e($current_qs) ?>">
         <input type="hidden" name="accion" value="nuevo_guardar">
-        <!-- Persistir filtros -->
         <input type="hidden" name="f_codigo" value="<?= e($svc_codigo) ?>">
         <input type="hidden" name="f_nombre" value="<?= e($svc_nombre) ?>">
         <input type="hidden" name="f_desc"   value="<?= e($svc_desc) ?>">
@@ -362,7 +340,7 @@ if ($nuevo) { ?>
           <option value="0">No disponible</option>
         </select>
 
-        <p><em>El <b>código</b> se generará automáticamente con las 3 primeras letras del nombre y numeración correlativa (p. ej. <b>FRE001</b>).</em></p>
+        <p><em>El <b>código</b> se generará automáticamente con las 3 primeras letras del nombre y numeración correlativa (p. ej. <b>FRE01</b>).</em></p>
 
         <div class="acciones">
           <button class="btn btn-primario" type="submit">Guardar</button>
@@ -373,7 +351,7 @@ if ($nuevo) { ?>
   </div>
 <?php }
 
-/* Modal: Incrementar precio (GET POST accion=incrementar) */
+/* Modal: Incrementar precio */
 if ($_SERVER['REQUEST_METHOD']==='POST' && ($_POST['accion'] ?? '')==='incrementar') {
     $ids = isset($_POST['ids']) ? array_filter(array_map('trim',(array)$_POST['ids'])) : []; ?>
     <div class="modal-backdrop">
@@ -405,7 +383,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST' && ($_POST['accion'] ?? '')==='increment
     </div>
 <?php }
 
-/* Modal: Confirmar eliminación lógica (GET POST accion=eliminar) */
+/* Modal: Confirmar eliminación lógica */
 if ($_SERVER['REQUEST_METHOD']==='POST' && ($_POST['accion'] ?? '')==='eliminar') {
     $ids = isset($_POST['ids']) ? array_filter(array_map('trim',(array)$_POST['ids'])) : []; ?>
     <div class="modal-backdrop">
@@ -435,7 +413,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST' && ($_POST['accion'] ?? '')==='eliminar'
     </div>
 <?php }
 
-/* Modal: Ver/Editar servicio (lupa) */
+/* Modal: Ver/Editar servicio */
 if ($servVer) { ?>
   <div class="modal-backdrop">
     <div class="modal">

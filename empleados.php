@@ -15,7 +15,6 @@ use PHPMailer\PHPMailer\Exception;
 /* ===================== Helpers ===================== */
 function e($s){ return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 function ntitle($s){
-    // Cada palabra con inicial mayúscula, resto minúsculas, considerando tildes comunes.
     $s = mb_strtolower(trim($s), 'UTF-8');
     return preg_replace_callback('/\b\p{L}+/u', function($m){
         return mb_convert_case($m[0], MB_CASE_TITLE, 'UTF-8');
@@ -37,12 +36,11 @@ function filtros_qs($dni,$nombre,$email,$roll,$estado,$incluir_bajas){
 // Envío mail helper
 function enviar_mail($paraEmail, $paraNombre, $asunto, $html){
     $mail = new PHPMailer(true);
-    // Config SMTP
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
     $mail->Username = 'wasporttaller@gmail.com';
-    $mail->Password = 'gdkwryakgynsewdl'; // App password Gmail
+    $mail->Password = 'gdkwryakgynsewdl';
     $mail->SMTPSecure = 'tls';
     $mail->Port = 587;
 
@@ -64,7 +62,7 @@ $roll   = isset($_GET['roll'])   ? trim($_GET['roll'])   : '';
 $estado = isset($_GET['estado']) ? trim($_GET['estado']) : '';
 $incluir_bajas = isset($_GET['incluir_bajas']) ? 1 : 0;
 
-$nuevo  = isset($_GET['nuevo']) ? 1 : 0; // abrir modal Nuevo
+$nuevo  = isset($_GET['nuevo']) ? 1 : 0;
 $msg    = $_GET['msg'] ?? '';
 
 $current_qs = filtros_qs($dni,$nombre,$email,$roll,$estado,$incluir_bajas);
@@ -73,7 +71,6 @@ $current_qs = filtros_qs($dni,$nombre,$email,$roll,$estado,$incluir_bajas);
 if ($_SERVER['REQUEST_METHOD']==='POST'){
     $accion = $_POST['accion'] ?? '';
 
-    // Persistir filtros en vuelta
     $f_dni    = $_POST['f_dni']    ?? $dni;
     $f_nombre = $_POST['f_nombre'] ?? $nombre;
     $f_email  = $_POST['f_email']  ?? $email;
@@ -82,15 +79,12 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
     $f_incb   = isset($_POST['f_incluir_bajas']) ? 1 : $incluir_bajas;
     $qs = filtros_qs($f_dni,$f_nombre,$f_email,$f_roll,$f_estado,$f_incb);
 
-    // IDs/DNIs seleccionados (usamos DNI como identificador único)
     $ids = isset($_POST['ids']) ? array_filter((array)$_POST['ids'], static fn($x)=>strlen(trim($x))>0) : [];
 
-    // ------ Guardar desde modal VER (editar) ------
     if ($accion === 'ver_guardar'){
         $dniKey    = trim((string)($_POST['empleado_DNI'] ?? ''));
         if ($dniKey===''){ header("Location: empleados.php?{$qs}&msg=edit_fail"); exit; }
 
-        // Campos editables: email, roll, direccion, localidad, telefono, estado, licencia_desde/hasta, contraseña (opcional)
         $emailE    = lower($_POST['empleado_email'] ?? '');
         $rollE     = lower($_POST['empleado_roll'] ?? '');
         $dirE      = ntitle($_POST['empleado_direccion'] ?? '');
@@ -105,7 +99,6 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
             header("Location: empleados.php?{$qs}&msg=edit_fail"); exit;
         }
         if ($estadoE==='licencia'){
-            // validar fechas
             if (!$licDesde || !$licHasta || $licDesde > $licHasta){
                 header("Location: empleados.php?{$qs}&msg=lic_invalida"); exit;
             }
@@ -113,7 +106,6 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
             $licDesde = $licHasta = null;
         }
 
-        // habilitado: sólo se inhabilita en BAJA
         $habilitado = ($estadoE==='baja') ? 0 : 1;
 
         try{
@@ -154,10 +146,8 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
             }
             $conexion->commit();
 
-            // Si se marcó BAJA -> enviar mail de notificación
             if ($estadoE==='baja'){
                 try{
-                    // Datos para mail
                     $stE = $conexion->prepare("SELECT empleado_nombre FROM empleados WHERE empleado_DNI=?");
                     $stE->execute([$dniKey]);
                     $nom = $stE->fetchColumn() ?: 'Empleado';
@@ -177,7 +167,6 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
         }
     }
 
-    // ------ Baja lógica por lote (marca estado=BAJA + inhabilita) ------
     if ($accion === 'baja_aplicar'){
         if (empty($ids)){ header("Location: empleados.php?{$qs}&msg=sin_ids"); exit; }
         try{
@@ -189,7 +178,6 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
             $st  = $conexion->prepare($sql);
             $st->execute($ids);
 
-            // Enviar mails (best-effort, fuera de la transacción)
             $conexion->commit();
             try{
                 $st2 = $conexion->prepare("SELECT empleado_nombre, empleado_email FROM empleados WHERE empleado_DNI IN ($place)");
@@ -212,7 +200,6 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
         }
     }
 
-    // ------ Nuevo empleado: guardar + mail bienvenida con link ------
     if ($accion === 'nuevo_guardar'){
         $dniN  = trim((string)($_POST['empleado_DNI'] ?? ''));
         $nomN  = ntitle($_POST['empleado_nombre'] ?? '');
@@ -241,15 +228,13 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
         $habN = ($estN==='baja') ? 0 : 1;
 
         try{
-            // DNI debe ser único
             $chk = $conexion->prepare("SELECT COUNT(*) FROM empleados WHERE empleado_DNI = ?");
             $chk->execute([$dniN]);
             if ((int)$chk->fetchColumn() > 0){
                 header("Location: empleados.php?{$qs}&msg=dni_dup&nuevo=1"); exit;
             }
 
-            // Creamos clave temporal aleatoria (hash) y token de recuperación para que el usuario defina su clave
-            $tempPlain = bin2hex(random_bytes(6)); // 12 hex chars
+            $tempPlain = bin2hex(random_bytes(6));
             $tempHash  = password_hash($tempPlain, PASSWORD_DEFAULT);
             $token     = bin2hex(random_bytes(32));
 
@@ -267,7 +252,6 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
                 ':hab'=>$habN, ':est'=>$estN, ':ld'=>$ldN, ':lh'=>$lhN
             ]);
 
-            // Mail de bienvenida con link para setear contraseña
             $link = "http://localhost/tallermecanico/restablecer_contrasena_empleado.php?token={$token}";
             $html = "Hola <strong>".e($nomN)."</strong>,<br><br>
             ¡Bienvenido/a a <strong>WA SPORT</strong>!<br>
@@ -275,7 +259,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
             <a href='{$link}'>{$link}</a><br><br>
             Si no reconocés este alta, por favor contactanos.";
 
-            try{ enviar_mail($emailN, $nomN, 'Bienvenida - WA SPORT', $html); } catch (Exception $ex){ /* no rompe el alta */ }
+            try{ enviar_mail($emailN, $nomN, 'Bienvenida - WA SPORT', $html); } catch (Exception $ex){}
 
             header("Location: empleados.php?{$qs}&msg=nuevo_ok&nuevo_codigo=".urlencode($dniN)); exit;
 
@@ -283,8 +267,6 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
             header("Location: empleados.php?{$qs}&msg=nuevo_fail&nuevo=1"); exit;
         }
     }
-
-    // Si se apretó el botón para abrir modales (baja), dejamos que el render los pinte abajo.
 }
 
 /* ===================== Listado ===================== */
@@ -306,7 +288,6 @@ $st = $conexion->prepare($sql);
 $st->execute($params);
 $empleados = $st->fetchAll(PDO::FETCH_ASSOC);
 
-// Modal VER (GET ?ver=DNI)
 $verDni = isset($_GET['ver']) ? trim($_GET['ver']) : '';
 $empVer = null;
 if ($verDni!==''){
@@ -329,7 +310,6 @@ try {
 <meta charset="UTF-8">
 <title>Empleados – Panel Gerente</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 </head>
 <body>
     <?php include("nav_gerente.php"); ?>
@@ -338,7 +318,6 @@ try {
     <h2>Empleados</h2>
     <br>
     <div class="topbar">
-        
         <?php if ($msg==='edit_ok'): ?><div style="color:#1e824c;">Empleado actualizado.</div><?php endif; ?>
         <?php if ($msg==='edit_fail'): ?><div style="color:#c0392b;">No se pudo actualizar.</div><?php endif; ?>
         <?php if ($msg==='pass_bad'): ?><div style="color:#c0392b;">La nueva contraseña no cumple requisitos.</div><?php endif; ?>
@@ -377,10 +356,9 @@ try {
         <br>
         <div class="ger_empleados_btn">
           <label>
-              <input class="ger_empleados_check " type="checkbox" name="incluir_bajas" value="1" <?= $incluir_bajas?'checked':'' ?>>
+              <input type="checkbox" name="incluir_bajas" value="1" <?= $incluir_bajas?'checked':'' ?>>
               Incluir bajas
           </label>
-        
           <button type="submit">Buscar</button>
           <a href="empleados.php">Limpiar</a>
           <a href="empleados.php?<?= e($current_qs) ?>&nuevo=1">Nuevo</a>
@@ -401,11 +379,12 @@ try {
             <button name="accion" value="baja">Dar de Baja (inhabilitar)</button>
         </div>
         <br>
-        <table >
+        <table>
             <thead>
             <tr>
                 <th>
-                    <input class="ger_empleados_check " type="checkbox" onclick="document.querySelectorAll('.check_row').forEach(c=>c.checked=this.checked);">
+                    <input type="checkbox"
+                      onclick="document.querySelectorAll('input[name=&quot;ids[]&quot;]').forEach(c=>c.checked=this.checked);">
                 </th>
                 <th>DNI</th>
                 <th>Nombre</th>
@@ -432,7 +411,7 @@ try {
                 $verUrl = "empleados.php?ver=".urlencode($r['empleado_DNI'])."&".$current_qs;
             ?>
                 <tr class="<?= $cls ?>">
-                    <td><input class="ger_empleados_check "  type="checkbox" name="ids[]" value="<?= e($r['empleado_DNI']) ?>"></td>
+                    <td><input type="checkbox" name="ids[]" value="<?= e($r['empleado_DNI']) ?>"></td>
                     <td><?= e($r['empleado_DNI']) ?></td>
                     <td><?= e($r['empleado_nombre']) ?></td>
                     <td><?= e($r['empleado_roll']) ?></td>
@@ -446,7 +425,6 @@ try {
             </tbody>
         </table>
 
-        <!-- Intercepto el click de BAJA para confirmar via modal -->
         <input type="hidden" name="accion" id="accionHidden" value="">
     </form>
 </div>
@@ -572,7 +550,7 @@ if ($empVer){ ?>
                 $rolActual = $empVer['empleado_roll'] ?: '';
                 $roles_ed = $roles;
                 if ($rolActual !== '' && !in_array($rolActual, $roles_ed, true)) {
-                    $roles_ed[] = $rolActual; // por si el empleado tiene un rol válido pero hoy no aparece en el DISTINCT (raro)
+                    $roles_ed[] = $rolActual;
                     sort($roles_ed, SORT_STRING|SORT_FLAG_CASE);
                 }
               ?>
@@ -607,7 +585,7 @@ if ($empVer){ ?>
           </tr>
         </table>
 
-        <p class="small">Reglas: Nombre/Dirección/Localidad se guardan con Inicial Mayúscula. Email y rol en minúscula. Si estado = baja, se inhabilita el usuario y se envía correo de notificación.</p>
+        <p class="small">Reglas: Nombre/Dirección/Localidad en Inicial Mayúscula. Email y rol en minúscula. Si estado = baja, se inhabilita y se notifica por correo.</p>
 
         <div class="acciones">
           <button class="btn btn-primario" type="submit">Guardar</button>
@@ -630,7 +608,6 @@ function toggleLicencia(val, id){
 document.addEventListener('click', function(ev){
     if (ev.target && ev.target.tagName==='BUTTON' && ev.target.name==='accion' && ev.target.value==='baja'){
         ev.preventDefault();
-        // Envío POST con accion=baja para que se abra el modal de confirmación y lleve los ids tildados
         const form = document.getElementById('formEmpleados');
         const hidden = document.getElementById('accionHidden');
         hidden.value = 'baja';

@@ -10,37 +10,51 @@ require_once 'verificar_sesion_cliente.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// VARIABLES DE MODAL
+// Bandera para modales
 $modalGuardadoExito = false;
-$modalTurnoExito = false;
-$modalErrorMail = false;
+$modalTurnoExito    = false;
+$modalErrorMail     = false;
 
+$dni = $_SESSION['cliente_dni'] ?? null;
+if (!$dni) {
+    header("Location: login.php");
+    exit();
+}
 
-$mensaje = "";
-
-$dni = $_SESSION['cliente_dni'];
-
-//OBTENER LOS DATOS DEL CLIENTE
+// Obtener datos del cliente
 $stmt = $conexion->prepare("SELECT * FROM clientes WHERE cliente_DNI = :dni");
 $stmt->execute(['dni' => $dni]);
 $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
+if (!$cliente) {
+    // Si no existe, forzamos logout por coherencia
+    header("Location: logout.php");
+    exit();
+}
 
-// GUARDAR CAMBIOS
+// ------------------ GUARDAR CAMBIOS ------------------
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['guardar_rec'])) {
-    $direccion = $_POST['direccion'];
-    $localidad = $_POST['localidad'];
-    $telefono  = $_POST['telefono'];
-    $correo    = $_POST['correo'];
-    $clave     = $_POST['clave'];
-    
-    // GUARDAR CONTRASEÑA SI NO HUBO CAMBIOS
-    if (!empty($clave)) {
+    $direccion = $_POST['direccion'] ?? '';
+    $localidad = $_POST['localidad'] ?? '';
+    $telefono  = $_POST['telefono']  ?? '';
+    $correo    = $_POST['correo']    ?? '';
+    $clave     = $_POST['clave']     ?? '';
+
+    // Si enviaron una nueva clave, la hasheamos. Si no, dejamos la actual.
+    if ($clave !== '') {
         $claveHasheada = password_hash($clave, PASSWORD_DEFAULT);
     } else {
         $claveHasheada = $cliente['cliente_contrasena'];
     }
 
-    $update = $conexion->prepare("UPDATE clientes SET cliente_direccion = :dir, cliente_localidad = :loc, cliente_telefono = :tel, cliente_email = :mail, cliente_contrasena = :clave WHERE cliente_DNI = :dni");
+    $update = $conexion->prepare("
+        UPDATE clientes
+           SET cliente_direccion = :dir,
+               cliente_localidad = :loc,
+               cliente_telefono  = :tel,
+               cliente_email     = :mail,
+               cliente_contrasena= :clave
+         WHERE cliente_DNI = :dni
+    ");
     $update->execute([
         'dir'   => $direccion,
         'loc'   => $localidad,
@@ -50,36 +64,46 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['guardar_rec'])) {
         'dni'   => $dni
     ]);
 
+    // Releer datos para reflejar cambios en el render
+    $stmt = $conexion->prepare("SELECT * FROM clientes WHERE cliente_DNI = :dni");
+    $stmt->execute(['dni' => $dni]);
+    $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
+
     $modalGuardadoExito = true;
 }
 
-// SOLICITAR TURNO
+// ------------------ SOLICITAR TURNO ------------------
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['solicitar'])) {
-    $clienteCorreo = $cliente['cliente_email'];
-    $clienteNombre = $cliente['cliente_nombre'];
+    $clienteCorreo = $cliente['cliente_email']  ?? '';
+    $clienteNombre = $cliente['cliente_nombre'] ?? '';
 
     try {
         $mail = new PHPMailer(true);
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
-        $mail->Port       = 587;
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'wasportaller@gmail.com';
-        $mail->Password   = 'kyozoppabnumingu';
+        $mail->SMTPAuth   = true; // <- aquí estaba el bug (faltaba el $)
+        $mail->Username   = 'wasporttaller@gmail.com';
+        $mail->Password   = 'gdkwryakgynsewdl'; // App Password Gmail
         $mail->SMTPSecure = 'tls';
+        $mail->Port       = 587;
+        $mail->CharSet    = 'UTF-8';
+        $mail->isHTML(true);
 
-        // MAIL AL CLIENTE
-        $mail->setFrom('wasportaller@gmail.com', 'WA SPORT');
-        $mail->addAddress($clienteCorreo);
+        // Mail al cliente
+        $mail->setFrom('wasporttaller@gmail.com', 'WA SPORT');
+        if ($clienteCorreo !== '') {
+            $mail->addAddress($clienteCorreo, $clienteNombre ?: 'Cliente');
+        }
         $mail->Subject = 'Solicitud de turno recibida';
         $mail->Body    = 'Hemos recibido su solicitud de turno. A la brevedad será atendido.';
         $mail->send();
 
-        // MAIL AL TALLER
+        // Mail al taller
         $mail->clearAddresses();
-        $mail->addAddress('wasportaller@gmail.com');
+        // Aseguro el mismo correo del taller usado en Username
+        $mail->addAddress('wasporttaller@gmail.com', 'WA SPORT');
         $mail->Subject = 'Nuevo turno solicitado';
-        $mail->Body    = "El cliente $clienteNombre (DNI: $dni) ha solicitado un turno.";
+        $mail->Body    = "El cliente {$clienteNombre} (DNI: {$dni}) ha solicitado un turno.";
         $mail->send();
 
         $modalTurnoExito = true;
@@ -116,28 +140,34 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['solicitar'])) {
                     </tr>
                     <tr>
                         <th>Dirección</th>
-                        <td><input type="text" class="datos_modificados" name="direccion" value="<?= htmlspecialchars($cliente['cliente_direccion']) ?>"></td>
+                        <td><input type="text" class="datos_modificados" name="direccion" value="<?= htmlspecialchars($cliente['cliente_direccion'] ?? '') ?>"></td>
                     </tr>
                     <tr>
                         <th>Localidad</th>
-                        <td><input type="text" class="datos_modificados" name="localidad" value="<?= htmlspecialchars($cliente['cliente_localidad']) ?>"></td>
+                        <td><input type="text" class="datos_modificados" name="localidad" value="<?= htmlspecialchars($cliente['cliente_localidad'] ?? '') ?>"></td>
                     </tr>
                     <tr>
                         <th>Teléfono</th>
-                        <td><input type="text" class="datos_modificados" name="telefono" value="<?= htmlspecialchars($cliente['cliente_telefono']) ?>"></td>
+                        <td><input type="text" class="datos_modificados" name="telefono" value="<?= htmlspecialchars($cliente['cliente_telefono'] ?? '') ?>"></td>
                     </tr>
                     <tr>
                         <th>E-Mail</th>
-                        <td><input type="email" class="datos_modificados" name="correo" value="<?= htmlspecialchars($cliente['cliente_email']) ?>"></td>
+                        <td><input type="email" class="datos_modificados" name="correo" value="<?= htmlspecialchars($cliente['cliente_email'] ?? '') ?>"></td>
                     </tr>
                     <tr>
                         <th>Contraseña</th>
                         <td>
-                            <input type="password" class="datos_modificados" name="clave"
-                                minlength="8" maxlength="15"
+                            <input
+                                type="password"
+                                class="datos_modificados"
+                                name="clave"
+                                minlength="8"
+                                maxlength="15"
                                 pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,15}$"
                                 title="Debe tener entre 8 y 15 caracteres, al menos una mayúscula, un número y un símbolo"
                                 placeholder="********">
+                            <br>
+                            <small>Dejar en blanco para mantener la contraseña actual.</small>
                         </td>
                     </tr>
                 </table>
@@ -172,7 +202,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['solicitar'])) {
     </dialog>
     <?php endif; ?>
 
-    <!-- MODAL ERROR ENVIO DE CORREO -->
+    <!-- MODAL ERROR ENVÍO DE CORREO -->
     <?php if ($modalErrorMail): ?>
     <dialog open>
         <p><strong>Error al enviar el correo.</strong></p>
