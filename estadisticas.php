@@ -119,7 +119,6 @@ function obtener_estadisticas(PDO $db, $tipo, $desde, $hasta, $solo_facturadas, 
 }
 
 // ================== Datos base UI: lista de mecánicos ==================
-// ================== Datos base UI: lista de mecánicos ==================
 $listaMecanicos = [];
 try {
     // Solo empleados cuyo rol sea "mecanico" (con o sin acento)

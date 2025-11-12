@@ -38,3 +38,4 @@ if ($_POST['paso'] === 'aplicar') {
 }
 
 header("Location: productos.php");
+

@@ -200,3 +200,4 @@ if ($format === 'pdf' && $hasTcpdf) {
 </table>
 </body>
 </html>
+

@@ -363,3 +363,4 @@ $mecanicos = $conexion->query("SELECT empleado_DNI, empleado_nombre FROM emplead
 <script src="control_inactividad.js"></script>
 </body>
 </html>
+

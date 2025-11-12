@@ -25,9 +25,6 @@ if (!$nombre || !$telefono || !$email || !$consulta) {
     exit();
 }
 
-
-
-
 try {
     // ENVÍO AL TALLER
     $mail = new PHPMailer(true);

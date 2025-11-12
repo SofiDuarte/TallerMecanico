@@ -6,3 +6,4 @@ if (isset($_GET['id'])) {
     echo "Turno confirmado correctamente.";
 }
 ?>
+

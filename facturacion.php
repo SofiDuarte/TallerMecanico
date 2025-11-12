@@ -248,3 +248,4 @@ function formatear(num){
 <?php include("piedepagina.php"); ?>
 </body>
 </html>
+

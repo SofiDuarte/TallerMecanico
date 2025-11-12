@@ -6,3 +6,4 @@
 [2025-10-14 02:28:01] Empleado 44671150 eliminó el turno ID 53. Resultado: Eliminado con éxito.
 [2025-11-12 01:13:31] Empleado 44671150 eliminó el turno ID 56. Resultado: Eliminado con éxito.
 [2025-11-12 16:02:43] Empleado 44671150 eliminó el turno ID 57. Resultado: Eliminado con éxito.
+

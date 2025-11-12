@@ -66,3 +66,4 @@ foreach ($turnos as $t) {
         error_log("Error al enviar recordatorio de turno (ID {$t['turno_id']}): {$mail->ErrorInfo}");
     }
 }
+
