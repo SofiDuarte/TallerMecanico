@@ -238,48 +238,32 @@ if (!$errores) {
 <meta charset="UTF-8">
 <title>Estadísticas</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-.container{width:95%;margin:20px auto;}
-h2{margin:8px 0 14px;}
-.filtros label{margin-right:8px;font-weight:600;}
-.filtros input[type="date"], .filtros select{padding:6px 8px;margin-right:10px;}
-.btn{display:inline-block;padding:8px 14px;margin-right:8px;border:none;border-radius:4px;cursor:pointer;text-decoration:none;}
-.btn-primario{background:#2d6cdf;color:#fff;}
-.btn-neutro{background:#7f8c8d;color:#fff;}
-.table{width:100%;border-collapse:collapse;background:#fff;margin-top:12px;}
-.table th,.table td{border:1px solid #ddd;padding:8px;text-align:left;vertical-align:middle;}
-.table th{background:#f2f2f2;}
-.right{text-align:right;}
-.totalbox{margin-top:12px;font-weight:700;text-align:right;}
-.alert{padding:10px 12px;border-radius:6px;margin:10px 0;background:#eef6ff;color:#2d6cdf;}
-dialog#export_modal{max-width:420px;width:92%;}
-.modal-actions{margin-top:12px;text-align:right;display:flex;gap:8px;justify-content:flex-end;}
-</style>
+
 </head>
 <body>
-<div class="container">
+<div class="ger_empleados">
     <h2>Estadísticas</h2>
 
     <form class="filtros" method="get" action="estadisticas.php">
-        <label for="tipo">Tipo:</label>
-        <select name="tipo" id="tipo">
+        <label class="ger_empleados"  for="tipo">Tipo</label>
+        <select class="ger_empleado_sel" name="tipo" id="tipo">
             <option value="servicios" <?= $tipo==='servicios'?'selected':'' ?>>Servicios</option>
             <option value="ventas" <?= $tipo==='ventas'?'selected':'' ?>>Ventas</option>
         </select>
 
-        <label for="desde">Desde:</label>
-        <input type="date" id="desde" name="desde" value="<?= e($desde) ?>">
+        <label class="ger_empleados"  for="desde">Desde</label>
+        <input  class="ger_empleados_input" type="date" id="desde" name="desde" value="<?= e($desde) ?>">
 
-        <label for="hasta">Hasta:</label>
-        <input type="date" id="hasta" name="hasta" value="<?= e($hasta) ?>">
+        <label class="ger_empleados"  for="hasta">Hasta</label>
+        <input class="ger_empleados_input" type="date" id="hasta" name="hasta" value="<?= e($hasta) ?>">
 
-        <label style="margin-left:10px;">
-            <input type="checkbox" name="solo_facturadas" value="1" <?= $solo?'checked':'' ?>>
+        <label>
+            <input class="ger_empleados_check " type="checkbox" name="solo_facturadas" value="1" <?= $solo?'checked':'' ?>>
             Solo facturadas
         </label>
 
-        <label for="mecanico" style="margin-left:10px;">Mecánico:</label>
-        <select name="mecanico" id="mecanico">
+        <label class="ger_empleados"  for="mecanico" style="margin-left:10px;">Mecánico:</label>
+        <select class="ger_empleado_sel" name="mecanico" id="mecanico">
             <option value="">Todos</option>
             <?php foreach($listaMecanicos as $m): ?>
                 <option value="<?= e($m['empleado_DNI']) ?>" <?= ($mec===$m['empleado_DNI']?'selected':'') ?>>
@@ -287,11 +271,12 @@ dialog#export_modal{max-width:420px;width:92%;}
                 </option>
             <?php endforeach; ?>
         </select>
+        <div class="ger_empleados_btn">
+            <button  type="submit" name="buscar" value="1">Buscar</button>
+            <a  href="estadisticas.php">Limpiar</a>
 
-        <button class="btn btn-primario" type="submit" name="buscar" value="1">Buscar</button>
-        <a class="btn btn-neutro" href="estadisticas.php">Limpiar</a>
-
-        <button class="btn btn-neutro" type="button" onclick="abrirExport()">Exportar</button>
+            <button  type="button" onclick="abrirExport()">Exportar</button>
+        </div>    
     </form>
 
     <?php if ($errores): ?>
@@ -300,7 +285,7 @@ dialog#export_modal{max-width:420px;width:92%;}
         </div>
     <?php endif; ?>
 
-    <table class="table">
+    <table class="ger_empleados_tabla_esta">
         <thead>
         <tr>
             <?php foreach($cols as $c): ?>

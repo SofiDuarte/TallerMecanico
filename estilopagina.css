@@ -2135,8 +2135,6 @@ html, body {
     justify-content: center;
     align-items: center;
 }
-/*PRODUCTOS GERENTE*/
-/*Usa los botones de la servicio de gerente*/
 
                                         /*MODIFICAR GERENTE*/
 
@@ -2232,7 +2230,7 @@ html, body {
     color:#888;
 }
 
-/* PRODUCTOS Y SERVICIOS GERENTE*/
+                            /* PRODUCTOS Y SERVICIOS GERENTE*/
 
 .servicios_ger{
     min-height: 80vh; /* que ocupe toda la pantalla */
@@ -2247,7 +2245,8 @@ html, body {
 .buscador_produ_ger{
     margin-top:8px;
 }
-.servicios_ger label{
+.servicios_ger label
+.filtros label{
     font-family: 'Big_Shoulders_Medium';
     font-size: 18px;
     align-content: center;
@@ -2320,6 +2319,8 @@ html, body {
     text-align: center;  
     width: 487.99px;
     height: 36.99px;
+    text-align: right;
+    padding-right: 15px;
 }
 .servicios_ger th{
     font-family: 'AlumniSans_Medium';
@@ -2329,7 +2330,7 @@ html, body {
 .servicios_ger td{text-align: center;}
 .btn_serv_ger{text-decoration: none;}
 
-/*EMPLEADOS GERENTE */
+                            /*ESTADISTICAS Y EMPLEADOS GERENTE */
 .ger_empleados{
        min-height: 80vh; /* que ocupe toda la pantalla */
 }
@@ -2337,7 +2338,16 @@ html, body {
     display: block;
     align-content: center;
 }
+.ger_empleados .filtros{
+    display: block;
+    align-content: center;
+    margin-left: 5%;
+}
 
+.ger_empleados_buscar{
+    display: flex;
+    align-content: center;
+}
 .ger_empleados h2{
     font-family: 'Big_Shoulders_ExtraBold';
     font-size: 30px;
@@ -2408,6 +2418,12 @@ html, body {
     justify-content: center;
     align-items: center;
 }
+.ger_empleados_baja{
+    display: flex;
+    justify-content: center;
+}
+
+
 .ger_empleados_baja button{
     border-radius: 40px;
     background-color:#ed2e57d1; 
@@ -2417,16 +2433,13 @@ html, body {
     font-family: 'Big_Shoulders_Medium';
     font-size: 15px;
 }
-.ger_empleados_baja{
-    display: flex;
-    justify-content: end;
-}
 
 .ger_empleados_table table{
     width: 1600px;
     height: 500px;
     margin-left: 9%;
 }
+
 .ger_empleados_table tr{
     background-color: #ffa154c2;
     border-radius: 5px;
@@ -2443,6 +2456,55 @@ html, body {
 }
 .ger_empleados_table td{text-align: center;}
 .btn_serv_ger{text-decoration: none;}
+
+
+/* Contenedor general de la tabla */
+.ger_empleados_tabla_esta {
+    width: 1200px;
+    height: 300px;
+    margin: 0 auto;
+}
+
+/* Filas de la tabla */
+.ger_empleados_tabla_esta tr {
+    background-color: #ffa15479; /* mismo color que el otro estilo */
+    border-radius: 5px;
+    font-family: 'AlumniSans_Light';
+    font-size: 20px;
+    text-align: center;
+    height: 37px;
+}
+
+/* Encabezados */
+.ger_empleados_tabla_esta th {
+    font-family: 'AlumniSans_Medium';
+    font-size: 24px;
+    text-align: center;
+    background-color: #ffbc6f; /* un tono más fuerte para diferenciar encabezado */
+    border-bottom: 2px solid #ffa154;
+    padding: 8px;
+}
+
+
+/* Si hay columnas numéricas */
+.ger_empleados_tabla_esta td.right {
+    text-align: right;
+    padding-right: 15px;
+}
+
+/* Caja del total */
+.totalbox {
+    font-family: 'AlumniSans_Medium';
+    font-size: 22px;
+    color: #000;
+    background-color: #ffe8c2;
+    border: 2px solid #ffa154;
+    border-radius: 10px;
+    width: fit-content;
+    padding: 10px 20px;
+    margin: 20px auto;
+    text-align: center;
+}
 
 
 
