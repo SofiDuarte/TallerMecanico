@@ -2135,7 +2135,8 @@ html, body {
     justify-content: center;
     align-items: center;
 }
-
+/*PRODUCTOS GERENTE*/
+/*Usa los botones de la servicio de gerente*/
 
                                         /*MODIFICAR GERENTE*/
 
@@ -2231,7 +2232,7 @@ html, body {
     color:#888;
 }
 
-/*SERVICIOS GERENTE*/
+/* PRODUCTOS Y SERVICIOS GERENTE*/
 
 .servicios_ger{
     min-height: 80vh; /* que ocupe toda la pantalla */
@@ -2243,6 +2244,9 @@ html, body {
     text-align: center;
 }
 
+.buscador_produ_ger{
+    margin-top:8px;
+}
 .servicios_ger label{
     font-family: 'Big_Shoulders_Medium';
     font-size: 18px;
@@ -2260,7 +2264,8 @@ html, body {
     width: 350px;
 }
 
-.servicios_ger_check {
+.servicios_ger_check 
+.check_row{
     border-radius: 40px;
     width: 90px;
     height: 25px;
@@ -2271,6 +2276,7 @@ html, body {
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: center;
+    text-decoration: none;
 }
 
 .acciones_ger button{
@@ -2299,6 +2305,7 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 .servicios_ger table{
     width: 1595px;

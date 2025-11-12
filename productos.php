@@ -213,65 +213,67 @@ if ($verId > 0) {
   </dialog>
 <?php endif; ?>
 
-<div class="container" style="width:95%; margin:20px auto;">
-    <div class="topbar" style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+<div class="servicios_ger" >
+    <div class="topbar">
+        <br>
         <h2>Listado de Productos</h2>
-        <?php if ($msg === 'incremento_ok'): ?><div style="color:#1e824c;">Incremento aplicado correctamente.</div><?php endif; ?>
-        <?php if ($msg === 'eliminar_ok'): ?><div style="color:#1e824c;">Productos marcados como no disponibles.</div><?php endif; ?>
-        <?php if ($msg === 'edit_ok'): ?><div style="color:#1e824c;">Producto modificado correctamente.</div><?php endif; ?>
-        <?php if ($msg === 'sin_ids'): ?><div style="color:#c0392b;">Seleccioná al menos un producto.</div><?php endif; ?>
-        <?php if ($msg === 'porcentaje_invalido'): ?><div style="color:#c0392b;">Porcentaje inválido.</div><?php endif; ?>
+        <?php if ($msg === 'incremento_ok'): ?><div>Incremento aplicado correctamente.</div><?php endif; ?>
+        <?php if ($msg === 'eliminar_ok'): ?><div>Productos marcados como no disponibles.</div><?php endif; ?>
+        <?php if ($msg === 'edit_ok'): ?><div>Producto modificado correctamente.</div><?php endif; ?>
+        <?php if ($msg === 'sin_ids'): ?><div>Seleccioná al menos un producto.</div><?php endif; ?>
+        <?php if ($msg === 'porcentaje_invalido'): ?><div>Porcentaje inválido.</div><?php endif; ?>
         <?php if ($msg === 'nuevo_ok'): ?>
-            <div style="color:#1e824c;">Producto creado correctamente (código: <?= e($_GET['nuevo_codigo'] ?? '') ?>).</div>
+            <div >Producto creado correctamente (código: <?= e($_GET['nuevo_codigo'] ?? '') ?>).</div>
         <?php elseif ($msg === 'nuevo_invalido'): ?>
-            <div style="color:#c0392b;">Completá todos los campos requeridos.</div>
+            <div >Completá todos los campos requeridos.</div>
         <?php endif; ?>
     </div>
 
     <!-- Buscador -->
-    <form method="get" class="buscador" action="productos.php" style="margin-top:8px;">
-        <label for="codigo" style="margin-right:6px;font-weight:600;">Código:</label>
-        <input type="text" id="codigo" name="codigo" value="<?= e($codigo) ?>" placeholder="Ej: LUB001" style="padding:6px 8px; margin-right:10px; min-width:180px;">
+    <form method="get" class="buscador_produ_ger" action="productos.php" >
+        <label for="codigo">Código</label>
+        <input class="servicios_ger_input" type="text" id="codigo" name="codigo" value="<?= e($codigo) ?>" placeholder="Ej: LUB001" >
 
-        <label for="categoria" style="margin-right:6px;font-weight:600;">Categoría:</label>
-        <input type="text" id="categoria" name="categoria" value="<?= e($categoria) ?>" placeholder="Ej: Lubricantes" style="padding:6px 8px; margin-right:10px; min-width:180px;">
+        <label for="categoria">Categoría</label>
+        <input class="servicios_ger_input" type="text" id="categoria" name="categoria" value="<?= e($categoria) ?>" placeholder="Ej: Lubricantes" >
 
-        <label for="descripcion" style="margin-right:6px;font-weight:600;">Descripción:</label>
-        <input type="text" id="descripcion" name="descripcion" value="<?= e($descripcion) ?>" placeholder="Buscar descripción" style="padding:6px 8px; margin-right:10px; min-width:180px;">
+        <label for="descripcion">Descripción</label>
+        <input class="servicios_ger_input" type="text" id="descripcion" name="descripcion" value="<?= e($descripcion) ?>" placeholder="Buscar descripción" >
 
-        <label style="margin-left:10px;">
-            <input type="checkbox" name="incluir_no_disponibles" value="1" <?= $incluir_no_disponibles ? 'checked' : '' ?>>
+        <label>
+            <input class="servicios_ger_check" type="checkbox" name="incluir_no_disponibles" value="1" <?= $incluir_no_disponibles ? 'checked' : '' ?>>
             Incluir no disponibles
         </label>
-
-        <button class="btn btn-primario" type="submit" name="buscar" style="padding:8px 14px;border-radius:4px;border:none;cursor:pointer;background:#2d6cdf;color:#fff;">Buscar</button>
-        <a class="btn btn-neutro" href="productos.php" style="padding:8px 14px;border-radius:4px;background:#7f8c8d;color:#fff;text-decoration:none;">Limpiar</a>
-        <a class="btn btn-primario" href="productos.php?<?= e($current_qs) ?>&nuevo=1" style="padding:8px 14px;border-radius:4px;border:none;background:#2d6cdf;color:#fff;text-decoration:none;">Nuevo</a>
+        <div class="acciones_ger">
+            <button  type="submit" name="buscar">Buscar</button>
+            <a href="productos.php" >Limpiar</a>
+            <a href="productos.php?<?= e($current_qs) ?>&nuevo=1" >Nuevo</a>
+        </div>
     </form>
 
     <!-- FORM PRINCIPAL -->
-    <form id="formProductos" method="post" action="productos.php?<?= e($current_qs) ?>">
-        <div class="acciones" style="margin:10px 0 15px;">
-            <button class="btn btn-primario" name="accion" value="incrementar" style="padding:8px 14px;border-radius:4px;border:none;background:#2d6cdf;color:#fff;cursor:pointer;">Incrementar precio</button>
-            <button class="btn btn-peligro"  name="accion" value="eliminar" style="padding:8px 14px;border-radius:4px;border:none;background:#c0392b;color:#fff;cursor:pointer;">Eliminar</button>
-            <a class="btn btn-neutro" href="gerente.php" style="padding:8px 14px;border-radius:4px;background:#7f8c8d;color:#fff;text-decoration:none;">Volver</a>
+    <form class="servicios_ger" id="formProductos" method="post" action="productos.php?<?= e($current_qs) ?>">
+        <div class="acciones_ger" >
+            <button name="accion" value="incrementar" >Incrementar precio</button>
+            <button name="accion" value="eliminar" >Eliminar</button>
+            <a href="gerente.php">Volver</a>
         </div>
 
-        <table class="tabla" style="width:100%; border-collapse:collapse; background:#fff;">
+        <table>
             <thead>
             <tr>
-                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2; width:32px;">
-                    <input type="checkbox" id="check_all"
+                <th >
+                    <input class="servicios_ger_check" type="checkbox" id="check_all"
                         onclick="document.querySelectorAll('.check_row').forEach(c=>c.checked=this.checked);">
                 </th>
-                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2;">Código</th>
-                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2;">Categoría</th>
-                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2;">Descripción</th>
-                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2; text-align:right;">Stock</th>
-                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2; text-align:right;">Prov.</th>
-                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2; text-align:right;">Venta</th>
-                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2;">Estado</th>
-                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2; width:90px;">Acciones</th>
+                <th>Código</th>
+                <th>Categoría</th>
+                <th>Descripción</th>
+                <th>Stock</th>
+                <th>Prov.</th>
+                <th>Venta</th>
+                <th>Estado</th>
+                <th>Acciones</th>
             </tr>
             </thead>
             <tbody>
@@ -284,15 +286,15 @@ if ($verId > 0) {
                 $verUrl = "productos.php?ver=".(int)$p['prod_id']."&".$current_qs;
             ?>
                 <tr class="<?= $noDisp ? 'fila-nd' : '' ?>">
-                    <td style="border:1px solid #ddd; padding:8px;"><input class="check_row" type="checkbox" name="ids[]" value="<?= (int)$p['prod_id'] ?>"></td>
-                    <td style="border:1px solid #ddd; padding:8px;"><?= e($p['prod_codigo']) ?></td>
-                    <td style="border:1px solid #ddd; padding:8px;"><?= e($p['prod_categoria']) ?></td>
-                    <td style="border:1px solid #ddd; padding:8px;"><?= e($p['prod_descripcion']) ?></td>
-                    <td style="border:1px solid #ddd; padding:8px; text-align:right;"><?= number_format((int)$p['prod_stock'], 0, ',', '.') ?></td>
-                    <td style="border:1px solid #ddd; padding:8px; text-align:right;">$ <?= nfmt($p['prod_precio_proveedor']) ?></td>
-                    <td style="border:1px solid #ddd; padding:8px; text-align:right;">$ <?= nfmt($p['prod_precio_venta']) ?></td>
-                    <td style="border:1px solid #ddd; padding:8px;"><span class="estado-tag <?= $estadoCls ?>"><?= $estadoTxt ?></span></td>
-                    <td style="border:1px solid #ddd; padding:8px;"><a class="btn btn-neutro" href="<?= e($verUrl) ?>" title="Ver / Modificar" style="text-decoration:none;">🔍</a></td>
+                    <td ><input class="check_row" type="checkbox" name="ids[]" value="<?= (int)$p['prod_id'] ?>"></td>
+                    <td><?= e($p['prod_codigo']) ?></td>
+                    <td><?= e($p['prod_categoria']) ?></td>
+                    <td><?= e($p['prod_descripcion']) ?></td>
+                    <td><?= number_format((int)$p['prod_stock'], 0, ',', '.') ?></td>
+                    <td>$ <?= nfmt($p['prod_precio_proveedor']) ?></td>
+                    <td>$ <?= nfmt($p['prod_precio_venta']) ?></td>
+                    <td><span class="estado-tag <?= $estadoCls ?>"><?= $estadoTxt ?></span></td>
+                    <td><a class="acciones_ger" href="<?= e($verUrl) ?>" title="Ver / Modificar">🔍</a></td>
                 </tr>
             <?php endforeach; endif; ?>
             </tbody>
