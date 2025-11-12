@@ -175,6 +175,7 @@ $stmt = $conexion->prepare($sql);
 $stmt->execute($params);
 $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Categorías para el modal Nuevo
 $stc = $conexion->query("SELECT DISTINCT prod_categoria FROM productos ORDER BY prod_categoria ASC");
 $categorias = $stc->fetchAll(PDO::FETCH_COLUMN);
 
@@ -193,32 +194,7 @@ if ($verId > 0) {
 <meta charset="UTF-8">
 <title>Productos – Panel Gerente</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-.container { width:95%; margin:20px auto; }
-h2 { margin: 10px 0 15px; }
-.buscador label { margin-right:6px; font-weight:600; }
-.buscador input[type="text"] { padding:6px 8px; margin-right:10px; min-width:180px; }
-.btn { display:inline-block; padding:8px 14px; margin-right:8px; border:none; border-radius:4px; cursor:pointer; text-decoration:none; }
-.btn-primario { background:#2d6cdf; color:#fff; }
-.btn-peligro { background:#c0392b; color:#fff; }
-.btn-neutro { background:#7f8c8d; color:#fff; }
-.topbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
-.tabla { width:100%; border-collapse:collapse; margin-top:10px; background:#fff; }
-.tabla th, .tabla td { border:1px solid #ddd; padding:8px; text-align:left; vertical-align:middle; }
-.tabla th { background:#f2f2f2; }
-.estado-tag { display:inline-block; padding:2px 8px; border-radius:12px; font-size:12px; font-weight:600; }
-.disp { background:#e5f7ea; color:#1e824c; }
-.nodisp { background:#fdecea; color:#c0392b; }
-.fila-nd { opacity:0.6; }
-
-/* Modal */
-.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-.modal { background:#fff; padding:18px; border-radius:8px; max-width:720px; width:95%; box-shadow: 0 10px 40px rgba(0,0,0,.25); }
-.modal h3 { margin-top:0; }
-.modal .acciones { margin-top: 14px; }
-.modal table { width:100%; border-collapse:collapse; }
-.modal table td, .modal table th { border:1px solid #ddd; padding:8px; }
-</style>
+<link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>">
 </head>
 <body>
 
@@ -237,8 +213,8 @@ h2 { margin: 10px 0 15px; }
   </dialog>
 <?php endif; ?>
 
-<div class="container">
-    <div class="topbar">
+<div class="container" style="width:95%; margin:20px auto;">
+    <div class="topbar" style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
         <h2>Listado de Productos</h2>
         <?php if ($msg === 'incremento_ok'): ?><div style="color:#1e824c;">Incremento aplicado correctamente.</div><?php endif; ?>
         <?php if ($msg === 'eliminar_ok'): ?><div style="color:#1e824c;">Productos marcados como no disponibles.</div><?php endif; ?>
@@ -253,234 +229,226 @@ h2 { margin: 10px 0 15px; }
     </div>
 
     <!-- Buscador -->
-    <form method="get" class="buscador" action="productos.php">
-        <label for="codigo">Código:</label>
-        <input type="text" id="codigo" name="codigo" value="<?= e($codigo) ?>" placeholder="Ej: LUB001">
+    <form method="get" class="buscador" action="productos.php" style="margin-top:8px;">
+        <label for="codigo" style="margin-right:6px;font-weight:600;">Código:</label>
+        <input type="text" id="codigo" name="codigo" value="<?= e($codigo) ?>" placeholder="Ej: LUB001" style="padding:6px 8px; margin-right:10px; min-width:180px;">
 
-        <label for="categoria">Categoría:</label>
-        <input type="text" id="categoria" name="categoria" value="<?= e($categoria) ?>" placeholder="Ej: Lubricantes">
+        <label for="categoria" style="margin-right:6px;font-weight:600;">Categoría:</label>
+        <input type="text" id="categoria" name="categoria" value="<?= e($categoria) ?>" placeholder="Ej: Lubricantes" style="padding:6px 8px; margin-right:10px; min-width:180px;">
 
-        <label for="descripcion">Descripción:</label>
-        <input type="text" id="descripcion" name="descripcion" value="<?= e($descripcion) ?>" placeholder="Buscar descripción">
+        <label for="descripcion" style="margin-right:6px;font-weight:600;">Descripción:</label>
+        <input type="text" id="descripcion" name="descripcion" value="<?= e($descripcion) ?>" placeholder="Buscar descripción" style="padding:6px 8px; margin-right:10px; min-width:180px;">
 
         <label style="margin-left:10px;">
             <input type="checkbox" name="incluir_no_disponibles" value="1" <?= $incluir_no_disponibles ? 'checked' : '' ?>>
             Incluir no disponibles
         </label>
 
-        <button class="btn btn-primario" type="submit" name="buscar">Buscar</button>
-        <a class="btn btn-neutro" href="productos.php">Limpiar</a>
-        <a class="btn btn-primario" href="productos.php?<?= e($current_qs) ?>&nuevo=1">Nuevo</a>
+        <button class="btn btn-primario" type="submit" name="buscar" style="padding:8px 14px;border-radius:4px;border:none;cursor:pointer;background:#2d6cdf;color:#fff;">Buscar</button>
+        <a class="btn btn-neutro" href="productos.php" style="padding:8px 14px;border-radius:4px;background:#7f8c8d;color:#fff;text-decoration:none;">Limpiar</a>
+        <a class="btn btn-primario" href="productos.php?<?= e($current_qs) ?>&nuevo=1" style="padding:8px 14px;border-radius:4px;border:none;background:#2d6cdf;color:#fff;text-decoration:none;">Nuevo</a>
     </form>
 
     <!-- FORM PRINCIPAL -->
     <form id="formProductos" method="post" action="productos.php?<?= e($current_qs) ?>">
         <div class="acciones" style="margin:10px 0 15px;">
-            <button class="btn btn-primario" name="accion" value="incrementar">Incrementar precio</button>
-            <button class="btn btn-peligro"  name="accion" value="eliminar">Eliminar</button>
-            <a class="btn btn-neutro" href="gerente.php">Volver</a>
+            <button class="btn btn-primario" name="accion" value="incrementar" style="padding:8px 14px;border-radius:4px;border:none;background:#2d6cdf;color:#fff;cursor:pointer;">Incrementar precio</button>
+            <button class="btn btn-peligro"  name="accion" value="eliminar" style="padding:8px 14px;border-radius:4px;border:none;background:#c0392b;color:#fff;cursor:pointer;">Eliminar</button>
+            <a class="btn btn-neutro" href="gerente.php" style="padding:8px 14px;border-radius:4px;background:#7f8c8d;color:#fff;text-decoration:none;">Volver</a>
         </div>
 
-        <table class="tabla">
+        <table class="tabla" style="width:100%; border-collapse:collapse; background:#fff;">
             <thead>
             <tr>
-                <th style="width:32px;">
-                    <input type="checkbox"
-                        onclick="document.querySelectorAll('input[name=&quot;ids[]&quot;]').forEach(c=>c.checked=this.checked);">
+                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2; width:32px;">
+                    <input type="checkbox" id="check_all"
+                        onclick="document.querySelectorAll('.check_row').forEach(c=>c.checked=this.checked);">
                 </th>
-                <th>Código</th>
-                <th>Categoría</th>
-                <th>Descripción</th>
-                <th style="text-align:right;">Stock</th>
-                <th style="text-align:right;">Prov.</th>
-                <th style="text-align:right;">Venta</th>
-                <th>Estado</th>
-                <th style="width:90px;">Acciones</th>
+                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2;">Código</th>
+                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2;">Categoría</th>
+                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2;">Descripción</th>
+                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2; text-align:right;">Stock</th>
+                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2; text-align:right;">Prov.</th>
+                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2; text-align:right;">Venta</th>
+                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2;">Estado</th>
+                <th style="border:1px solid #ddd; padding:8px; background:#f2f2f2; width:90px;">Acciones</th>
             </tr>
             </thead>
             <tbody>
             <?php if (!$productos): ?>
-                <tr><td colspan="9">No se encontraron productos con los filtros aplicados.</td></tr>
-            <?php else: ?>
-                <?php foreach ($productos as $p): ?>
-                    <?php
-                        $noDisp = (int)$p['prod_disponible'] === 0 || (int)$p['prod_stock'] <= 0;
-                        $rowClass = $noDisp ? 'fila-nd' : '';
-                        $estadoTxt = $noDisp ? 'No disponible' : 'Disponible';
-                        $estadoCls = $noDisp ? 'nodisp' : 'disp';
-                        $verUrl = "productos.php?ver=".(int)$p['prod_id']."&".$current_qs;
-                    ?>
-                    <tr class="<?= $rowClass ?>">
-                        <td><input type="checkbox" name="ids[]" value="<?= (int)$p['prod_id'] ?>"></td>
-                        <td><?= e($p['prod_codigo']) ?></td>
-                        <td><?= e($p['prod_categoria']) ?></td>
-                        <td><?= e($p['prod_descripcion']) ?></td>
-                        <td style="text-align:right;"><?= number_format((int)$p['prod_stock'], 0, ',', '.') ?></td>
-                        <td style="text-align:right;">$ <?= nfmt($p['prod_precio_proveedor']) ?></td>
-                        <td style="text-align:right;">$ <?= nfmt($p['prod_precio_venta']) ?></td>
-                        <td><span class="estado-tag <?= $estadoCls ?>"><?= $estadoTxt ?></span></td>
-                        <td><a class="btn btn-neutro" href="<?= e($verUrl) ?>" title="Ver / Modificar">🔍 </a></td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
+                <tr><td style="border:1px solid #ddd; padding:8px;" colspan="9">No se encontraron productos con los filtros aplicados.</td></tr>
+            <?php else: foreach ($productos as $p): 
+                $noDisp = (int)$p['prod_disponible'] === 0 || (int)$p['prod_stock'] <= 0;
+                $estadoTxt = $noDisp ? 'No disponible' : 'Disponible';
+                $estadoCls = $noDisp ? 'nodisp' : 'disp';
+                $verUrl = "productos.php?ver=".(int)$p['prod_id']."&".$current_qs;
+            ?>
+                <tr class="<?= $noDisp ? 'fila-nd' : '' ?>">
+                    <td style="border:1px solid #ddd; padding:8px;"><input class="check_row" type="checkbox" name="ids[]" value="<?= (int)$p['prod_id'] ?>"></td>
+                    <td style="border:1px solid #ddd; padding:8px;"><?= e($p['prod_codigo']) ?></td>
+                    <td style="border:1px solid #ddd; padding:8px;"><?= e($p['prod_categoria']) ?></td>
+                    <td style="border:1px solid #ddd; padding:8px;"><?= e($p['prod_descripcion']) ?></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:right;"><?= number_format((int)$p['prod_stock'], 0, ',', '.') ?></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:right;">$ <?= nfmt($p['prod_precio_proveedor']) ?></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:right;">$ <?= nfmt($p['prod_precio_venta']) ?></td>
+                    <td style="border:1px solid #ddd; padding:8px;"><span class="estado-tag <?= $estadoCls ?>"><?= $estadoTxt ?></span></td>
+                    <td style="border:1px solid #ddd; padding:8px;"><a class="btn btn-neutro" href="<?= e($verUrl) ?>" title="Ver / Modificar" style="text-decoration:none;">🔍</a></td>
+                </tr>
+            <?php endforeach; endif; ?>
             </tbody>
         </table>
     </form>
 </div>
 
 <?php
-// ===================== MODALES =====================
+// ===================== MODALES (todos con <dialog>) =====================
 
+// Modal: Nuevo producto
 if ($nuevo) {
     ?>
-    <div class="modal-backdrop">
-      <div class="modal">
-        <h3>Nuevo producto</h3>
-        <form method="post" action="productos.php?<?= e($current_qs) ?>">
-            <input type="hidden" name="accion" value="nuevo_guardar">
-            <input type="hidden" name="f_codigo" value="<?= e($codigo) ?>">
-            <input type="hidden" name="f_categoria" value="<?= e($categoria) ?>">
-            <input type="hidden" name="f_descripcion" value="<?= e($descripcion) ?>">
-            <?php if ($incluir_no_disponibles): ?><input type="hidden" name="f_incluir_no_disponibles" value="1"><?php endif; ?>
+    <dialog open>
+      <p><strong>Nuevo producto</strong></p>
+      <form method="post" action="productos.php?<?= e($current_qs) ?>">
+        <input type="hidden" name="accion" value="nuevo_guardar">
+        <input type="hidden" name="f_codigo" value="<?= e($codigo) ?>">
+        <input type="hidden" name="f_categoria" value="<?= e($categoria) ?>">
+        <input type="hidden" name="f_descripcion" value="<?= e($descripcion) ?>">
+        <?php if ($incluir_no_disponibles): ?><input type="hidden" name="f_incluir_no_disponibles" value="1"><?php endif; ?>
 
-            <label>Categoría:</label>
-            <select name="prod_categoria" style="min-width:280px;">
-                <option value="" selected>Seleccionar existente...</option>
-                <?php foreach ($categorias as $cat): ?>
-                    <option value="<?= e($cat) ?>"><?= e($cat) ?></option>
-                <?php endforeach; ?>
-            </select>
-            <span style="margin:0 8px; display:inline-block;">o</span>
-            <input type="text" name="prod_categoria_nueva" placeholder="Nueva categoría" style="min-width:280px;">
-            <p style="margin-top:6px;"><em>Si completás “Nueva categoría”, se usará esa y se generará el prefijo automáticamente.</em></p>
-            <br><br>
+        <label>Categoría:</label>
+        <select name="prod_categoria" style="min-width:280px;">
+            <option value="" selected>Seleccionar existente...</option>
+            <?php foreach ($categorias as $cat): ?>
+                <option value="<?= e($cat) ?>"><?= e($cat) ?></option>
+            <?php endforeach; ?>
+        </select>
+        <span style="margin:0 8px; display:inline-block;">o</span>
+        <input type="text" name="prod_categoria_nueva" placeholder="Nueva categoría" style="min-width:280px;">
+        <p style="margin-top:6px;"><em>Si completás “Nueva categoría”, se usará esa y se generará el prefijo automáticamente.</em></p>
+        <br>
 
-            <label>Descripción:</label><br>
-            <input type="text" name="prod_descripcion" maxlength="255" required style="min-width:420px;">
-            <br><br>
+        <label>Descripción:</label><br>
+        <input type="text" name="prod_descripcion" maxlength="255" required style="min-width:420px;">
+        <br><br>
 
-            <label>Stock:</label>
-            <input type="number" name="prod_stock" min="0" required>
-            <br><br>
+        <label>Stock:</label>
+        <input type="number" name="prod_stock" min="0" required>
+        <br><br>
 
-            <label>Precio proveedor:</label>
-            <input type="number" step="1" min="0" name="prod_precio_proveedor" required>
-            <p><em>El <b>código</b> se generará automáticamente según la categoría. El <b>precio de venta</b> será proveedor + 10%.</em></p>
+        <label>Precio proveedor:</label>
+        <input type="number" step="1" min="0" name="prod_precio_proveedor" required>
+        <p><em>El <b>código</b> se generará automáticamente según la categoría. El <b>precio de venta</b> será proveedor + 10%.</em></p>
 
-            <div class="acciones">
-                <button class="btn btn-primario" type="submit">Guardar</button>
-                <a class="btn btn-neutro" href="productos.php?<?= e($current_qs) ?>">Volver</a>
-            </div>
-        </form>
-      </div>
-    </div>
+        <div class="modal-actions">
+            <button type="submit">Guardar</button>
+            <a class="cancelar_boton" href="productos.php?<?= e($current_qs) ?>">Volver</a>
+        </div>
+      </form>
+    </dialog>
     <?php
 }
 
+// Modal: Incrementar precio
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'incrementar') {
     $ids = isset($_POST['ids']) ? array_filter((array)$_POST['ids'], 'is_numeric') : [];
     ?>
-    <div class="modal-backdrop">
-      <div class="modal">
-        <h3>Incrementar precio</h3>
-        <?php if (empty($ids)): ?>
-            <p>No seleccionaste productos.</p>
-            <div class="acciones">
-                <a class="btn btn-neutro" href="productos.php?<?= e($current_qs) ?>">Volver</a>
-            </div>
-        <?php else: ?>
-            <p>Seleccionados: <strong><?= count($ids) ?></strong> producto(s).</p>
-            <form method="post" action="productos.php?<?= e($current_qs) ?>">
-                <?php foreach ($ids as $id): ?><input type="hidden" name="ids[]" value="<?= (int)$id ?>"><?php endforeach; ?>
-                <input type="hidden" name="f_codigo" value="<?= e($codigo) ?>">
-                <input type="hidden" name="f_categoria" value="<?= e($categoria) ?>">
-                <input type="hidden" name="f_descripcion" value="<?= e($descripcion) ?>">
-                <?php if ($incluir_no_disponibles): ?><input type="hidden" name="f_incluir_no_disponibles" value="1"><?php endif; ?>
-                <label>Porcentaje (%): </label>
-                <input type="number" name="porcentaje" step="1" min="0" required>
-                <div class="acciones">
-                    <button class="btn btn-primario" name="accion" value="incrementar_aplicar">Aplicar</button>
-                    <a class="btn btn-neutro" href="productos.php?<?= e($current_qs) ?>">Cancelar</a>
-                </div>
-            </form>
-        <?php endif; ?>
-      </div>
-    </div>
-    <?php
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'eliminar') {
-    $ids = isset($_POST['ids']) ? array_filter((array)$_POST['ids'], 'is_numeric') : [];
-    ?>
-    <div class="modal-backdrop">
-      <div class="modal">
-        <h3>Eliminar productos (lógico)</h3>
-        <?php if (empty($ids)): ?>
-            <p>No seleccionaste productos.</p>
-            <div class="acciones">
-                <a class="btn btn-neutro" href="productos.php?<?= e($current_qs) ?>">Volver</a>
-            </div>
-        <?php else: ?>
-            <p>Se marcarán como <strong>No disponibles</strong> <b><?= count($ids) ?></b> producto(s).</p>
-            <form method="post" action="productos.php?<?= e($current_qs) ?>">
-                <?php foreach ($ids as $id): ?><input type="hidden" name="ids[]" value="<?= (int)$id ?>"><?php endforeach; ?>
-                <input type="hidden" name="f_codigo" value="<?= e($codigo) ?>">
-                <input type="hidden" name="f_categoria" value="<?= e($categoria) ?>">
-                <input type="hidden" name="f_descripcion" value="<?= e($descripcion) ?>">
-                <?php if ($incluir_no_disponibles): ?><input type="hidden" name="f_incluir_no_disponibles" value="1"><?php endif; ?>
-                <div class="acciones">
-                    <button class="btn btn-peligro" name="accion" value="eliminar_aplicar">Sí, eliminar</button>
-                    <a class="btn btn-neutro" href="productos.php?<?= e($current_qs) ?>">Cancelar</a>
-                </div>
-            </form>
-        <?php endif; ?>
-      </div>
-    </div>
-    <?php
-}
-
-if ($productoVer) {
-    ?>
-    <div class="modal-backdrop">
-      <div class="modal">
-        <h3>Producto <?= e($productoVer['prod_codigo']) ?></h3>
-        <table>
-          <tr><th style="width:220px;">Código</th><td><?= e($productoVer['prod_codigo']) ?></td></tr>
-          <tr><th>Categoría</th><td><?= e($productoVer['prod_categoria']) ?></td></tr>
-          <tr><th>Descripción</th><td><?= e($productoVer['prod_descripcion']) ?></td></tr>
-          <tr><th>Precio venta (actual)</th><td>$ <?= nfmt($productoVer['prod_precio_venta']) ?></td></tr>
-        </table>
-        <br>
+    <dialog open>
+      <p><strong>Incrementar precio</strong></p>
+      <?php if (empty($ids)): ?>
+        <p>No seleccionaste productos.</p>
+        <div class="modal-actions">
+            <a class="cancelar_boton" href="productos.php?<?= e($current_qs) ?>">Volver</a>
+        </div>
+      <?php else: ?>
+        <p>Seleccionados: <strong><?= count($ids) ?></strong> producto(s).</p>
         <form method="post" action="productos.php?<?= e($current_qs) ?>">
-            <input type="hidden" name="accion" value="ver_guardar">
-            <input type="hidden" name="id" value="<?= (int)$productoVer['prod_id'] ?>">
+            <?php foreach ($ids as $id): ?><input type="hidden" name="ids[]" value="<?= (int)$id ?>"><?php endforeach; ?>
             <input type="hidden" name="f_codigo" value="<?= e($codigo) ?>">
             <input type="hidden" name="f_categoria" value="<?= e($categoria) ?>">
             <input type="hidden" name="f_descripcion" value="<?= e($descripcion) ?>">
             <?php if ($incluir_no_disponibles): ?><input type="hidden" name="f_incluir_no_disponibles" value="1"><?php endif; ?>
-
-            <label>Estado:</label>
-            <select name="prod_disponible">
-                <option value="1" <?= $productoVer['prod_disponible'] ? 'selected':'' ?>>Disponible</option>
-                <option value="0" <?= !$productoVer['prod_disponible'] ? 'selected':'' ?>>No disponible</option>
-            </select>
-            <br><br>
-
-            <label>Stock:</label>
-            <input type="number" name="prod_stock" min="0" value="<?= (int)$productoVer['prod_stock'] ?>" required>
-            <br><br>
-
-            <label>Precio proveedor:</label>
-            <input type="number" step="1" min="0" name="prod_precio_proveedor" value="<?= e($productoVer['prod_precio_proveedor']) ?>" required>
-            <p><em>El precio de venta se recalculará automáticamente (proveedor × 1.10).</em></p>
-
-            <div class="acciones">
-                <button class="btn btn-primario" type="submit">Guardar</button>
-                <a class="btn btn-neutro" href="productos.php?<?= e($current_qs) ?>">Volver</a>
+            <label>Porcentaje (%): </label>
+            <input type="number" name="porcentaje" step="1" min="0" required>
+            <div class="modal-actions">
+                <button name="accion" value="incrementar_aplicar">Aplicar</button>
+                <a class="cancelar_boton" href="productos.php?<?= e($current_qs) ?>">Cancelar</a>
             </div>
         </form>
-      </div>
-    </div>
+      <?php endif; ?>
+    </dialog>
+    <?php
+}
+
+// Modal: Confirmar eliminación lógica
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'eliminar') {
+    $ids = isset($_POST['ids']) ? array_filter((array)$_POST['ids'], 'is_numeric') : [];
+    ?>
+    <dialog open>
+      <p><strong>Eliminar productos (lógico)</strong></p>
+      <?php if (empty($ids)): ?>
+        <p>No seleccionaste productos.</p>
+        <div class="modal-actions">
+            <a class="cancelar_boton" href="productos.php?<?= e($current_qs) ?>">Volver</a>
+        </div>
+      <?php else: ?>
+        <p>Se marcarán como <strong>No disponibles</strong> <b><?= count($ids) ?></b> producto(s).</p>
+        <form method="post" action="productos.php?<?= e($current_qs) ?>">
+            <?php foreach ($ids as $id): ?><input type="hidden" name="ids[]" value="<?= (int)$id ?>"><?php endforeach; ?>
+            <input type="hidden" name="f_codigo" value="<?= e($codigo) ?>">
+            <input type="hidden" name="f_categoria" value="<?= e($categoria) ?>">
+            <input type="hidden" name="f_descripcion" value="<?= e($descripcion) ?>">
+            <?php if ($incluir_no_disponibles): ?><input type="hidden" name="f_incluir_no_disponibles" value="1"><?php endif; ?>
+            <div class="modal-actions">
+                <button name="accion" value="eliminar_aplicar">Sí, eliminar</button>
+                <a class="cancelar_boton" href="productos.php?<?= e($current_qs) ?>">Cancelar</a>
+            </div>
+        </form>
+      <?php endif; ?>
+    </dialog>
+    <?php
+}
+
+// Modal: Ver/Editar producto
+if ($productoVer) {
+    ?>
+    <dialog open>
+      <p><strong>Producto <?= e($productoVer['prod_codigo']) ?></strong></p>
+      <table style="width:100%;border-collapse:collapse;">
+        <tr><th style="width:220px;">Código</th><td><?= e($productoVer['prod_codigo']) ?></td></tr>
+        <tr><th>Categoría</th><td><?= e($productoVer['prod_categoria']) ?></td></tr>
+        <tr><th>Descripción</th><td><?= e($productoVer['prod_descripcion']) ?></td></tr>
+        <tr><th>Precio venta (actual)</th><td>$ <?= nfmt($productoVer['prod_precio_venta']) ?></td></tr>
+      </table>
+      <br>
+      <form method="post" action="productos.php?<?= e($current_qs) ?>">
+        <input type="hidden" name="accion" value="ver_guardar">
+        <input type="hidden" name="id" value="<?= (int)$productoVer['prod_id'] ?>">
+        <input type="hidden" name="f_codigo" value="<?= e($codigo) ?>">
+        <input type="hidden" name="f_categoria" value="<?= e($categoria) ?>">
+        <input type="hidden" name="f_descripcion" value="<?= e($descripcion) ?>">
+        <?php if ($incluir_no_disponibles): ?><input type="hidden" name="f_incluir_no_disponibles" value="1"><?php endif; ?>
+
+        <label>Estado:</label>
+        <select name="prod_disponible">
+            <option value="1" <?= $productoVer['prod_disponible'] ? 'selected':'' ?>>Disponible</option>
+            <option value="0" <?= !$productoVer['prod_disponible'] ? 'selected':'' ?>>No disponible</option>
+        </select>
+        <br><br>
+
+        <label>Stock:</label>
+        <input type="number" name="prod_stock" min="0" value="<?= (int)$productoVer['prod_stock'] ?>" required>
+        <br><br>
+
+        <label>Precio proveedor:</label>
+        <input type="number" step="1" min="0" name="prod_precio_proveedor" value="<?= e($productoVer['prod_precio_proveedor']) ?>" required>
+        <p><em>El precio de venta se recalculará automáticamente (proveedor × 1.10).</em></p>
+
+        <div class="modal-actions">
+            <button type="submit">Guardar</button>
+            <a class="cancelar_boton" href="productos.php?<?= e($current_qs) ?>">Volver</a>
+        </div>
+      </form>
+    </dialog>
     <?php
 }
 ?>

@@ -62,7 +62,7 @@ $roll   = isset($_GET['roll'])   ? trim($_GET['roll'])   : '';
 $estado = isset($_GET['estado']) ? trim($_GET['estado']) : '';
 $incluir_bajas = isset($_GET['incluir_bajas']) ? 1 : 0;
 
-$nuevo  = isset($_GET['nuevo']) ? 1 : 0;
+$nuevo  = isset($_GET['nuevo']) ? 1 : 0; // abrir modal Nuevo
 $msg    = $_GET['msg'] ?? '';
 
 $current_qs = filtros_qs($dni,$nombre,$email,$roll,$estado,$incluir_bajas);
@@ -71,6 +71,7 @@ $current_qs = filtros_qs($dni,$nombre,$email,$roll,$estado,$incluir_bajas);
 if ($_SERVER['REQUEST_METHOD']==='POST'){
     $accion = $_POST['accion'] ?? '';
 
+    // Persistir filtros en vuelta
     $f_dni    = $_POST['f_dni']    ?? $dni;
     $f_nombre = $_POST['f_nombre'] ?? $nombre;
     $f_email  = $_POST['f_email']  ?? $email;
@@ -213,14 +214,14 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
         $lhN   = !empty($_POST['licencia_hasta']) ? $_POST['licencia_hasta'] : null;
 
         if ($dniN==='' || $nomN==='' || $emailN==='' || $rollN===''){
-            header("Location: empleados.php?{$qs}&msg=nuevo_invalido&nuevo=1"); exit;
+            header("Location: empleados.php?{$current_qs}&msg=nuevo_invalido&nuevo=1"); exit;
         }
         if (!in_array($estN, ['disponible','no_disponible','licencia','baja'], true)){
-            header("Location: empleados.php?{$qs}&msg=nuevo_invalido&nuevo=1"); exit;
+            header("Location: empleados.php?{$current_qs}&msg=nuevo_invalido&nuevo=1"); exit;
         }
         if ($estN==='licencia'){
             if (!$ldN || !$lhN || $ldN>$lhN){
-                header("Location: empleados.php?{$qs}&msg=lic_invalida&nuevo=1"); exit;
+                header("Location: empleados.php?{$current_qs}&msg=lic_invalida&nuevo=1"); exit;
             }
         } else {
             $ldN = $lhN = null;
@@ -231,7 +232,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
             $chk = $conexion->prepare("SELECT COUNT(*) FROM empleados WHERE empleado_DNI = ?");
             $chk->execute([$dniN]);
             if ((int)$chk->fetchColumn() > 0){
-                header("Location: empleados.php?{$qs}&msg=dni_dup&nuevo=1"); exit;
+                header("Location: empleados.php?{$current_qs}&msg=dni_dup&nuevo=1"); exit;
             }
 
             $tempPlain = bin2hex(random_bytes(6));
@@ -261,10 +262,10 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
 
             try{ enviar_mail($emailN, $nomN, 'Bienvenida - WA SPORT', $html); } catch (Exception $ex){}
 
-            header("Location: empleados.php?{$qs}&msg=nuevo_ok&nuevo_codigo=".urlencode($dniN)); exit;
+            header("Location: empleados.php?{$current_qs}&msg=nuevo_ok&nuevo_codigo=".urlencode($dniN)); exit;
 
         } catch (Exception $ex){
-            header("Location: empleados.php?{$qs}&msg=nuevo_fail&nuevo=1"); exit;
+            header("Location: empleados.php?{$current_qs}&msg=nuevo_fail&nuevo=1"); exit;
         }
     }
 }
@@ -288,6 +289,7 @@ $st = $conexion->prepare($sql);
 $st->execute($params);
 $empleados = $st->fetchAll(PDO::FETCH_ASSOC);
 
+// Modal VER (GET ?ver=DNI)
 $verDni = isset($_GET['ver']) ? trim($_GET['ver']) : '';
 $empVer = null;
 if ($verDni!==''){
@@ -310,6 +312,7 @@ try {
 <meta charset="UTF-8">
 <title>Empleados – Panel Gerente</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="estilopagina.css?v=<?= time() ?>">
 </head>
 <body>
     <?php include("nav_gerente.php"); ?>
@@ -356,9 +359,10 @@ try {
         <br>
         <div class="ger_empleados_btn">
           <label>
-              <input type="checkbox" name="incluir_bajas" value="1" <?= $incluir_bajas?'checked':'' ?>>
+              <input class="ger_empleados_check " type="checkbox" name="incluir_bajas" value="1" <?= $incluir_bajas?'checked':'' ?>>
               Incluir bajas
           </label>
+        
           <button type="submit">Buscar</button>
           <a href="empleados.php">Limpiar</a>
           <a href="empleados.php?<?= e($current_qs) ?>&nuevo=1">Nuevo</a>
@@ -379,7 +383,7 @@ try {
             <button name="accion" value="baja">Dar de Baja (inhabilitar)</button>
         </div>
         <br>
-        <table>
+        <table >
             <thead>
             <tr>
                 <th>
@@ -430,170 +434,160 @@ try {
 </div>
 
 <?php
-/* ===================== MODALES ===================== */
+/* ===================== MODALES (UNIFICADOS A <dialog>) ===================== */
 
 // Modal: Nuevo
 if ($nuevo){ ?>
-  <div class="modal-backdrop">
-    <div class="modal">
-      <h3>Nuevo empleado</h3>
-      <form method="post" action="empleados.php?<?= e($current_qs) ?>">
-        <input type="hidden" name="accion" value="nuevo_guardar">
-        <input type="hidden" name="f_dni"    value="<?= e($dni) ?>">
-        <input type="hidden" name="f_nombre" value="<?= e($nombre) ?>">
-        <input type="hidden" name="f_email"  value="<?= e($email) ?>">
-        <input type="hidden" name="f_roll"   value="<?= e($roll) ?>">
-        <input type="hidden" name="f_estado" value="<?= e($estado) ?>">
-        <?php if ($incluir_bajas): ?><input type="hidden" name="f_incluir_bajas" value="1"><?php endif; ?>
+  <dialog open>
+    <p><strong>Nuevo empleado</strong></p>
+    <form method="post" action="empleados.php?<?= e($current_qs) ?>">
+      <input type="hidden" name="accion" value="nuevo_guardar">
+      <input type="hidden" name="f_dni"    value="<?= e($dni) ?>">
+      <input type="hidden" name="f_nombre" value="<?= e($nombre) ?>">
+      <input type="hidden" name="f_email"  value="<?= e($email) ?>">
+      <input type="hidden" name="f_roll"   value="<?= e($roll) ?>">
+      <input type="hidden" name="f_estado" value="<?= e($estado) ?>">
+      <?php if ($incluir_bajas): ?><input type="hidden" name="f_incluir_bajas" value="1"><?php endif; ?>
 
-        <table>
-          <tr><th style="width:200px;">DNI *</th><td><input type="text" name="empleado_DNI" required></td></tr>
-          <tr><th>Nombre *</th><td><input type="text" name="empleado_nombre" required placeholder="Juan Perez"></td></tr>
-          <tr><th>Email *</th><td><input type="email" name="empleado_email" required placeholder="falso_mail@mail.com"></td></tr>
-          <tr>
-            <th>Rol *</th>
-            <td>
-              <select name="empleado_roll" required>
-                <?php foreach ($roles as $r): ?>
-                  <option value="<?= e($r) ?>"><?= e($r) ?></option>
-                <?php endforeach; ?>
-              </select>
-            </td>
-          </tr>
-          <tr><th>Dirección</th><td><input type="text" name="empleado_direccion" placeholder="Calle Falsa 123"></td></tr>
-          <tr><th>Localidad</th><td><input type="text" name="empleado_localidad" placeholder="Caba"></td></tr>
-          <tr><th>Teléfono</th><td><input type="text" name="empleado_telefono"></td></tr>
-          <tr>
-            <th>Estado</th>
-            <td>
-              <select name="empleado_estado" id="nuevo_estado" onchange="toggleLicencia(this.value, 'nuevo_lic')">
-                <option value="disponible" selected>disponible</option>
-                <option value="no_disponible">no_disponible</option>
-                <option value="licencia">licencia</option>
-                <option value="baja">baja</option>
-              </select>
-              <div id="nuevo_lic" class="small" style="margin-top:8px; display:none;">
-                Desde: <input type="date" name="licencia_desde">
-                Hasta: <input type="date" name="licencia_hasta">
-              </div>
-            </td>
-          </tr>
-        </table>
-        <p class="small">* En el alta se envía automáticamente un mail de bienvenida con el link para definir contraseña.</p>
+      <table style="width:100%;border-collapse:collapse;">
+        <tr><th style="width:200px;">DNI *</th><td><input type="text" name="empleado_DNI" required></td></tr>
+        <tr><th>Nombre *</th><td><input type="text" name="empleado_nombre" required placeholder="Juan Perez"></td></tr>
+        <tr><th>Email *</th><td><input type="email" name="empleado_email" required placeholder="falso_mail@mail.com"></td></tr>
+        <tr>
+          <th>Rol *</th>
+          <td>
+            <select name="empleado_roll" required>
+              <?php foreach ($roles as $r): ?>
+                <option value="<?= e($r) ?>"><?= e($r) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </td>
+        </tr>
+        <tr><th>Dirección</th><td><input type="text" name="empleado_direccion" placeholder="Calle Falsa 123"></td></tr>
+        <tr><th>Localidad</th><td><input type="text" name="empleado_localidad" placeholder="Caba"></td></tr>
+        <tr><th>Teléfono</th><td><input type="text" name="empleado_telefono"></td></tr>
+        <tr>
+          <th>Estado</th>
+          <td>
+            <select name="empleado_estado" id="nuevo_estado" onchange="toggleLicencia(this.value, 'nuevo_lic')">
+              <option value="disponible" selected>disponible</option>
+              <option value="no_disponible">no_disponible</option>
+              <option value="licencia">licencia</option>
+              <option value="baja">baja</option>
+            </select>
+            <div id="nuevo_lic" class="small" style="margin-top:8px; display:none;">
+              Desde: <input type="date" name="licencia_desde">
+              Hasta: <input type="date" name="licencia_hasta">
+            </div>
+          </td>
+        </tr>
+      </table>
+      <p class="small">* Se enviará un mail de bienvenida con el link para definir contraseña.</p>
 
-        <div class="acciones">
-          <button class="btn btn-primario" type="submit">Guardar</button>
-          <a class="btn btn-neutro" href="empleados.php?<?= e($current_qs) ?>">Volver</a>
-        </div>
-      </form>
-    </div>
-  </div>
+      <div class="modal-actions">
+        <button type="submit">Guardar</button>
+        <a href="empleados.php?<?= e($current_qs) ?>" class="cancelar_boton">Volver</a>
+      </div>
+    </form>
+  </dialog>
 <?php }
 
 // Modal: Baja lógica (confirmación)
 if ($_SERVER['REQUEST_METHOD']==='POST' && ($_POST['accion'] ?? '')==='baja'){
     $ids = isset($_POST['ids']) ? array_filter((array)$_POST['ids']) : []; ?>
-    <div class="modal-backdrop">
-      <div class="modal">
-        <h3>Baja lógica</h3>
-        <?php if (empty($ids)): ?>
-            <p>No seleccionaste empleados.</p>
-            <div class="acciones">
-                <a class="btn btn-neutro" href="empleados.php?<?= e($current_qs) ?>">Volver</a>
-            </div>
-        <?php else: ?>
-            <p>Se marcarán como <strong>baja</strong> e <strong>inhabilitados</strong> <b><?= count($ids) ?></b> empleado(s). Se enviará mail de notificación.</p>
-            <form method="post" action="empleados.php?<?= e($current_qs) ?>">
-                <?php foreach ($ids as $id): ?><input type="hidden" name="ids[]" value="<?= e($id) ?>"><?php endforeach; ?>
-                <input type="hidden" name="f_dni"    value="<?= e($dni) ?>">
-                <input type="hidden" name="f_nombre" value="<?= e($nombre) ?>">
-                <input type="hidden" name="f_email"  value="<?= e($email) ?>">
-                <input type="hidden" name="f_roll"   value="<?= e($roll) ?>">
-                <input type="hidden" name="f_estado" value="<?= e($estado) ?>">
-                <?php if ($incluir_bajas): ?><input type="hidden" name="f_incluir_bajas" value="1"><?php endif; ?>
-                <div class="acciones">
-                    <button class="btn btn-peligro" name="accion" value="baja_aplicar">Sí, aplicar baja</button>
-                    <a class="btn btn-neutro" href="empleados.php?<?= e($current_qs) ?>">Cancelar</a>
-                </div>
-            </form>
-        <?php endif; ?>
-      </div>
-    </div>
+    <dialog open>
+      <p><strong>Baja lógica</strong></p>
+      <?php if (empty($ids)): ?>
+        <p>No seleccionaste empleados.</p>
+        <div class="modal-actions">
+          <a class="cancelar_boton" href="empleados.php?<?= e($current_qs) ?>">Volver</a>
+        </div>
+      <?php else: ?>
+        <p>Se marcarán como <strong>baja</strong> e <strong>inhabilitados</strong> <b><?= count($ids) ?></b> empleado(s). Se enviará mail de notificación.</p>
+        <form method="post" action="empleados.php?<?= e($current_qs) ?>">
+          <?php foreach ($ids as $id): ?><input type="hidden" name="ids[]" value="<?= e($id) ?>"><?php endforeach; ?>
+          <input type="hidden" name="f_dni"    value="<?= e($dni) ?>">
+          <input type="hidden" name="f_nombre" value="<?= e($nombre) ?>">
+          <input type="hidden" name="f_email"  value="<?= e($email) ?>">
+          <input type="hidden" name="f_roll"   value="<?= e($roll) ?>">
+          <input type="hidden" name="f_estado" value="<?= e($estado) ?>">
+          <?php if ($incluir_bajas): ?><input type="hidden" name="f_incluir_bajas" value="1"><?php endif; ?>
+          <div class="modal-actions">
+            <button name="accion" value="baja_aplicar">Sí, aplicar baja</button>
+            <a class="cancelar_boton" href="empleados.php?<?= e($current_qs) ?>">Cancelar</a>
+          </div>
+        </form>
+      <?php endif; ?>
+    </dialog>
 <?php }
 
 // Modal: Ver/Editar
 if ($empVer){ ?>
-  <div class="modal-backdrop">
-    <div class="modal">
-      <h3>Empleado <?= e($empVer['empleado_nombre']) ?> (DNI <?= e($empVer['empleado_DNI']) ?>)</h3>
-      <table>
-        <tr><th style="width:220px;">DNI</th><td><?= e($empVer['empleado_DNI']) ?></td></tr>
-        <tr><th>Nombre </th><td><?= e($empVer['empleado_nombre']) ?></td></tr>
+  <dialog open>
+    <p><strong>Empleado <?= e($empVer['empleado_nombre']) ?> (DNI <?= e($empVer['empleado_DNI']) ?>)</strong></p>
+    <table style="width:100%;border-collapse:collapse;">
+      <tr><th style="width:220px;">DNI</th><td><?= e($empVer['empleado_DNI']) ?></td></tr>
+      <tr><th>Nombre</th><td><?= e($empVer['empleado_nombre']) ?></td></tr>
+    </table>
+    <br>
+    <form method="post" action="empleados.php?<?= e($current_qs) ?>">
+      <input type="hidden" name="accion" value="ver_guardar">
+      <input type="hidden" name="empleado_DNI" value="<?= e($empVer['empleado_DNI']) ?>">
+      <input type="hidden" name="f_dni"    value="<?= e($dni) ?>">
+      <input type="hidden" name="f_nombre" value="<?= e($nombre) ?>">
+      <input type="hidden" name="f_email"  value="<?= e($email) ?>">
+      <input type="hidden" name="f_roll"   value="<?= e($roll) ?>">
+      <input type="hidden" name="f_estado" value="<?= e($estado) ?>">
+      <?php if ($incluir_bajas): ?><input type="hidden" name="f_incluir_bajas" value="1"><?php endif; ?>
+
+      <table style="width:100%;border-collapse:collapse;">
+        <tr><th>Email</th><td><input type="email" name="empleado_email" value="<?= e($empVer['empleado_email']) ?>" required></td></tr>
+        <tr>
+          <th>Rol</th>
+          <td>
+            <?php
+              $rolActual = $empVer['empleado_roll'] ?: '';
+              $roles_ed = $roles;
+              if ($rolActual !== '' && !in_array($rolActual, $roles_ed, true)) {
+                  $roles_ed[] = $rolActual;
+                  sort($roles_ed, SORT_STRING|SORT_FLAG_CASE);
+              }
+            ?>
+            <select name="empleado_roll" required>
+              <?php foreach ($roles_ed as $r): ?>
+                <option value="<?= e($r) ?>" <?= ($r===$rolActual?'selected':'') ?>><?= e($r) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </td>
+        </tr>
+        <tr><th>Dirección</th><td><input type="text" name="empleado_direccion" value="<?= e($empVer['empleado_direccion']) ?>"></td></tr>
+        <tr><th>Localidad</th><td><input type="text" name="empleado_localidad" value="<?= e($empVer['empleado_localidad']) ?>"></td></tr>
+        <tr><th>Teléfono</th><td><input type="text" name="empleado_telefono" value="<?= e($empVer['empleado_telefono']) ?>"></td></tr>
+        <tr>
+          <th>Estado</th>
+          <td>
+            <?php $est = $empVer['empleado_estado'] ?: 'disponible'; ?>
+            <select name="empleado_estado" id="ver_estado" onchange="toggleLicencia(this.value, 'ver_lic')">
+              <?php foreach (['disponible','no_disponible','licencia','baja'] as $op): ?>
+                <option value="<?= $op ?>" <?= ($op===$est?'selected':'') ?>><?= $op ?></option>
+              <?php endforeach; ?>
+            </select>
+            <div id="ver_lic" class="small" style="margin-top:8px; display:<?= ($est==='licencia'?'block':'none') ?>;">
+              Desde: <input type="date" name="licencia_desde" value="<?= e($empVer['licencia_desde']) ?>">
+              Hasta: <input type="date" name="licencia_hasta" value="<?= e($empVer['licencia_hasta']) ?>">
+            </div>
+          </td>
+        </tr>
       </table>
-      <br>
-      <form method="post" action="empleados.php?<?= e($current_qs) ?>">
-        <input type="hidden" name="accion" value="ver_guardar">
-        <input type="hidden" name="empleado_DNI" value="<?= e($empVer['empleado_DNI']) ?>">
-        <input type="hidden" name="f_dni"    value="<?= e($dni) ?>">
-        <input type="hidden" name="f_nombre" value="<?= e($nombre) ?>">
-        <input type="hidden" name="f_email"  value="<?= e($email) ?>">
-        <input type="hidden" name="f_roll"   value="<?= e($roll) ?>">
-        <input type="hidden" name="f_estado" value="<?= e($estado) ?>">
-        <?php if ($incluir_bajas): ?><input type="hidden" name="f_incluir_bajas" value="1"><?php endif; ?>
 
-        <table>
-          <tr><th>Email</th><td><input type="email" name="empleado_email" value="<?= e($empVer['empleado_email']) ?>" required></td></tr>
-          <tr>
-            <th>Rol</th>
-            <td>
-              <?php
-                $rolActual = $empVer['empleado_roll'] ?: '';
-                $roles_ed = $roles;
-                if ($rolActual !== '' && !in_array($rolActual, $roles_ed, true)) {
-                    $roles_ed[] = $rolActual;
-                    sort($roles_ed, SORT_STRING|SORT_FLAG_CASE);
-                }
-              ?>
-              <select name="empleado_roll" required>
-                <?php foreach ($roles_ed as $r): ?>
-                  <option value="<?= e($r) ?>" <?= ($r===$rolActual?'selected':'') ?>><?= e($r) ?></option>
-                <?php endforeach; ?>
-              </select>
-            </td>
-          </tr>
-          <tr><th>Dirección</th><td><input type="text" name="empleado_direccion" value="<?= e($empVer['empleado_direccion']) ?>"></td></tr>
-          <tr><th>Localidad</th><td><input type="text" name="empleado_localidad" value="<?= e($empVer['empleado_localidad']) ?>"></td></tr>
-          <tr><th>Teléfono</th><td><input type="text" name="empleado_telefono" value="<?= e($empVer['empleado_telefono']) ?>"></td></tr>
-          <tr>
-            <th>Estado</th>
-            <td>
-              <?php $est = $empVer['empleado_estado'] ?: 'disponible'; ?>
-              <select name="empleado_estado" id="ver_estado" onchange="toggleLicencia(this.value, 'ver_lic')">
-                <?php
-                  $opts = ['disponible','no_disponible','licencia','baja'];
-                  foreach ($opts as $op){
-                    $sel = ($op===$est)?'selected':'';
-                    echo "<option value=\"{$op}\" {$sel}>{$op}</option>";
-                  }
-                ?>
-              </select>
-              <div id="ver_lic" class="small" style="margin-top:8px; display:<?= ($est==='licencia'?'block':'none') ?>;">
-                Desde: <input type="date" name="licencia_desde" value="<?= e($empVer['licencia_desde']) ?>">
-                Hasta: <input type="date" name="licencia_hasta" value="<?= e($empVer['licencia_hasta']) ?>">
-              </div>
-            </td>
-          </tr>
-        </table>
+      <p class="small">Reglas: Nombre/Dirección/Localidad con inicial mayúscula. Email y rol en minúscula. Si estado = baja, se inhabilita y se envía correo.</p>
 
-        <p class="small">Reglas: Nombre/Dirección/Localidad en Inicial Mayúscula. Email y rol en minúscula. Si estado = baja, se inhabilita y se notifica por correo.</p>
-
-        <div class="acciones">
-          <button class="btn btn-primario" type="submit">Guardar</button>
-          <a class="btn btn-neutro" href="empleados.php?<?= e($current_qs) ?>">Volver</a>
-        </div>
-      </form>
-    </div>
-  </div>
+      <div class="modal-actions">
+        <button type="submit">Guardar</button>
+        <a class="cancelar_boton" href="empleados.php?<?= e($current_qs) ?>">Volver</a>
+      </div>
+    </form>
+  </dialog>
 <?php } ?>
 
 <script>
@@ -603,7 +597,6 @@ function toggleLicencia(val, id){
     if (!el) return;
     el.style.display = (val==='licencia') ? 'block' : 'none';
 }
-
 // Interceptar botón "Baja lógica"
 document.addEventListener('click', function(ev){
     if (ev.target && ev.target.tagName==='BUTTON' && ev.target.name==='accion' && ev.target.value==='baja'){
@@ -614,7 +607,6 @@ document.addEventListener('click', function(ev){
         form.submit();
     }
 });
-
 // Al abrir modal "Nuevo", inicializar visibilidad
 (function(){
     var ns = document.getElementById('nuevo_estado');
